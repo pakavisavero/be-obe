@@ -1,0 +1,35 @@
+{
+    "model": "models.StatusMahasiswa",
+    "data": [
+        {
+            "status": "Aktif",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "status": "Undur Diri",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "status": "Mangkir",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "status": "DO",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "status": "Lulus",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

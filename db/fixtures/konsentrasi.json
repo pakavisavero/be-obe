@@ -1,0 +1,35 @@
+{
+    "model": "models.Konsentrasi",
+    "data": [
+        {
+            "konsentrasi": "Teknik Tenaga Listrik",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "konsentrasi": "Elektronika",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "konsentrasi": "Telekomunikasi",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "konsentrasi": "Kontrol & Instrumentasi",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "konsentrasi": "Teknologi Informasi",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

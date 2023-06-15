@@ -1,0 +1,53 @@
+{
+    "model": "models.RoleMaster",
+    "data": [
+        {
+            "role_name": "Super Admin",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "role_name": "Admin",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "role_name": "Dosen",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "role_name": "Operator",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "role_name": "Kepala Program Studi S1",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "role_name": "Kepala Departemen",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "role_name": "Dekanat",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "role_name": "Operator Dekanat",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

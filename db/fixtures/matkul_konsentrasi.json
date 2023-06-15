@@ -1,0 +1,1020 @@
+{
+    "model": "models.MatkulKonsentrasi",
+    "data": [
+        {
+            "matkul_id": 40,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 41,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 42,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 43,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 44,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 45,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 46,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 47,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 48,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 49,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 50,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 51,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 52,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 53,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 54,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 55,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 56,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 57,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 58,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 59,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 60,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 61,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 62,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 63,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 64,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 65,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 66,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 67,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 68,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 69,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 70,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 71,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 72,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 73,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 74,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 75,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 76,
+            "konsentrasi_id": 1,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 77,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 78,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 79,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 80,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 81,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 84,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 85,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 86,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 87,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 88,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 89,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 90,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 91,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 92,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 93,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 94,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 95,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 96,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 97,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 98,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 99,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 100,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 101,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 102,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 103,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 104,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 105,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 106,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 107,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 108,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 109,
+            "konsentrasi_id": 2,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 110,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 111,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 112,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 113,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 114,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 115,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 116,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 117,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 118,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 119,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 120,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 121,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 122,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 123,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 124,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 125,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 126,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 127,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 128,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 129,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 130,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 131,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 132,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 133,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 134,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 135,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 136,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 137,
+            "konsentrasi_id": 3,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 138,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 139,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 140,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 141,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 142,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 143,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 144,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 145,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 146,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 147,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 148,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 149,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 150,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 151,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 152,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 153,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 154,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 155,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 156,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 157,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 158,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 159,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 160,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 161,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 162,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 163,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 164,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 165,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 166,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 167,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 168,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 169,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 170,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 171,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 172,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 173,
+            "konsentrasi_id": 4,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 174,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 175,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 176,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 177,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 178,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 179,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 180,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 181,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 182,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 183,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 184,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 185,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "matkul_id": 186,
+            "konsentrasi_id": 5,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

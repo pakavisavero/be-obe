@@ -1,0 +1,77 @@
+{
+    "model": "models.Fakultas",
+    "data": [
+        {
+            "nama_fakultas": "Fakultas Teknik",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Kedokteran",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Psikologi",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Ekonomika dan Bisnis",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Peternakan dan Pertanian",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Perairan dan Ilmu Kelautan",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Hukum",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Vokasi",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Kesehatan Masyarakat",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Ilmu Budaya",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Sains dan Matematika",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "nama_fakultas": "Fakultas Ilmu Sosial dan Ilmu Politik",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

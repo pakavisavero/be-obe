@@ -1,0 +1,19 @@
+{
+    "model": "models.Kurikulum",
+    "data": [
+        {
+            "name": "K17",
+            "deskripsi": "Kurikulum untuk 2017",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "name": "K20",
+            "deskripsi": "Kurikulum untuk 2020",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

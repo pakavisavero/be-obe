@@ -1,0 +1,103 @@
+{
+    "model": "models.Module",
+    "data": [
+        {
+            "module_group_id": 1,
+            "module_name": "Dashboard",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 2,
+            "module_name": "Mahasiswa",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 2,
+            "module_name": "Dosen",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 2,
+            "module_name": "Program Studi",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 2,
+            "module_name": "Mata Kuliah",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 2,
+            "module_name": "Perkuliahan",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 3,
+            "module_name": "Users",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 3,
+            "module_name": "Module",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 3,
+            "module_name": "Role Master",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 4,
+            "module_name": "Import",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 4,
+            "module_name": "CPMK",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 4,
+            "module_name": "CPL",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 4,
+            "module_name": "Portofolio",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_group_id": 5,
+            "module_name": "KBM",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

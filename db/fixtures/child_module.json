@@ -1,0 +1,197 @@
+{
+    "model": "models.ChildModule",
+    "data": [
+        {
+            "module_id": 2,
+            "module_name": "Add Mahasiswa",
+            "route": "/mahasiswa/create",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 2,
+            "module_name": "List Mahasiswa",
+            "route": "/mahasiswa",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 3,
+            "module_name": "Add Dosen",
+            "route": "/dosen/create",
+            "is_active": false,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 3,
+            "module_name": "List Dosen",
+            "route": "/dosen",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 4,
+            "module_name": "Add Program Studi",
+            "route": "/program-studi/create",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 4,
+            "module_name": "List Program Studi",
+            "route": "/program-studi",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 5,
+            "module_name": "Add Mata Kuliah",
+            "route": "/mata-kuliah/create",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 5,
+            "module_name": "List Mata Kuliah",
+            "route": "/mata-kuliah",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 6,
+            "module_name": "Add Perkuliahan",
+            "route": "/perkuliahan/create",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 6,
+            "module_name": "List Perkuliahan",
+            "route": "/perkuliahan",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 7,
+            "module_name": "Add User",
+            "route": "/user/create",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 7,
+            "module_name": "List Users",
+            "route": "/user",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 8,
+            "module_name": "Add Module",
+            "route": "/module/create",
+            "is_active": false,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 8,
+            "module_name": "List Modules",
+            "route": "/module",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 9,
+            "module_name": "Add Role",
+            "route": "/role-master/create",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 9,
+            "module_name": "List Roles",
+            "route": "/role-master",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 10,
+            "module_name": "Plotting MK",
+            "route": "/import-menu/plotting-mk",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 10,
+            "module_name": "DPNA",
+            "route": "/import-menu/dpna",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 10,
+            "module_name": "Portofolio CPMK",
+            "route": "/import-menu/cpmk",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 11,
+            "module_name": "List CPMK",
+            "route": "/cpmk",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 12,
+            "module_name": "Add CPL",
+            "route": "/cpl/create",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 12,
+            "module_name": "List CPL",
+            "route": "/cpl",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 13,
+            "module_name": "Add Portofolio",
+            "route": "/portoflio/create",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "module_id": 13,
+            "module_name": "List Portofolio",
+            "route": "/portoflio",
+            "is_active": true,
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

@@ -1,0 +1,89 @@
+{
+    "model": "models.Prodi",
+    "data": [
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Lingkungan",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Perkapalan",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Kimia",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Mesin",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Sipil",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Geologi",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Geodesi",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Elektro",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Arsitektur",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Planologi",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Komputer",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "fakultas_id": 1,
+            "prodi": "Teknik Industri",
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

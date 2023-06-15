@@ -1,0 +1,2155 @@
+{
+    "model": "models.MataKuliah",
+    "data": [
+        {
+            "mata_kuliah": "Pendidikan Agama Islam",
+            "kode_mk": "UUW00011",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pancasila",
+            "kode_mk": "UUW00003",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Bahasa Indonesia",
+            "kode_mk": "UUW00004",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Olahraga",
+            "kode_mk": "UUW00005 ",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Fisika Mekanika dan Panas",
+            "kode_mk": "TEL21311 ",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kalkulus",
+            "kode_mk": "TEL21312",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Aljabar Linear",
+            "kode_mk": "TEL213113",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengantar Teknik Elektro",
+            "kode_mk": "TEL21314 ",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknologi Informasi",
+            "kode_mk": "TEL21315",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Bahasa Inggris",
+            "kode_mk": "UNW00006",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kewarganegaraan",
+            "kode_mk": "UNW00003",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Fisika Listrik, Gelombang dan Cahaya",
+            "kode_mk": "TEL21321",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Persamaan Differensial",
+            "kode_mk": "TEL21322",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Analisis Vektor",
+            "kode_mk": "TEL21323",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengantar Analisis Rangkaian",
+            "kode_mk": "TEL21324",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Algoritma dan Pemrograman",
+            "kode_mk": "TEL21325",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Prak. Pemrograman Komputer",
+            "kode_mk": "TEL21326",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Prak. Fisika Listrik",
+            "kode_mk": "TEL21327",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Variabel Kompleks",
+            "kode_mk": "TEL21331",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Probabilitas dan Stokastik",
+            "kode_mk": "TEL21332",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Waktu Kontinu",
+            "kode_mk": "TEL21333",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Dasar Elektronika",
+            "kode_mk": "TEL21334",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Digital",
+            "kode_mk": "TEL21335",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Rangkaian Listrik",
+            "kode_mk": "TEL21336",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Prak. Rangkaian Listrik",
+            "kode_mk": "TEL21337",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Prak. Sistem Digital",
+            "kode_mk": "TEL21338",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Metode dan Komputasi Numerik",
+            "kode_mk": "TEL21341",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Medan Elektromagnetik",
+            "kode_mk": "TEL21342",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Dasar Sistem Kontrol",
+            "kode_mk": "TEL21343",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Mikroprosesor",
+            "kode_mk": "TEL21344",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Pengukuran dan Instrumentasi",
+            "kode_mk": "TEL21345",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Waktu Diskrit",
+            "kode_mk": "TEL21346",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Prak. Dasar Elektronika",
+            "kode_mk": "TEL21347",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Prak. Dasar Sistem Kontrol",
+            "kode_mk": "TEL21348",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Prak. Mikroprosesor",
+            "kode_mk": "TEL21349",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Dasar Tenaga Listrik",
+            "kode_mk": "TEL21351",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Dasar Sistem Telekomunikasi",
+            "kode_mk": "TEL21352",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Prak. Dasar Sistem Telekomunikasi",
+            "kode_mk": "TEL21353",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Prak. Dasar Tenaga Listrik",
+            "kode_mk": "TEL21351",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Bahan Bahan Listrik",
+            "kode_mk": "TEL21401",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Transmisi Daya Arus Bolak Balik",
+            "kode_mk": "TEL21402",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Mesin Arus Searah dan Transformator",
+            "kode_mk": "TEL21403",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Mesin Asinkron dan Sinkron",
+            "kode_mk": "TEL21404",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknik dan Peralatan Tegangan Tinggi",
+            "kode_mk": "TEL21405",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Teknik dan Peralatan Tegangan Tinggi",
+            "kode_mk": "TEL21406",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Termodinamika dan Pembangkit Tenaga Listrik",
+            "kode_mk": "TEL21410",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknik Instalasi Listrik dan Iluminasi",
+            "kode_mk": "TEL21411",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Elektronika Daya",
+            "kode_mk": "TEL21412",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Mesin Listrik",
+            "kode_mk": "TEL21414",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Teknik Instalasi Listrik dan Sistem Pembumian",
+            "kode_mk": "TEL21415 ",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Elektronika Daya",
+            "kode_mk": "TEL21416",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Analisis Sistem Tenaga dan Sistem Pembumian",
+            "kode_mk": "TEL21417",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Konservasi dan Manajemen Energi Listrik",
+            "kode_mk": "TEL21418",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pemrograman dalam Sistem Tenaga",
+            "kode_mk": "TEL21419",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Desain Sistem Distribusi Tenaga Listrik",
+            "kode_mk": "TEL21420",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Pembangkit Tenaga Listrik",
+            "kode_mk": "TEL21426",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Pembangkit Energi Baru & Terbarukan",
+            "kode_mk": "TEL21425",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Metoda Prakiraan Beban dan Tarif Listrik",
+            "kode_mk": "TEL21430",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Optimasi dan Operasi Tenaga Listrik",
+            "kode_mk": "TEL21428",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Aplikasi Kecerdasan Buatan dalam Tenaga Listrik",
+            "kode_mk": "TEL21434",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Proteksi Tenaga Listrik",
+            "kode_mk": "TEL21437",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Proteksi Tenaga Listrik",
+            "kode_mk": "TEL21438",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Stabilitas dan Keandalan Tenaga Listrik",
+            "kode_mk": "TEL21439",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Saluran dan Gardu Induk",
+            "kode_mk": "TEL21422",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Gelombang Berjalan dan Proteksi Petir",
+            "kode_mk": "TEL21429",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kualitas Tenaga Listrik",
+            "kode_mk": "TEL21421",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kecerdasan Buatan",
+            "kode_mk": "TEL21460",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Mesin Lisrik",
+            "kode_mk": "TEL21423",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Penggunaan Mesin dan Pengemudian Motor Listrik",
+            "kode_mk": "TEL21427",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Traksi dan Transportasi Listrik",
+            "kode_mk": "TEL21431",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Desain Rangkaian Kontrol Elektronika Daya",
+            "kode_mk": "TEL21435",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Transmisi Daya Arus Searah",
+            "kode_mk": "TEL21424",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Aplikasi Tegangan Tinggi",
+            "kode_mk": "TEL21433",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Gelombang Berjalan dan Proteksi Petir",
+            "kode_mk": "TEL21429",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Kabel Tenaga Lisrik",
+            "kode_mk": "TEL21432 ",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Desain Isolator Tenaga",
+            "kode_mk": "TEL21436",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Saluran Transmisi",
+            "kode_mk": "PTEL6321",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Jaringan Telekomunikasi",
+            "kode_mk": "PTEL6322",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengenalan Pola",
+            "kode_mk": "PTEL6323",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Elektronika Telekomunikasi",
+            "kode_mk": "PTEL6324",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Modulasi Pulsa",
+            "kode_mk": "PTEL6325",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teori Informasi dan Pengkodean",
+            "kode_mk": "PTEL6326",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Modulasi Digital",
+            "kode_mk": "PTEL6327",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teori dan Perancangan Antenna",
+            "kode_mk": "PTEL6331",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Komunikasi Digital",
+            "kode_mk": "PTEL6331",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Trafik dan Kinerja Jaringan Telekomunikasi",
+            "kode_mk": "PTEL6333",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Komunikasi Nirkawat",
+            "kode_mk": "PTEL6334",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Komunikasi Data",
+            "kode_mk": "PTEL6335",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Komunikasi Serat Optik",
+            "kode_mk": "PTEL6336",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Kinerja Jaringan Telekomunikasi",
+            "kode_mk": "PTEL6337",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Terrestrial dan Satelit",
+            "kode_mk": "LTEL6421",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Telekomunikasi Multimedia",
+            "kode_mk": "LTEL6422",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pembelajaran Mesin",
+            "kode_mk": "LTEL6423",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengolahan dan Analisis Sinyal",
+            "kode_mk": "LTEL6424",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Jaringan Akses Nirkawat",
+            "kode_mk": "LTEL6425",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Telekomunikasi Bergerak",
+            "kode_mk": "LTEL6426",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Sistem Komunikasi",
+            "kode_mk": "LTEL6427",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Jaringan Telekomunikasi",
+            "kode_mk": "LTEL6428",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Manajemen Jaringan Telekomunikasi",
+            "kode_mk": "LTEL6429",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perbaikan Kinerja Jaringan",
+            "kode_mk": "LTEL6430",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengolahan Sinyal Digital",
+            "kode_mk": "LTEL6431",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengolahan Suara Digital",
+            "kode_mk": "LTEL6432",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengolahan Citra Digital",
+            "kode_mk": "LTEL6433",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Jaringan Saraf Tiruan",
+            "kode_mk": "LTEL6434",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Aplikasi Phyton",
+            "kode_mk": "LTEL6435",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Analisis Spektral",
+            "kode_mk": "LTEL6436",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pemrograman Matlab",
+            "kode_mk": "LTEL6437",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Elektronika Analog",
+            "kode_mk": "PTEL6341",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Elektronika Analog",
+            "kode_mk": "PTEL6342",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Device Semikonduktor",
+            "kode_mk": "PTEL6343",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Optoelektronika",
+            "kode_mk": "PTEL6344",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sensor dan Aktuator",
+            "kode_mk": "PTEL6345",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengolahan Sinyal Elektronika",
+            "kode_mk": "PTEL6351",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Pengolahan Sinyal Elektronika",
+            "kode_mk": "PTEL6352",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Sistem Digital",
+            "kode_mk": "PTEL6353",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Perancangan Sistem Digital",
+            "kode_mk": "PTEL6354",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknologi Rangkaian Terintegrasi",
+            "kode_mk": "PTEL6355",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Elektronika RF",
+            "kode_mk": "PTEL6356",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Derau dalam Sistem Elektronika",
+            "kode_mk": "PTEL6357",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Elektronika Industri dan Otomasi",
+            "kode_mk": "LTEL6441",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Elektronika Kedokteran",
+            "kode_mk": "LTEL6442",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Tertanam",
+            "kode_mk": "LTEL6443",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Sistem VLSI",
+            "kode_mk": "LTEL6444",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan Berbasis FPGA",
+            "kode_mk": "LTEL6445",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknologi Nano",
+            "kode_mk": "LTEL6446",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengolahan Citra Medis",
+            "kode_mk": "LTEL6447",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perancangan IC Analog",
+            "kode_mk": "LTEL6448",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Cerdas",
+            "kode_mk": "LTEL6449",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknologi Display dan Memory",
+            "kode_mk": "LTEL6450",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengolahan Sinyal Digital",
+            "kode_mk": "LTEL6451",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknologi Lapisan Tipis",
+            "kode_mk": "LTEL6452",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Mekatronika dan Robot",
+            "kode_mk": "LTEL6453",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknik Akuisisi Data",
+            "kode_mk": "LTEL6454",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknologi Mobil Listrik",
+            "kode_mk": "LTEL6455",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknologi Fuel Cell",
+            "kode_mk": "LTEL6456",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Kontrol Analog",
+            "kode_mk": "PTEL6361",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Kontrol Analog",
+            "kode_mk": "PTEL6362",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknik Optimasi",
+            "kode_mk": "PTEL6364",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Kontrol Tertanam",
+            "kode_mk": "PTEL6365",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pemodelan dan Identifikasi Sistem",
+            "kode_mk": "PTEL6371",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Kontrol Digital",
+            "kode_mk": "PTEL6372",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kontrol Proses Manufakturing",
+            "kode_mk": "PTEL6373",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Komponen Sistem Kontrol",
+            "kode_mk": "PTEL6374",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Menggambar Instrumentasi",
+            "kode_mk": "PTEL6375",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Pemodelan dan Identifikasi Sistem",
+            "kode_mk": "PTEL6376",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Kontrol Proses Manufakturing",
+            "kode_mk": "PTEL6377",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Kontrol Digital",
+            "kode_mk": "PTEL6378",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknik Kontrol Optimal",
+            "kode_mk": "LTEL6461",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknik Kontrol Adaptif",
+            "kode_mk": "LTEL6462",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Kontrol Cerdas",
+            "kode_mk": "LTEL6463",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Skala Besar",
+            "kode_mk": "LTEL6464",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Navigasi Inersia",
+            "kode_mk": "LTEL6465",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Mekatronika",
+            "kode_mk": "LTEL6466",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Robotika",
+            "kode_mk": "LTEL6467",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pembelajaran Mesin",
+            "kode_mk": "LTEL6468",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kontrol Remot dan Telemetri",
+            "kode_mk": "LTEL6469",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kontrol Otomotif",
+            "kode_mk": "LTEL6470",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kontrol Energi Listrik",
+            "kode_mk": "LTEL6471",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pemrograman dan Simulasi Sistem",
+            "kode_mk": "LTEL6472",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kontrol Berbasis Model",
+            "kode_mk": "LTEL6473",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Identifikasi Sistem Lanjut",
+            "kode_mk": "LTEL6474",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Struktur Data",
+            "kode_mk": "PTEL6381",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Organisasi dan Arsitektur Komputer",
+            "kode_mk": "PTEL6382",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Basis Data",
+            "kode_mk": "PTEL6383",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Basis Data",
+            "kode_mk": "PTEL6384",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Jaringan dan Komunikasi Data",
+            "kode_mk": "PTEL6382",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Jaringan Komputer",
+            "kode_mk": "PTEL6391",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Jaringan Komputer",
+            "kode_mk": "PTEL6392",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Rekayasa Perangkat Lunak",
+            "kode_mk": "PTEL6393",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Rekayasa Perangkat Lunak",
+            "kode_mk": "PTEL6394",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Operasi",
+            "kode_mk": "PTEL6395",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Informasi",
+            "kode_mk": "PTEL6396",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengembangan Web",
+            "kode_mk": "PTEL6397",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kriptografi",
+            "kode_mk": "LTEL6481",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Multimedia",
+            "kode_mk": "LTEL6482",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Komputasi Cerdas",
+            "kode_mk": "LTEL6483",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Komputasi Terdistribusi dan Cloud",
+            "kode_mk": "LTEL6484",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengembangan Aplikasi Perangkat Bergerak",
+            "kode_mk": "LTEL6485",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Jaringan Nirkabel dan Bergerak",
+            "kode_mk": "LTEL6486",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Keamanan Jaringan",
+            "kode_mk": "LTEL6487",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Interface dan Peripheral",
+            "kode_mk": "LTEL6488",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pemrograman Berorientasi Objek",
+            "kode_mk": "LTEL6489",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Metoda Pemrograman Modern",
+            "kode_mk": "LTEL6490",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Analisis dan Desain Sistem Informasi",
+            "kode_mk": "LTEL6491",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Big Data dan Analitik",
+            "kode_mk": "LTEL6492",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Perencanaan Teknologi Informasi",
+            "kode_mk": "LTEL6493",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Pendukung Keputusan",
+            "kode_mk": "LTEL6494",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Manajemen Ekonomi Teknik",
+            "kode_mk": "TEL21381",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kewirausahaan",
+            "kode_mk": "UNW00007",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Proposal Tugas Akhir",
+            "kode_mk": "TEL21370",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Tugas Akhir",
+            "kode_mk": "TEL21380",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "KKN \/ Magang",
+            "kode_mk": "UNW00008",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Kerja Praktek",
+            "kode_mk": "TEL21383",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": false,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Keamanan dan Keselamatan Kerja",
+            "kode_mk": "TEL21413",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Telekomunikasi 1",
+            "kode_mk": "TEL21445",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Telekomunikasi 2",
+            "kode_mk": "TEL21457",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Telekomunikasi 3",
+            "kode_mk": "TEL21458",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Komunikasi Nirkawat (lanjut)",
+            "kode_mk": "TEL21463",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Material Elektronika",
+            "kode_mk": "TEL21482",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknologi IC",
+            "kode_mk": "TEL21494",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "VLSI",
+            "kode_mk": "TEL21496",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "elektronika industri",
+            "kode_mk": "TEL21503",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Nanoteknologi + thin film",
+            "kode_mk": "TEL21504",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Teknologi Display + Memory",
+            "kode_mk": "TEL21509",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Material Elektronika",
+            "kode_mk": "TEL21482",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Kontrol Multivariabel",
+            "kode_mk": "TEL21523",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Mekatronika",
+            "kode_mk": "TEL21544",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Robotika",
+            "kode_mk": "TEL21545",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Praktikum Interface dan Peripheral",
+            "kode_mk": "TEL21573",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Berbasis Internet of Things",
+            "kode_mk": "TEL21582",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Manajemen Jaringan",
+            "kode_mk": "TEL21585",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Interaksi Manusia Komputer",
+            "kode_mk": "TEL21589",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Pengembangan Perangkat Lunak Berorientasi Service",
+            "kode_mk": "TEL21590",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Intellijen Bisnis",
+            "kode_mk": "TEL21592",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "mata_kuliah": "Sistem Berbasis Enterprise",
+            "kode_mk": "TEL21593",
+            "kurikulum_id": 1,
+            "prodi_id": 8,
+            "is_konsen": true,
+            "is_active": 1,
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

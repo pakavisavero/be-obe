@@ -5,7 +5,7 @@ from controller import mahasiswa
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.mahasiswaSchema import (
     MahasiswaResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.mahasiswaSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "mahasiswa"
+MAHASISWA = "/mahasiswa"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=MahasiswaResponseSchema)
+@app.get(MAHASISWA + "s", response_model=MahasiswaResponseSchema)
 # @check_access_module
 async def get_all_mahasiswa(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_mahasiswa(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=MahasiswaResponseSchema)
+@app.get(MAHASISWA + "/{id}", response_model=MahasiswaResponseSchema)
 # @check_access_module
 async def get_mahasiswa(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_mahasiswa(
     }
 
 
-@app.post(MODULE_NAME, response_model=MahasiswaResponseSchema)
+@app.post(MAHASISWA, response_model=MahasiswaResponseSchema)
 # @check_access_module
 async def submit_mahasiswa(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_mahasiswa(
         }
 
 
-@app.put(MODULE_NAME, response_model=MahasiswaResponseSchema)
+@app.put(MAHASISWA, response_model=MahasiswaResponseSchema)
 # @check_access_module
 async def update_mahasiswa(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_mahasiswa(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(MAHASISWA)
 # @check_access_module
 async def delete_mahasiswa(
     db: Session = Depends(db),

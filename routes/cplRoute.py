@@ -5,7 +5,7 @@ from controller import cpl
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.cplSchema import (
     CPLResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.cplSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "cpl"
+CPL = "/cpl"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=CPLResponseSchema)
+@app.get(CPL + "s", response_model=CPLResponseSchema)
 # @check_access_module
 async def get_all_cpl(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_cpl(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=CPLResponseSchema)
+@app.get(CPL + "/{id}", response_model=CPLResponseSchema)
 # @check_access_module
 async def get_cpl(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_cpl(
     }
 
 
-@app.post(MODULE_NAME, response_model=CPLResponseSchema)
+@app.post(CPL, response_model=CPLResponseSchema)
 # @check_access_module
 async def submit_cpl(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_cpl(
         }
 
 
-@app.put(MODULE_NAME, response_model=CPLResponseSchema)
+@app.put(CPL, response_model=CPLResponseSchema)
 # @check_access_module
 async def update_cpl(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_cpl(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(CPL)
 # @check_access_module
 async def delete_cpl(
     db: Session = Depends(db),

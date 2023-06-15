@@ -1,6 +1,5 @@
 from fastapi import status
 from db.middleware import getDataInRedis, RedisType
-from db import module
 import pytz
 from sqlalchemy import cast, String, Date, desc
 from datetime import datetime, timedelta, date
@@ -19,49 +18,34 @@ from enum import Enum
 load_dotenv(".env")
 
 
-r = redis.Redis(host='localhost', port=6379, db=5)
-r2 = redis.Redis(host='localhost', port=6379, db=6)
+r = redis.Redis(host="localhost", port=6379, db=5)
+r2 = redis.Redis(host="localhost", port=6379, db=6)
+
 
 class Microservices(Enum):
-    USER = 'SERVICE_USER'
-    TRANSACTION = 'SERVICE_TRANSACTION'
+    USER = "SERVICE_USER"
+    TRANSACTION = "SERVICE_TRANSACTION"
 
-def helperGET(
-    token: str,
-    type: Microservices,
-    segment: str,
-    all=True,
-    id: int = None
-):
+
+def helperGET(token: str, type: Microservices, segment: str, all=True, id: int = None):
     headersList = {"token": token}
     baseUrl = os.environ.get(type.value)
     url = baseUrl + segment
 
     if not all:
-        url = baseUrl + segment + '/{}'.format(id)
+        url = baseUrl + segment + "/{}".format(id)
 
-    response = requests.request(
-        "GET", url, headers=headersList)
+    response = requests.request("GET", url, headers=headersList)
 
     return json.loads(response.text)
 
 
-def helperPOST(
-    token: str,
-    type: Microservices,
-    segment: str,
-    payload: dict
-):
+def helperPOST(token: str, type: Microservices, segment: str, payload: dict):
     headersList = {"token": token}
     baseUrl = os.environ.get(type.value)
     url = baseUrl + segment
 
-    response = requests.request(
-        "POST",
-        url,
-        payload=payload,
-        headers=headersList
-    )
+    response = requests.request("POST", url, payload=payload, headers=headersList)
 
     return json.loads(response.text)
 
@@ -69,9 +53,8 @@ def helperPOST(
 def decode_token(token):
     granted = r.exists(token)
     if not granted:
-        raise HandlerCustom(
-            data={"message": "you dont have access to this data"})
-    payload = jwt.decode(token, "SECRET", algorithms=['HS256'])
+        raise HandlerCustom(data={"message": "you dont have access to this data"})
+    payload = jwt.decode(token, "SECRET", algorithms=["HS256"])
     return payload
 
 
@@ -97,31 +80,7 @@ def is_foreign_key(column):
     return True if column.foreign_keys else False
 
 
-def getAccess(token: str, var: module):
-    granted = getDataInRedis(token, RedisType.TOKEN)
-    user_access = getDataInRedis(
-        granted["user_id"],
-        RedisType.USER_ACCESS
-    )
-
-    access = user_access["user_access"][0]
-    for a in access:
-        if a["module_id"] == var:
-            return {
-                "code": status.HTTP_200_OK,
-                "user_id": granted["user_id"],
-                "user_access": a
-            }
-
-    return {
-        "code": status.HTTP_404_NOT_FOUND,
-        "user_id": granted["user_id"],
-        "user_access": "No Access"
-    }
-
-
 def helper_static_filter(db, Schema, filtered, offset):
-
     page_size = 10
     dict_string = {}
     dict_number = {}
@@ -146,8 +105,7 @@ def helper_static_filter(db, Schema, filtered, offset):
                         if key_split[0] not in dict_date:
                             dict_date[key_split[0]] = [None, None]
 
-                        dict_date[key_split[0]][int(
-                            index_key_spit)] = filtered[key]
+                        dict_date[key_split[0]][int(index_key_spit)] = filtered[key]
 
                     else:
                         dict_string[key] = str(filtered[key])
@@ -188,14 +146,12 @@ def helper_static_filter(db, Schema, filtered, offset):
                 )
             else:
                 base_query = base_query.filter(
-                    cast(getattr(Schema, key), Date).between(
-                        start_date, end_date)
+                    cast(getattr(Schema, key), Date).between(start_date, end_date)
                 )
 
     if dict_bool:
         for key in dict_bool:
-            base_query = base_query.filter(
-                getattr(Schema, key) == dict_bool[key])
+            base_query = base_query.filter(getattr(Schema, key) == dict_bool[key])
 
     if offset == -1:
         data = base_query.all()
@@ -239,7 +195,6 @@ def helper_create_parent(Schema, db, data, SchemaChild, child, token):
 
 def helper_update_parent(Schema, db, data, values, token):
     try:
-
         tokenDecode = decode_token(token)
         data["modified_by"] = tokenDecode.get("username")
         ns = db.query(Schema).filter_by(id=data["id"]).first()
@@ -263,7 +218,6 @@ def helper_update_child(
     parent,
 ):
     try:
-
         if "copyId" in data:
             check = db.query(Schema).filter_by(id=data["copyId"]).first()
             del data["copyId"]
@@ -292,14 +246,13 @@ def helper_naming_series(connection, target, field, module):
     session = tempSessionn(connection)
 
     url = os.environ.get("SERVICE_USER") + "get-naming"
-    payload = {'module_name': module}
-    response = requests.request(
-        "POST", url,  data=payload)
+    payload = {"module_name": module}
+    response = requests.request("POST", url, data=payload)
 
     res = json.loads(response.text)
-    print(res['code'])
-    if res['code'] == 200:
-        setattr(target, field, res['data'])
+    print(res["code"])
+    if res["code"] == 200:
+        setattr(target, field, res["data"])
     else:
         raise Exception("Please set naming series fix for {0}".format(module))
 
@@ -312,21 +265,31 @@ def check_access_module(func):
             tokenDecode = decode_token(token)
             request = kwargs.get("request")
             module = kwargs.get("module_access")
-            checkRoleExist = r2.exists(tokenDecode['role_id'])
+            checkRoleExist = r2.exists(tokenDecode["role_id"])
             if checkRoleExist:
-                dataAccess = r2.get(tokenDecode['role_id']).decode("utf-8")
+                dataAccess = r2.get(tokenDecode["role_id"]).decode("utf-8")
                 resultAccess = [
-                    d for d in json.loads(dataAccess) if d['module'] == module]
+                    d for d in json.loads(dataAccess) if d["module"] == module
+                ]
                 if resultAccess:
-                    if request.method == "POST" and not resultAccess[0]['add']:
+                    if request.method == "POST" and not resultAccess[0]["add"]:
                         raise HandlerCustom(
-                            data={"message": "Your don't have access to add this module"})
-                    elif request.method == "PUT" and not resultAccess[0]['edit']:
+                            data={
+                                "message": "Your don't have access to add this module"
+                            }
+                        )
+                    elif request.method == "PUT" and not resultAccess[0]["edit"]:
                         raise HandlerCustom(
-                            data={"message": "Your don't have access to update this module"})
-                    elif request.method == "GET" and not resultAccess[0]['view']:
+                            data={
+                                "message": "Your don't have access to update this module"
+                            }
+                        )
+                    elif request.method == "GET" and not resultAccess[0]["view"]:
                         raise HandlerCustom(
-                            data={"message": "Your don't have access to view this module"})
+                            data={
+                                "message": "Your don't have access to view this module"
+                            }
+                        )
                 else:
                     raise HandlerCustom(data={"message": "Module Not Found"})
             else:

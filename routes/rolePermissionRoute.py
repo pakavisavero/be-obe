@@ -5,7 +5,7 @@ from controller import rolePermission
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.rolePermissionSchema import (
     RolePermissionResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.rolePermissionSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "role-permission"
+ROLE_PERMISSION = "/role-permission"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=RolePermissionResponseSchema)
+@app.get(ROLE_PERMISSION + "s", response_model=RolePermissionResponseSchema)
 # @check_access_module
 async def get_all_role_permission(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_role_permission(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=RolePermissionResponseSchema)
+@app.get(ROLE_PERMISSION + "/{id}", response_model=RolePermissionResponseSchema)
 # @check_access_module
 async def get_role_permission(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_role_permission(
     }
 
 
-@app.post(MODULE_NAME, response_model=RolePermissionResponseSchema)
+@app.post(ROLE_PERMISSION, response_model=RolePermissionResponseSchema)
 # @check_access_module
 async def submit_role_permission(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_role_permission(
         }
 
 
-@app.put(MODULE_NAME, response_model=RolePermissionResponseSchema)
+@app.put(ROLE_PERMISSION, response_model=RolePermissionResponseSchema)
 # @check_access_module
 async def update_role_permission(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_role_permission(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(ROLE_PERMISSION)
 # @check_access_module
 async def delete_role_permission(
     db: Session = Depends(db),

@@ -5,7 +5,7 @@ from controller import fakultas
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.fakultasSchema import (
     FakultasResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.fakultasSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "fakultas"
+FAKULTAS = "/fakultas"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "es", response_model=FakultasResponseSchema)
+@app.get(FAKULTAS + "es", response_model=FakultasResponseSchema)
 # @check_access_module
 async def get_all_fakultas(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_fakultas(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=FakultasResponseSchema)
+@app.get(FAKULTAS + "/{id}", response_model=FakultasResponseSchema)
 # @check_access_module
 async def get_fakultas(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_fakultas(
     }
 
 
-@app.post(MODULE_NAME, response_model=FakultasResponseSchema)
+@app.post(FAKULTAS, response_model=FakultasResponseSchema)
 # @check_access_module
 async def submit_fakultas(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_fakultas(
         }
 
 
-@app.put(MODULE_NAME, response_model=FakultasResponseSchema)
+@app.put(FAKULTAS, response_model=FakultasResponseSchema)
 # @check_access_module
 async def update_fakultas(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_fakultas(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(FAKULTAS)
 # @check_access_module
 async def delete_fakultas(
     db: Session = Depends(db),

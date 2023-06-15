@@ -17,7 +17,7 @@ from db.schemas.nilaiTugasSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "nilai-tugas"
+NILAI_TUGAS = "/nilai-tugas"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "es", response_model=NilaiTugasResponseSchema)
+@app.get(NILAI_TUGAS + "es", response_model=NilaiTugasResponseSchema)
 # @check_access_module
 async def get_all_nilai_tugas(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_nilai_tugas(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=NilaiTugasResponseSchema)
+@app.get(NILAI_TUGAS + "/{id}", response_model=NilaiTugasResponseSchema)
 # @check_access_module
 async def get_nilai_tugas(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_nilai_tugas(
     }
 
 
-@app.post(MODULE_NAME, response_model=NilaiTugasResponseSchema)
+@app.post(NILAI_TUGAS, response_model=NilaiTugasResponseSchema)
 # @check_access_module
 async def submit_nilai_tugas(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_nilai_tugas(
         }
 
 
-@app.put(MODULE_NAME, response_model=NilaiTugasResponseSchema)
+@app.put(NILAI_TUGAS, response_model=NilaiTugasResponseSchema)
 # @check_access_module
 async def update_nilai_tugas(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_nilai_tugas(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(NILAI_TUGAS)
 # @check_access_module
 async def delete_nilai_tugas(
     db: Session = Depends(db),

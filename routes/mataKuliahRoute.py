@@ -5,7 +5,7 @@ from controller import mataKuliah
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.mataKuliahSchema import (
     MataKuliahResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.mataKuliahSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "mata kuliah"
+MATA_KULIAH = "/mata-kuliah"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=MataKuliahResponseSchema)
+@app.get(MATA_KULIAH + "s", response_model=MataKuliahResponseSchema)
 # @check_access_module
 async def get_all_mata_kuliah(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_mata_kuliah(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=MataKuliahResponseSchema)
+@app.get(MATA_KULIAH + "/{id}", response_model=MataKuliahResponseSchema)
 # @check_access_module
 async def get_mata_kuliah(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_mata_kuliah(
     }
 
 
-@app.post(MODULE_NAME, response_model=MataKuliahResponseSchema)
+@app.post(MATA_KULIAH, response_model=MataKuliahResponseSchema)
 # @check_access_module
 async def submit_mata_kuliah(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_mata_kuliah(
         }
 
 
-@app.put(MODULE_NAME, response_model=MataKuliahResponseSchema)
+@app.put(MATA_KULIAH, response_model=MataKuliahResponseSchema)
 # @check_access_module
 async def update_mata_kuliah(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_mata_kuliah(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(MATA_KULIAH)
 # @check_access_module
 async def delete_mata_kuliah(
     db: Session = Depends(db),

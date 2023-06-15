@@ -5,7 +5,7 @@ from controller import prodi
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.mappingCpmkCplSchema import (
     MappingCpmkCplResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.mappingCpmkCplSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "mapping-cpmk-cpl"
+MAPPING_CPMK_CPL = "/mapping-cpmk-cpl"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=MappingCpmkCplResponseSchema)
+@app.get(MAPPING_CPMK_CPL + "s", response_model=MappingCpmkCplResponseSchema)
 # @check_access_module
 async def get_all_mapping_cpmk_cpl(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_mapping_cpmk_cpl(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=MappingCpmkCplResponseSchema)
+@app.get(MAPPING_CPMK_CPL + "/{id}", response_model=MappingCpmkCplResponseSchema)
 # @check_access_module
 async def get_mapping_cpmk_cpl(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_mapping_cpmk_cpl(
     }
 
 
-@app.post(MODULE_NAME, response_model=MappingCpmkCplResponseSchema)
+@app.post(MAPPING_CPMK_CPL, response_model=MappingCpmkCplResponseSchema)
 # @check_access_module
 async def submit_mapping_cpmk_cpl(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_mapping_cpmk_cpl(
         }
 
 
-@app.put(MODULE_NAME, response_model=MappingCpmkCplResponseSchema)
+@app.put(MAPPING_CPMK_CPL, response_model=MappingCpmkCplResponseSchema)
 # @check_access_module
 async def update_mapping_cpmk_cpl(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_mapping_cpmk_cpl(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(MAPPING_CPMK_CPL)
 # @check_access_module
 async def delete_mapping_cpmk_cpl(
     db: Session = Depends(db),

@@ -5,7 +5,7 @@ from controller import prodiStruktural
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.prodiStrukturalSchema import (
     ProdiStrukturalResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.prodiStrukturalSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "prodi-struktural"
+PRODI_STRUKTURAL = "/prodi-struktural"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=ProdiStrukturalResponseSchema)
+@app.get(PRODI_STRUKTURAL + "s", response_model=ProdiStrukturalResponseSchema)
 # @check_access_module
 async def get_all_prodi_struktural(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_prodi_struktural(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=ProdiStrukturalResponseSchema)
+@app.get(PRODI_STRUKTURAL + "/{id}", response_model=ProdiStrukturalResponseSchema)
 # @check_access_module
 async def get_prodi_struktural(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_prodi_struktural(
     }
 
 
-@app.post(MODULE_NAME, response_model=ProdiStrukturalResponseSchema)
+@app.post(PRODI_STRUKTURAL, response_model=ProdiStrukturalResponseSchema)
 # @check_access_module
 async def submit_prodi_struktural(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_prodi_struktural(
         }
 
 
-@app.put(MODULE_NAME, response_model=ProdiStrukturalResponseSchema)
+@app.put(PRODI_STRUKTURAL, response_model=ProdiStrukturalResponseSchema)
 # @check_access_module
 async def update_prodi_struktural(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_prodi_struktural(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(PRODI_STRUKTURAL)
 # @check_access_module
 async def delete_prodi_struktural(
     db: Session = Depends(db),

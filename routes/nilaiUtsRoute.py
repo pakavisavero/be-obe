@@ -17,7 +17,7 @@ from db.schemas.nilaiUtsSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "nilai-uts"
+NILAI_UTS = "/nilai-uts"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "es", response_model=NilaiUtsResponseSchema)
+@app.get(NILAI_UTS + "es", response_model=NilaiUtsResponseSchema)
 # @check_access_module
 async def get_all_nilai_uts(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_nilai_uts(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=NilaiUtsResponseSchema)
+@app.get(NILAI_UTS + "/{id}", response_model=NilaiUtsResponseSchema)
 # @check_access_module
 async def get_nilai_uts(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_nilai_uts(
     }
 
 
-@app.post(MODULE_NAME, response_model=NilaiUtsResponseSchema)
+@app.post(NILAI_UTS, response_model=NilaiUtsResponseSchema)
 # @check_access_module
 async def submit_nilai_uts(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_nilai_uts(
         }
 
 
-@app.put(MODULE_NAME, response_model=NilaiUtsResponseSchema)
+@app.put(NILAI_UTS, response_model=NilaiUtsResponseSchema)
 # @check_access_module
 async def update_nilai_uts(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_nilai_uts(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(NILAI_UTS)
 # @check_access_module
 async def delete_nilai_uts(
     db: Session = Depends(db),

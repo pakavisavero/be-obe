@@ -5,7 +5,7 @@ from controller import konsentrasi
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.konsentrasiSchema import (
     KonsentrasiResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.konsentrasiSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "konsentrasi"
+KONSENTRASI = "/konsentrasi"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=KonsentrasiResponseSchema)
+@app.get(KONSENTRASI + "s", response_model=KonsentrasiResponseSchema)
 # @check_access_module
 async def get_all_konsentrasi(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_konsentrasi(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=KonsentrasiResponseSchema)
+@app.get(KONSENTRASI + "/{id}", response_model=KonsentrasiResponseSchema)
 # @check_access_module
 async def get_konsentrasi(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_konsentrasi(
     }
 
 
-@app.post(MODULE_NAME, response_model=KonsentrasiResponseSchema)
+@app.post(KONSENTRASI, response_model=KonsentrasiResponseSchema)
 # @check_access_module
 async def submit_konsentrasi(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_konsentrasi(
         }
 
 
-@app.put(MODULE_NAME, response_model=KonsentrasiResponseSchema)
+@app.put(KONSENTRASI, response_model=KonsentrasiResponseSchema)
 # @check_access_module
 async def update_konsentrasi(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_konsentrasi(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(KONSENTRASI)
 # @check_access_module
 async def delete_konsentrasi(
     db: Session = Depends(db),

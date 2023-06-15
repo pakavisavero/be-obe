@@ -5,7 +5,7 @@ from controller import konsentrasiProdi
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.konsentrasiProdiSchema import (
     KonsentrasiProdiResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.konsentrasiProdiSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "konsentrasi-prodi"
+KONSENTRASI_PRODI = "/konsentrasi-prodi"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=KonsentrasiProdiResponseSchema)
+@app.get(KONSENTRASI_PRODI + "s", response_model=KonsentrasiProdiResponseSchema)
 # @check_access_module
 async def get_all_modules(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_modules(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=KonsentrasiProdiResponseSchema)
+@app.get(KONSENTRASI_PRODI + "/{id}", response_model=KonsentrasiProdiResponseSchema)
 # @check_access_module
 async def get_module(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_module(
     }
 
 
-@app.post(MODULE_NAME, response_model=KonsentrasiProdiResponseSchema)
+@app.post(KONSENTRASI_PRODI, response_model=KonsentrasiProdiResponseSchema)
 # @check_access_module
 async def submit_module(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_module(
         }
 
 
-@app.put(MODULE_NAME, response_model=KonsentrasiProdiResponseSchema)
+@app.put(KONSENTRASI_PRODI, response_model=KonsentrasiProdiResponseSchema)
 # @check_access_module
 async def update_module(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_module(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(KONSENTRASI_PRODI)
 # @check_access_module
 async def delete_module(
     db: Session = Depends(db),

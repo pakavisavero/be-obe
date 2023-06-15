@@ -5,7 +5,7 @@ from controller import cpmk
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.cpmkSchema import (
     CPMKResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.cpmkSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "cpmk"
+CPMK = "/cpmk"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=CPMKResponseSchema)
+@app.get(CPMK + "s", response_model=CPMKResponseSchema)
 # @check_access_module
 async def get_all_cpmk(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_cpmk(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=CPMKResponseSchema)
+@app.get(CPMK + "/{id}", response_model=CPMKResponseSchema)
 # @check_access_module
 async def get_cpmk(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_cpmk(
     }
 
 
-@app.post(MODULE_NAME, response_model=CPMKResponseSchema)
+@app.post(CPMK, response_model=CPMKResponseSchema)
 # @check_access_module
 async def submit_cpmk(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_cpmk(
         }
 
 
-@app.put(MODULE_NAME, response_model=CPMKResponseSchema)
+@app.put(CPMK, response_model=CPMKResponseSchema)
 # @check_access_module
 async def update_cpmk(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_cpmk(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(CPMK)
 # @check_access_module
 async def delete_cpmk(
     db: Session = Depends(db),

@@ -5,7 +5,7 @@ from controller import module
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.moduleSchema import (
     ModuleResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.moduleSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "module"
+MODULE = "/module"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=ModuleResponseSchema)
+@app.get(MODULE + "s", response_model=ModuleResponseSchema)
 # @check_access_module
 async def get_all_modules(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_modules(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=ModuleResponseSchema)
+@app.get(MODULE + "/{id}", response_model=ModuleResponseSchema)
 # @check_access_module
 async def get_module(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_module(
     }
 
 
-@app.post(MODULE_NAME, response_model=ModuleResponseSchema)
+@app.post(MODULE, response_model=ModuleResponseSchema)
 # @check_access_module
 async def submit_module(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_module(
         }
 
 
-@app.put(MODULE_NAME, response_model=ModuleResponseSchema)
+@app.put(MODULE, response_model=ModuleResponseSchema)
 # @check_access_module
 async def update_module(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_module(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(MODULE)
 # @check_access_module
 async def delete_module(
     db: Session = Depends(db),

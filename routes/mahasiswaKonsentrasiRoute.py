@@ -5,7 +5,7 @@ from controller import mahasiswaKonsentrasi
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.mahasiswaKonsentrasiSchema import (
     MahasiswaKonsentrasiResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.mahasiswaKonsentrasiSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "mahasiswa-konsentrasi"
+MAHASISWA_KONSENTRASI = "/mahasiswa-konsentrasi"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=MahasiswaKonsentrasiResponseSchema)
+@app.get(MAHASISWA_KONSENTRASI + "s", response_model=MahasiswaKonsentrasiResponseSchema)
 # @check_access_module
 async def get_all_konsentrasi(
     db: Session = Depends(db),
@@ -37,7 +37,9 @@ async def get_all_konsentrasi(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = mahasiswaKonsentrasi.getAllPagingFiltered(db, page, filtered_data, token)
+        query = mahasiswaKonsentrasi.getAllPagingFiltered(
+            db, page, filtered_data, token
+        )
 
         return {
             "code": status.HTTP_200_OK,
@@ -55,7 +57,9 @@ async def get_all_konsentrasi(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=MahasiswaKonsentrasiResponseSchema)
+@app.get(
+    MAHASISWA_KONSENTRASI + "/{id}", response_model=MahasiswaKonsentrasiResponseSchema
+)
 # @check_access_module
 async def get_konsentrasi(
     db: Session = Depends(db),
@@ -70,7 +74,7 @@ async def get_konsentrasi(
     }
 
 
-@app.post(MODULE_NAME, response_model=MahasiswaKonsentrasiResponseSchema)
+@app.post(MAHASISWA_KONSENTRASI, response_model=MahasiswaKonsentrasiResponseSchema)
 # @check_access_module
 async def submit_konsentrasi(
     db: Session = Depends(db),
@@ -94,7 +98,7 @@ async def submit_konsentrasi(
         }
 
 
-@app.put(MODULE_NAME, response_model=MahasiswaKonsentrasiResponseSchema)
+@app.put(MAHASISWA_KONSENTRASI, response_model=MahasiswaKonsentrasiResponseSchema)
 # @check_access_module
 async def update_konsentrasi(
     db: Session = Depends(db),
@@ -116,7 +120,7 @@ async def update_konsentrasi(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(MAHASISWA_KONSENTRASI)
 # @check_access_module
 async def delete_konsentrasi(
     db: Session = Depends(db),

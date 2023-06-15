@@ -5,7 +5,7 @@ from controller import perkuliahan
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.perkuliahanSchema import (
     PerkuliahanResponseSchema,
@@ -17,8 +17,7 @@ from db.schemas.perkuliahanSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "perkuliahan"
-
+PERKULIAHAN = "/perkuliahan"
 
 def errArray(idx):
     if idx < 2:
@@ -27,7 +26,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=PerkuliahanResponseSchema)
+@app.get(PERKULIAHAN + "s", response_model=PerkuliahanResponseSchema)
 # @check_access_module
 async def get_all_perkuliahan(
     db: Session = Depends(db),
@@ -55,7 +54,7 @@ async def get_all_perkuliahan(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=PerkuliahanResponseSchema)
+@app.get(PERKULIAHAN + "/{id}", response_model=PerkuliahanResponseSchema)
 # @check_access_module
 async def get_perkuliahan(
     db: Session = Depends(db),
@@ -70,7 +69,7 @@ async def get_perkuliahan(
     }
 
 
-@app.post(MODULE_NAME, response_model=PerkuliahanResponseSchema)
+@app.post(PERKULIAHAN, response_model=PerkuliahanResponseSchema)
 # @check_access_module
 async def submit_perkuliahan(
     db: Session = Depends(db),
@@ -94,7 +93,7 @@ async def submit_perkuliahan(
         }
 
 
-@app.put(MODULE_NAME, response_model=PerkuliahanResponseSchema)
+@app.put(PERKULIAHAN, response_model=PerkuliahanResponseSchema)
 # @check_access_module
 async def update_perkuliahan(
     db: Session = Depends(db),
@@ -116,7 +115,7 @@ async def update_perkuliahan(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(PERKULIAHAN)
 # @check_access_module
 async def delete_perkuliahan(
     db: Session = Depends(db),

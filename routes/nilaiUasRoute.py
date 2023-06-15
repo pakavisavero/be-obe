@@ -17,7 +17,7 @@ from db.schemas.nilaiUasSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "nilai-uas"
+NILAI_UAS = "/nilai-uas"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "es", response_model=NilaiUasResponseSchema)
+@app.get(NILAI_UAS + "es", response_model=NilaiUasResponseSchema)
 # @check_access_module
 async def get_all_nilai_uas(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_nilai_uas(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=NilaiUasResponseSchema)
+@app.get(NILAI_UAS + "/{id}", response_model=NilaiUasResponseSchema)
 # @check_access_module
 async def get_nilai_uas(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_nilai_uas(
     }
 
 
-@app.post(MODULE_NAME, response_model=NilaiUasResponseSchema)
+@app.post(NILAI_UAS, response_model=NilaiUasResponseSchema)
 # @check_access_module
 async def submit_nilai_uas(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_nilai_uas(
         }
 
 
-@app.put(MODULE_NAME, response_model=NilaiUasResponseSchema)
+@app.put(NILAI_UAS, response_model=NilaiUasResponseSchema)
 # @check_access_module
 async def update_nilai_uas(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_nilai_uas(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(NILAI_UAS)
 # @check_access_module
 async def delete_nilai_uas(
     db: Session = Depends(db),

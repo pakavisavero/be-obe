@@ -5,7 +5,7 @@ from controller import moduleGroup
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.moduleGroupSchema import (
     ModuleGroupResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.moduleGroupSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "module-group"
+MODULE_GROUP = "/module-group"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=ModuleGroupResponseSchema)
+@app.get(MODULE_GROUP + "s", response_model=ModuleGroupResponseSchema)
 # @check_access_module
 async def get_all_module_groups(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_module_groups(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=ModuleGroupResponseSchema)
+@app.get(MODULE_GROUP + "/{id}", response_model=ModuleGroupResponseSchema)
 # @check_access_module
 async def get_module_group(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_module_group(
     }
 
 
-@app.post(MODULE_NAME, response_model=ModuleGroupResponseSchema)
+@app.post(MODULE_GROUP, response_model=ModuleGroupResponseSchema)
 # @check_access_module
 async def submit_module_group(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_module_group(
         }
 
 
-@app.put(MODULE_NAME, response_model=ModuleGroupResponseSchema)
+@app.put(MODULE_GROUP, response_model=ModuleGroupResponseSchema)
 # @check_access_module
 async def update_module_group(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_module_group(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(MODULE_GROUP)
 # @check_access_module
 async def delete_module_group(
     db: Session = Depends(db),

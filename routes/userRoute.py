@@ -5,7 +5,7 @@ from controller import user
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.userSchema import (
     UserResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.userSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "user"
+USER = "/user"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=UserResponseSchema)
+@app.get(USER + "s", response_model=UserResponseSchema)
 # @check_access_module
 async def get_all_user(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_user(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=UserResponseSchema)
+@app.get(USER + "/{id}", response_model=UserResponseSchema)
 # @check_access_module
 async def get_user(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_user(
     }
 
 
-@app.post(MODULE_NAME, response_model=UserResponseSchema)
+@app.post(USER, response_model=UserResponseSchema)
 # @check_access_module
 async def submit_user(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_user(
         }
 
 
-@app.put(MODULE_NAME, response_model=UserResponseSchema)
+@app.put(USER, response_model=UserResponseSchema)
 # @check_access_module
 async def update_user(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_user(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(USER)
 # @check_access_module
 async def delete_user(
     db: Session = Depends(db),

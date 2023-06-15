@@ -5,7 +5,7 @@ from controller import userRole
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.userRoleSchema import (
     UserRoleResponseSchema,
@@ -17,8 +17,7 @@ from db.schemas.userRoleSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "user-role"
-
+USER_ROLE = "/user-role"
 
 def errArray(idx):
     if idx < 2:
@@ -27,7 +26,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=UserRoleResponseSchema)
+@app.get(USER_ROLE + "s", response_model=UserRoleResponseSchema)
 # @check_access_module
 async def get_all_user_role(
     db: Session = Depends(db),
@@ -55,7 +54,7 @@ async def get_all_user_role(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=UserRoleResponseSchema)
+@app.get(USER_ROLE + "/{id}", response_model=UserRoleResponseSchema)
 # @check_access_module
 async def get_user_role(
     db: Session = Depends(db),
@@ -70,7 +69,7 @@ async def get_user_role(
     }
 
 
-@app.post(MODULE_NAME, response_model=UserRoleResponseSchema)
+@app.post(USER_ROLE, response_model=UserRoleResponseSchema)
 # @check_access_module
 async def submit_user_role(
     db: Session = Depends(db),
@@ -94,7 +93,7 @@ async def submit_user_role(
         }
 
 
-@app.put(MODULE_NAME, response_model=UserRoleResponseSchema)
+@app.put(USER_ROLE, response_model=UserRoleResponseSchema)
 # @check_access_module
 async def update_user_role(
     db: Session = Depends(db),
@@ -116,7 +115,7 @@ async def update_user_role(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(USER_ROLE)
 # @check_access_module
 async def delete_user_role(
     db: Session = Depends(db),

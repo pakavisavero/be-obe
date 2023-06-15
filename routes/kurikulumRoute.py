@@ -5,7 +5,7 @@ from controller import kurikulum
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.kurikulumSchema import (
     KurikulumResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.kurikulumSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "kurikulum"
+KURIKULUM = "/kurikulum"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=KurikulumResponseSchema)
+@app.get(KURIKULUM + "s", response_model=KurikulumResponseSchema)
 # @check_access_module
 async def get_all_kurikulum(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_kurikulum(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=KurikulumResponseSchema)
+@app.get(KURIKULUM + "/{id}", response_model=KurikulumResponseSchema)
 # @check_access_module
 async def get_kurikulum(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_kurikulum(
     }
 
 
-@app.post(MODULE_NAME, response_model=KurikulumResponseSchema)
+@app.post(KURIKULUM, response_model=KurikulumResponseSchema)
 # @check_access_module
 async def submit_kurikulum(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_kurikulum(
         }
 
 
-@app.put(MODULE_NAME, response_model=KurikulumResponseSchema)
+@app.put(KURIKULUM, response_model=KurikulumResponseSchema)
 # @check_access_module
 async def update_kurikulum(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_kurikulum(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(KURIKULUM)
 # @check_access_module
 async def delete_kurikulum(
     db: Session = Depends(db),

@@ -17,7 +17,7 @@ from db.schemas.nilaiPraktekSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "nilai-praktek"
+NILAI_PRAKTEK = "/nilai-praktek"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=NilaiPraktekResponseSchema)
+@app.get(NILAI_PRAKTEK + "s", response_model=NilaiPraktekResponseSchema)
 # @check_access_module
 async def get_all_nilai_praktek(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_nilai_praktek(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=NilaiPraktekResponseSchema)
+@app.get(NILAI_PRAKTEK + "/{id}", response_model=NilaiPraktekResponseSchema)
 # @check_access_module
 async def get_nilai_praktek(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_nilai_praktek(
     }
 
 
-@app.post(MODULE_NAME, response_model=NilaiPraktekResponseSchema)
+@app.post(NILAI_PRAKTEK, response_model=NilaiPraktekResponseSchema)
 # @check_access_module
 async def submit_nilai_praktek(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_nilai_praktek(
         }
 
 
-@app.put(MODULE_NAME, response_model=NilaiPraktekResponseSchema)
+@app.put(NILAI_PRAKTEK, response_model=NilaiPraktekResponseSchema)
 # @check_access_module
 async def update_nilai_praktek(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_nilai_praktek(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(NILAI_PRAKTEK)
 # @check_access_module
 async def delete_nilai_praktek(
     db: Session = Depends(db),

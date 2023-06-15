@@ -5,7 +5,7 @@ from controller import mahasiswaDoswal
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.mahasiswaDoswalSchema import (
     MahasiswaDoswalResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.mahasiswaDoswalSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "mahasiswa-doswal"
+MAHASISWA_DOSWAL = "/mahasiswa-doswal"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=MahasiswaDoswalResponseSchema)
+@app.get(MAHASISWA_DOSWAL + "s", response_model=MahasiswaDoswalResponseSchema)
 # @check_access_module
 async def get_all_mahasiswa_doswal(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_mahasiswa_doswal(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=MahasiswaDoswalResponseSchema)
+@app.get(MAHASISWA_DOSWAL + "/{id}", response_model=MahasiswaDoswalResponseSchema)
 # @check_access_module
 async def get_mahasiswa_doswal(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_mahasiswa_doswal(
     }
 
 
-@app.post(MODULE_NAME, response_model=MahasiswaDoswalResponseSchema)
+@app.post(MAHASISWA_DOSWAL, response_model=MahasiswaDoswalResponseSchema)
 # @check_access_module
 async def submit_mahasiswa_doswal(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_mahasiswa_doswal(
         }
 
 
-@app.put(MODULE_NAME, response_model=MahasiswaDoswalResponseSchema)
+@app.put(MAHASISWA_DOSWAL, response_model=MahasiswaDoswalResponseSchema)
 # @check_access_module
 async def update_mahasiswa_doswal(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_mahasiswa_doswal(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(MAHASISWA_DOSWAL)
 # @check_access_module
 async def delete_mahasiswa_doswal(
     db: Session = Depends(db),

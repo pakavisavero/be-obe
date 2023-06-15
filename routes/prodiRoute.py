@@ -5,7 +5,7 @@ from controller import prodi
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getCID, getUsername
+from db.session import db, getUsername
 from db.database import Session
 from db.schemas.prodiSchema import (
     ProdiResponseSchema,
@@ -17,7 +17,7 @@ from db.schemas.prodiSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-MODULE_NAME = "prodi"
+PRODI = "/prodi"
 
 
 def errArray(idx):
@@ -27,7 +27,7 @@ def errArray(idx):
         return 1
 
 
-@app.get(MODULE_NAME + "s", response_model=ProdiResponseSchema)
+@app.get(PRODI + "s", response_model=ProdiResponseSchema)
 # @check_access_module
 async def get_all_prodi(
     db: Session = Depends(db),
@@ -55,7 +55,7 @@ async def get_all_prodi(
         }
 
 
-@app.get(MODULE_NAME + "/{id}", response_model=ProdiResponseSchema)
+@app.get(PRODI + "/{id}", response_model=ProdiResponseSchema)
 # @check_access_module
 async def get_prodi(
     db: Session = Depends(db),
@@ -70,7 +70,7 @@ async def get_prodi(
     }
 
 
-@app.post(MODULE_NAME, response_model=ProdiResponseSchema)
+@app.post(PRODI, response_model=ProdiResponseSchema)
 # @check_access_module
 async def submit_prodi(
     db: Session = Depends(db),
@@ -94,7 +94,7 @@ async def submit_prodi(
         }
 
 
-@app.put(MODULE_NAME, response_model=ProdiResponseSchema)
+@app.put(PRODI, response_model=ProdiResponseSchema)
 # @check_access_module
 async def update_prodi(
     db: Session = Depends(db),
@@ -116,7 +116,7 @@ async def update_prodi(
         }
 
 
-@app.delete(MODULE_NAME)
+@app.delete(PRODI)
 # @check_access_module
 async def delete_prodi(
     db: Session = Depends(db),

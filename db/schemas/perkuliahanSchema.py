@@ -3,8 +3,10 @@ from typing import Union, List, Optional
 from datetime import datetime
 import pytz
 
+from db.schemas.userSchema import UserSchema
 from db.schemas.prodiSchema import ProdiSchema
-from db.schemas.kurikulumSchema import KurikulumSchema
+from db.schemas.mataKuliahSchema import MataKuliahSchema
+from db.schemas.tahunAjaranSchema import TahunAjaranSchema
 
 tz = pytz.timezone("Asia/Jakarta")
 
@@ -19,7 +21,6 @@ class BasePerkuliahanSchema(BaseModel):
     prodi_id: Optional[int] = None
 
     kelas: Optional[str] = None
-    tahun_ajaran: Optional[str] = None
     semester: Optional[str] = None
     is_active: Optional[bool] = None
 
@@ -30,12 +31,13 @@ class BasePerkuliahanSchema(BaseModel):
 
 
 class PerkuliahanSchema(BasePerkuliahanSchema):
-    dosen1: Optional[ProdiSchema] = None
-    dosen2: Optional[KurikulumSchema] = None
-    dosen3: Optional[KurikulumSchema] = None
-    pjDosen: Optional[KurikulumSchema] = None
-    mataKuliah: Optional[KurikulumSchema] = None
-    prodi: Optional[KurikulumSchema] = None
+    dosen1: Optional[UserSchema] = None
+    dosen2: Optional[UserSchema] = None
+    dosen3: Optional[UserSchema] = None
+    pjDosen: Optional[UserSchema] = None
+    mataKuliah: Optional[MataKuliahSchema] = None
+    prodi: Optional[ProdiSchema] = None
+    tahunAjaran: Optional[TahunAjaranSchema] = None
 
     class Config:
         orm_mode = True

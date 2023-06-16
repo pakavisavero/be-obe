@@ -27,8 +27,8 @@ class BaseMataKuliahSchema(BaseModel):
 
 
 class MataKuliahSchema(BaseMataKuliahSchema):
-    kurikulum: Optional[ProdiSchema] = None
-    prodi: Optional[KurikulumSchema] = None
+    kurikulum: Optional[KurikulumSchema] = None
+    prodi: Optional[ProdiSchema] = None
 
     class Config:
         orm_mode = True

@@ -1,8 +1,8 @@
 """First migrate
 
-Revision ID: 7a21a94028f7
+Revision ID: 8ad4d005a8ca
 Revises: 
-Create Date: 2023-06-15 22:38:23.023907
+Create Date: 2023-06-16 23:59:17.164875
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '7a21a94028f7'
+revision = '8ad4d005a8ca'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -85,6 +85,17 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_status_mahasiswas_id'), 'status_mahasiswas', ['id'], unique=False)
+    op.create_table('tahun_ajarans',
+    sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
+    sa.Column('tahun_ajaran', sa.String(length=150), nullable=True),
+    sa.Column('is_active', sa.Boolean(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('created_by', sa.String(length=120), nullable=True),
+    sa.Column('modified_at', sa.DateTime(), nullable=True),
+    sa.Column('modified_by', sa.String(length=120), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_tahun_ajarans_id'), 'tahun_ajarans', ['id'], unique=False)
     op.create_table('modules',
     sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
     sa.Column('module_group_id', sa.BigInteger(), nullable=True),
@@ -279,8 +290,8 @@ def upgrade():
     sa.Column('pj_dosen_id', sa.BigInteger(), nullable=True),
     sa.Column('mata_kuliah_id', sa.BigInteger(), nullable=True),
     sa.Column('prodi_id', sa.BigInteger(), nullable=True),
+    sa.Column('tahun_ajaran_id', sa.BigInteger(), nullable=True),
     sa.Column('kelas', sa.String(length=100), nullable=True),
-    sa.Column('tahun_ajaran', sa.String(length=200), nullable=True),
     sa.Column('semester', sa.String(length=200), nullable=True),
     sa.Column('is_active', sa.Boolean(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
@@ -293,6 +304,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['mata_kuliah_id'], ['mata_kuliahs.id'], ),
     sa.ForeignKeyConstraint(['pj_dosen_id'], ['users.id'], ),
     sa.ForeignKeyConstraint(['prodi_id'], ['prodis.id'], ),
+    sa.ForeignKeyConstraint(['tahun_ajaran_id'], ['tahun_ajarans.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_perkuliahans_id'), 'perkuliahans', ['id'], unique=False)
@@ -505,6 +517,8 @@ def downgrade():
     op.drop_table('prodis')
     op.drop_index(op.f('ix_modules_id'), table_name='modules')
     op.drop_table('modules')
+    op.drop_index(op.f('ix_tahun_ajarans_id'), table_name='tahun_ajarans')
+    op.drop_table('tahun_ajarans')
     op.drop_index(op.f('ix_status_mahasiswas_id'), table_name='status_mahasiswas')
     op.drop_table('status_mahasiswas')
     op.drop_index(op.f('ix_role_masters_id'), table_name='role_masters')

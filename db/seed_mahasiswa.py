@@ -19,6 +19,8 @@ for i, row in list(result.iterrows()):
         "prodi_id": 8,
         "status_mhs_id": 1,
         "nip": row[3],
+        "created_by": "System",
+        "modified_by": "System",
     }
 
     mahasiswa.append(tempMhs)

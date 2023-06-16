@@ -71,7 +71,7 @@ def check_access_module(func):
     return wrapper
 
 
-def helper_static_filter(db, Schema, cid, filtered, offset, xtra={}):
+def helper_static_filter(db, Schema, filtered, offset, xtra={}):
     page_size = 10
     is_paging = True
     dict_string = {}
@@ -81,9 +81,6 @@ def helper_static_filter(db, Schema, cid, filtered, offset, xtra={}):
     list_dates = []
     key_dates = ""
     base_query = db.query(Schema)
-
-    if cid:
-        base_query = base_query.filter_by(client_id=cid)
 
     for key in filtered:
         if key == "page_size":
@@ -217,17 +214,16 @@ def helper_create(Schema, db, data):
         raise HandlerCustom(data=data)
 
 
-def helper_update(Schema, db, cid, data, cb):
+def helper_update(Schema, db, data, cb):
     try:
         (
             db.query(Schema)
-            .filter_by(client_id=cid)
             .filter_by(id=data.id)
             .update(dict(data))
         )
 
         db.commit()
-        return cb(db, cid, data.id)
+        return cb(db, data.id)
 
     except Exception as e:
         err = e.args[0].split("\n")

@@ -55,6 +55,39 @@ async def get_all_user(
         }
 
 
+@app.get("/dosens", response_model=UserResponseSchema)
+# @check_access_module
+async def get_all_dosen(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    request: Request = None,
+    page: int = 0,
+):
+    filtered_data = help_filter(request)
+    if filtered_data:
+        query = user.getAllPagingFilteredSpecialDosen(
+            db, page, filtered_data, token, {"role_id": 3}
+        )
+        data = user.getOnlyDosen(db, query["data"])
+
+        return {
+            "code": status.HTTP_200_OK,
+            "message": "Success retrieve filtered dosen",
+            "data": data,
+            "total": query["total"],
+        }
+    else:
+        query = user.getAllPaging(db, page, token)
+        data = user.getOnlyDosen(db, query["data"])
+
+        return {
+            "code": status.HTTP_200_OK,
+            "message": "Success retrieve all dosen",
+            "data": data,
+            "total": query["total"],
+        }
+
+
 @app.get(USER + "/{id}", response_model=UserResponseSchema)
 # @check_access_module
 async def get_user(

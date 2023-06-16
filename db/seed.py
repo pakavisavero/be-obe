@@ -18,6 +18,7 @@ json_files = [
     "user_role.json",
     "role_permission.json",
     "status_mahasiswa.json",
+    "tahun_ajaran.json",
 ]
 
 

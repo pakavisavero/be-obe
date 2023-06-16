@@ -231,19 +231,33 @@ class MataKuliah(Base):
     prodi = relationship("Prodi", foreign_keys=[prodi_id])
 
 
+class TahunAjaran(Base):
+    __tablename__ = "tahun_ajarans"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+
+    tahun_ajaran = Column(String(150))
+    is_active = Column(Boolean, default=True)
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+
 class Perkuliahan(Base):
     __tablename__ = "perkuliahans"
 
     id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
     dosen_id = Column(BigInteger, ForeignKey(User.id))
-    dosen2_id = Column(BigInteger, ForeignKey(User.id))
-    dosen3_id = Column(BigInteger, ForeignKey(User.id))
+    dosen2_id = Column(BigInteger, ForeignKey(User.id), nullable=True)
+    dosen3_id = Column(BigInteger, ForeignKey(User.id), nullable=True)
     pj_dosen_id = Column(BigInteger, ForeignKey(User.id))
     mata_kuliah_id = Column(BigInteger, ForeignKey(MataKuliah.id))
     prodi_id = Column(BigInteger, ForeignKey(Prodi.id))
+    tahun_ajaran_id = Column(BigInteger, ForeignKey(TahunAjaran.id))
 
     kelas = Column(String(length=100))
-    tahun_ajaran = Column(String(length=200))
     semester = Column(String(length=200))
     is_active = Column(Boolean, default=True)
 
@@ -258,6 +272,7 @@ class Perkuliahan(Base):
     pjDosen = relationship("User", foreign_keys=[pj_dosen_id])
     mataKuliah = relationship("MataKuliah", foreign_keys=[mata_kuliah_id])
     prodi = relationship("Prodi", foreign_keys=[prodi_id])
+    tahunAjaran = relationship("TahunAjaran", foreign_keys=[tahun_ajaran_id])
 
 
 class Konsentrasi(Base):
@@ -564,3 +579,5 @@ class PresentasePK(Base):
     modified_by = Column(String(length=120), nullable=True)
 
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
+
+

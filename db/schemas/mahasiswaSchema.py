@@ -5,6 +5,7 @@ import pytz
 
 from db.schemas.prodiSchema import ProdiSchema
 from db.schemas.statusMahasiswaSchema import StatusMahasiswaSchema
+from db.schemas.userSchema import UserSchema
 
 tz = pytz.timezone("Asia/Jakarta")
 
@@ -27,6 +28,7 @@ class BaseMahasiswaSchema(BaseModel):
 class MahasiswaSchema(BaseMahasiswaSchema):
     prodi: Optional[ProdiSchema] = None
     status: Optional[StatusMahasiswaSchema] = None
+    doswal: Optional[UserSchema] = None
 
     class Config:
         orm_mode = True

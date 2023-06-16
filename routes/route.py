@@ -33,4 +33,6 @@ from routes import (
     statusMahasiswaRoute,
     userRoleRoute,
     userRoute,
+    dashboardRoute,
+    tahunAjaranRoute,
 )

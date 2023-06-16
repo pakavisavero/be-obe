@@ -1,4 +1,4 @@
-from db.models import Mahasiswa
+from db.models import Mahasiswa, MahasiswaDoswal, User
 from db.database import Session
 from db.schemas.mahasiswaSchema import (
     MahasiswaCreateSchema,
@@ -12,6 +12,15 @@ import pytz
 tz = pytz.timezone("Asia/Jakarta")
 
 
+def helperRetrieveMahasiswa(db, data):
+    for dt in data:
+        doswal = db.query(MahasiswaDoswal).filter_by(mahasiswa_id=dt.id).first()
+        dosen = db.query(User).filter_by(id=doswal.dosen_id).first()
+
+        if doswal:
+            setattr(dt, "doswal", dosen)
+
+
 def errArray(idx):
     if idx < 2:
         return 0
@@ -22,6 +31,7 @@ def errArray(idx):
 def getAll(db: Session, token: str):
     data = db.query(Mahasiswa).all()
 
+    helperRetrieveMahasiswa(db, data)
     return data
 
 
@@ -31,18 +41,21 @@ def getAllPaging(db: Session, offset: int, token: str):
     data = base_query.all()
     total = base_query.count()
 
+    helperRetrieveMahasiswa(db, data)
     return {"data": data, "total": total}
 
 
 def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
     data, total = helper_static_filter(db, Mahasiswa, filtered, offset)
 
+    helperRetrieveMahasiswa(db, data)
     return {"data": data, "total": total}
 
 
 def getByID(db: Session, id: int, token: str):
     data = db.query(Mahasiswa).filter_by(id=id).first()
 
+    helperRetrieveMahasiswa(db, [data])
     return data
 
 

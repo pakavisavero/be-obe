@@ -7,7 +7,7 @@
             "prodi_id": 8,
             "email": "superadmin@gmail.com",
             "username": "superadmin",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -17,7 +17,7 @@
             "prodi_id": 8,
             "email": "admin@gmail.com",
             "username": "admin",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -27,7 +27,7 @@
             "prodi_id": 8,
             "email": "operator@gmail.com",
             "username": "operator",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -37,7 +37,7 @@
             "prodi_id": 8,
             "email": "sudjadi@gmail.com",
             "username": "sudjadi",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -47,7 +47,7 @@
             "prodi_id": 8,
             "email": "nugroho@gmail.com",
             "username": "nugroho",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -57,7 +57,7 @@
             "prodi_id": 8,
             "email": "agung@gmail.com",
             "username": "agung",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -67,7 +67,7 @@
             "prodi_id": 8,
             "email": "jakwin@gmail.com",
             "username": "jaka",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -77,7 +77,7 @@
             "prodi_id": 8,
             "email": "bambang@gmail.com",
             "username": "bambang",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -87,7 +87,7 @@
             "prodi_id": 8,
             "email": "wahyudi@gmail.com",
             "username": "wahyudi",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -97,7 +97,7 @@
             "prodi_id": 8,
             "email": "sumardi@gmail.com",
             "username": "sumardi",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -107,7 +107,7 @@
             "prodi_id": 8,
             "email": "achmad@gmail.com",
             "username": "achmad",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -117,7 +117,7 @@
             "prodi_id": 8,
             "email": "wahyul@gmail.com",
             "username": "wahyul",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -127,7 +127,7 @@
             "prodi_id": 8,
             "email": "imamsantoso@gmail.com",
             "username": "imam",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -137,7 +137,7 @@
             "prodi_id": 8,
             "email": "karnots@gmail.com",
             "username": "karnots",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -147,7 +147,7 @@
             "prodi_id": 8,
             "email": "sukiswo@gmail.com",
             "username": "sukiswo",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -157,7 +157,7 @@
             "prodi_id": 8,
             "email": "yuli@gmail.com",
             "username": "yuli",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -167,7 +167,7 @@
             "prodi_id": 8,
             "email": "aghus@gmail.com",
             "username": "sofwan",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -177,7 +177,7 @@
             "prodi_id": 8,
             "email": "ajub@gmail.com",
             "username": "ajub",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -187,7 +187,7 @@
             "prodi_id": 8,
             "email": "aris@gmail.com",
             "username": "aris",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -197,7 +197,7 @@
             "prodi_id": 8,
             "email": "syakur@gmail.com",
             "username": "syakur",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -207,7 +207,7 @@
             "prodi_id": 8,
             "email": "mamansoemantri@gmail.com",
             "username": "maman",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -217,7 +217,7 @@
             "prodi_id": 8,
             "email": "facta@gmail.com",
             "username": "facta",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -227,7 +227,7 @@
             "prodi_id": 8,
             "email": "darjat@gmail.com",
             "username": "darjat",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -237,7 +237,7 @@
             "prodi_id": 8,
             "email": "handoko@gmail.com",
             "username": "handoko",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -247,7 +247,7 @@
             "prodi_id": 8,
             "email": "IwanSet@gmail.com",
             "username": "iwan",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -257,7 +257,7 @@
             "prodi_id": 8,
             "email": "budi@gmail.com",
             "username": "budi",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -267,7 +267,7 @@
             "prodi_id": 8,
             "email": "trias@gmail.com",
             "username": "trias",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -277,7 +277,7 @@
             "prodi_id": 8,
             "email": "eko@gmail.com",
             "username": "eko",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -287,7 +287,7 @@
             "prodi_id": 8,
             "email": "munawar@gmail.com",
             "username": "munawar",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -297,7 +297,7 @@
             "prodi_id": 8,
             "email": "enda@gmail.com",
             "username": "enda",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -307,7 +307,7 @@
             "prodi_id": 8,
             "email": "teguhprakoso@gmail.com",
             "username": "teguh",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -317,7 +317,7 @@
             "prodi_id": 8,
             "email": "marfan@gmail.com",
             "username": "arfan",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -327,7 +327,7 @@
             "prodi_id": 8,
             "email": "denis@gmail.com",
             "username": "denis",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -337,7 +337,7 @@
             "prodi_id": 8,
             "email": "yosua@gmail.com",
             "username": "yosua",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -347,7 +347,7 @@
             "prodi_id": 8,
             "email": "hadhaaf@gmail.com",
             "username": "hadha",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
@@ -357,7 +357,7 @@
             "prodi_id": 8,
             "email": "ayuketut@gmail.com",
             "username": "ayuketut",
-            "is_active": false,
+            "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         }

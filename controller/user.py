@@ -1,4 +1,4 @@
-from db.models import User
+from db.models import User, UserRole
 from db.database import Session
 from db.schemas.userSchema import (
     UserCreateSchema,
@@ -34,8 +34,16 @@ def getAllPaging(db: Session, offset: int, token: str):
     return {"data": data, "total": total}
 
 
-def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
-    data, total = helper_static_filter(db, User, filtered, offset)
+def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str, xtra={}):
+    data, total = helper_static_filter(db, User, filtered, offset, xtra)
+
+    return {"data": data, "total": total}
+
+
+def getAllPagingFilteredSpecialDosen(
+    db: Session, offset: int, filtered: dict, token: str, xtra={}
+):
+    data, total = helper_static_filter(db, UserRole, filtered, offset, xtra)
 
     return {"data": data, "total": total}
 
@@ -44,6 +52,15 @@ def getByID(db: Session, id: int, token: str):
     data = db.query(User).filter_by(id=id).first()
 
     return data
+
+
+def getOnlyDosen(db: Session, data: list):
+    outputData = []
+    for dt in data:
+        dosen = db.query(User).filter_by(id=dt.user_id).first()
+        outputData.append(dosen)
+
+    return outputData
 
 
 def create(db: Session, username: str, data: UserCreateSchema):

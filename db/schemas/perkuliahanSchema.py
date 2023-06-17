@@ -7,6 +7,7 @@ from db.schemas.userSchema import UserSchema
 from db.schemas.prodiSchema import ProdiSchema
 from db.schemas.mataKuliahSchema import MataKuliahSchema
 from db.schemas.tahunAjaranSchema import TahunAjaranSchema
+from db.schemas.mahasiswaSchema import MahasiswaSchema
 
 tz = pytz.timezone("Asia/Jakarta")
 
@@ -38,6 +39,7 @@ class PerkuliahanSchema(BasePerkuliahanSchema):
     mataKuliah: Optional[MataKuliahSchema] = None
     prodi: Optional[ProdiSchema] = None
     tahunAjaran: Optional[TahunAjaranSchema] = None
+    mahasiswa: List[MahasiswaSchema] = []
 
     class Config:
         orm_mode = True

@@ -1,4 +1,4 @@
-from db.models import User, UserRole
+from db.models import *
 from db.database import Session
 from db.schemas.userSchema import (
     UserCreateSchema,
@@ -8,8 +8,38 @@ from db.schemas.userSchema import (
 from .utils import helper_static_filter
 from datetime import datetime
 import pytz
+from sqlalchemy import or_
 
 tz = pytz.timezone("Asia/Jakarta")
+
+
+def helperRetrieveDosen(db, data):
+    perkuliahan = (
+        db.query(Perkuliahan)
+        .filter(
+            or_(
+                Perkuliahan.dosen_id == data.id,
+                Perkuliahan.dosen2_id == data.id,
+                Perkuliahan.dosen3_id == data.id,
+            )
+        )
+        .all()
+    )
+
+    doswal = db.query(MahasiswaDoswal).filter_by(dosen_id=data.id).all()
+    mahasiswa = []
+    for mhs in doswal:
+        mahasiswa.append(
+            {
+                "nim": mhs.mahasiswa.nim,
+                "full_name": mhs.mahasiswa.full_name,
+                "status": mhs.mahasiswa.status.status,
+                "angkatan": mhs.angkatan,
+            }
+        )
+
+    setattr(data, "perkuliahan", perkuliahan)
+    setattr(data, "mahasiswa", mahasiswa)
 
 
 def errArray(idx):
@@ -51,6 +81,7 @@ def getAllPagingFilteredSpecialDosen(
 def getByID(db: Session, id: int, token: str):
     data = db.query(User).filter_by(id=id).first()
 
+    helperRetrieveDosen(db, data)
     return data
 
 

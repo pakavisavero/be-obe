@@ -1,4 +1,4 @@
-from db.models import Mahasiswa, MahasiswaDoswal, User
+from db.models import *
 from db.database import Session
 from db.schemas.mahasiswaSchema import (
     MahasiswaCreateSchema,
@@ -15,10 +15,26 @@ tz = pytz.timezone("Asia/Jakarta")
 def helperRetrieveMahasiswa(db, data):
     for dt in data:
         doswal = db.query(MahasiswaDoswal).filter_by(mahasiswa_id=dt.id).first()
-        dosen = db.query(User).filter_by(id=doswal.dosen_id).first()
-
         if doswal:
+            dosen = db.query(User).filter_by(id=doswal.dosen_id).first()
             setattr(dt, "doswal", dosen)
+
+        perkuliahan = []
+        mapping = db.query(MappingMahasiswa).filter_by(mahasiswa_id=dt.id).all()
+        for map in mapping:
+            mata_kuliah = map.perkuliahan.mataKuliah
+            perkuliahan.append(
+                {
+                    "mata_kuliah": mata_kuliah.kode_mk
+                    + " - "
+                    + mata_kuliah.mata_kuliah,
+                    "kelas": map.perkuliahan.kelas,
+                    "semester": map.perkuliahan.semester,
+                    "tahun_ajaran": map.perkuliahan.tahunAjaran.tahun_ajaran,
+                }
+            )
+
+        setattr(dt, "perkuliahan", perkuliahan)
 
 
 def errArray(idx):

@@ -428,7 +428,7 @@ class CPMK(Base):
 
     name = Column(String(length=200))
     statement = Column(Text())
-    is_active = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=True)
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
@@ -448,7 +448,7 @@ class NilaiTugas(Base):
     nilai_tugas = Column(DECIMAL)
     nilai_cpmk = Column(DECIMAL)
     bobot_cpmk = Column(DECIMAL)
-    is_active = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=True)
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
@@ -581,3 +581,16 @@ class PresentasePK(Base):
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
 
 
+class CheckExportDPNA(Base):
+    __tablename__ = "check_export_dpnas"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    perkuliahan_id = Column(BigInteger, ForeignKey(Perkuliahan.id))
+    template_name = Column(Text())
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])

@@ -4,6 +4,7 @@ from datetime import datetime
 import pytz
 
 from db.schemas.prodiSchema import ProdiSchema
+from db.schemas.perkuliahan2Schema import PerkuliahanSchema
 
 tz = pytz.timezone("Asia/Jakarta")
 
@@ -29,6 +30,8 @@ class BaseUserSchema(BaseModel):
 
 class UserSchema(BaseUserSchema):
     prodi: Optional[ProdiSchema] = None
+    perkuliahan: Optional[List[PerkuliahanSchema]] = None
+    mahasiswa = []
 
     class Config:
         orm_mode = True

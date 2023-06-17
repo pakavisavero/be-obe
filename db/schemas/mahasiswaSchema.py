@@ -29,6 +29,7 @@ class MahasiswaSchema(BaseMahasiswaSchema):
     prodi: Optional[ProdiSchema] = None
     status: Optional[StatusMahasiswaSchema] = None
     doswal: Optional[UserSchema] = None
+    perkuliahan = []
 
     class Config:
         orm_mode = True

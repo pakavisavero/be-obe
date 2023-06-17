@@ -14,7 +14,7 @@ mahasiswa = []
 
 for i, row in list(result.iterrows()):
     tempMhs = {
-        "full_name": row[1],
+        "full_name": str(row[1]).lower().title(),
         "nim": row[0],
         "prodi_id": 8,
         "status_mhs_id": 1,
@@ -45,5 +45,3 @@ for mhs in mahasiswa:
     )
     db.add(dw)
     db.commit()
-
-    # print("success add mahasiswa " + mhs["full_name"])

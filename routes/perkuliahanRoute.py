@@ -1,7 +1,7 @@
-from fastapi import Request
+from fastapi import Request, BackgroundTasks
 from fastapi import Depends, status, Header
 
-from controller import perkuliahan
+from controller import perkuliahan, mataKuliah, tahunAjaran
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
@@ -16,15 +16,17 @@ from db.schemas.perkuliahanSchema import (
 
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
-from db.models import (
-    MataKuliah,
-    User,
-    UserRole,
-    Perkuliahan,
-    TahunAjaran,
-    Mahasiswa,
-    MappingMahasiswa,
-)
+from db.models import *
+
+from sqlalchemy.orm import Session as tempSessionn
+from openpyxl import load_workbook
+from fastapi.responses import FileResponse, JSONResponse
+import os
+import sys
+import re
+from sqlalchemy import event
+from datetime import datetime
+
 
 PERKULIAHAN = "/perkuliahan"
 
@@ -108,7 +110,7 @@ async def submit_perkuliahan(
 async def update_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    data: PerkuliahanUpdateSchema = None,
+    data: dict = None,
 ):
     username = getUsername(token)
     res = perkuliahan.update(db, username, data)
@@ -147,8 +149,8 @@ async def upload(
 ):
     try:
         data = data["data"]
-        thn_ajaran = (data[0][1]).replace(":", "").strip()
-        semester = (data[1][1]).replace(":", "").strip()
+        thn_ajaran = str(data[0][1]).replace(":", "").strip()
+        semester = str(data[1][1]).replace(":", "").strip()
 
         if semester == "" or thn_ajaran == "":
             raise ValueError(
@@ -164,12 +166,12 @@ async def upload(
                     for _ in range(0, dis):
                         value.append("")
 
-                matkul = (value[0]).strip()
-                kode = (value[1]).strip()
-                kelas = (value[2]).strip()
-                sks = ((value[3].strip().lower())).replace("sks", "")
-                dosen1 = (value[4]).strip()
-                nip_dosen1 = (value[5]).strip()
+                matkul = str(value[0]).strip()
+                kode = str(value[1]).strip()
+                kelas = str(value[2]).strip()
+                sks = str((value[3].strip().lower())).replace("sks", "")
+                dosen1 = str(value[4]).strip()
+                nip_dosen1 = str(value[5]).strip()
                 dosen2 = value[6]
                 nip_dosen2 = value[7]
                 dosen3 = value[8]
@@ -285,11 +287,14 @@ async def upload(
         db.rollback()
         err = str(e.args[0]).split("\n")
         data = {"message": err[errArray(len(err))]}
-        raise HandlerCustom(data=data)
+        return {
+            "code": status.HTTP_400_BAD_REQUEST,
+            "message": err,
+        }
 
 
 @app.post("/dpna" + "-upload")
-async def upload(
+async def upload_dpna(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: dict = None,
@@ -301,10 +306,10 @@ async def upload(
         if len(c1.split("-")) != 2:
             raise ValueError("Format cell B1 (Kode MK - Matkul) tidak valid!")
 
-        kode_mk = (c1.split("-")[0]).replace(":", "").strip()
-        tahun_ajaran = (header[1][1]).replace(":", "").strip()
-        semester = (header[2][1]).replace(":", "").strip()
-        kelas = (header[3][1]).replace(":", "").strip()
+        kode_mk = str(c1.split("-")[0]).replace(":", "").strip()
+        tahun_ajaran = str(header[1][1]).replace(":", "").strip()
+        semester = str(header[2][1]).replace(":", "").strip()
+        kelas = str(header[3][1]).replace(":", "").strip()
 
         checkMatkul = db.query(MataKuliah).filter_by(kode_mk=kode_mk).first()
         if not checkMatkul:
@@ -338,13 +343,20 @@ async def upload(
                 nim = str(value[0])
                 full_name = str(value[1])
 
+                char = ["(", "<", "%", ">", ")"]
+                for ch in char:
+                    full_name = full_name.replace(ch, "")
+
                 if nim and full_name:
                     mhs = db.query(Mahasiswa).filter_by(nim=nim).first()
                     if not mhs:
                         mhs = Mahasiswa(
                             **{
                                 "nim": nim,
-                                "full_name": full_name,
+                                "full_name": full_name.rsplit(" ", 1)[0]
+                                .lower()
+                                .title()
+                                .strip(),
                                 "prodi_id": 8,
                                 "status_mhs_id": 1,
                             }
@@ -360,6 +372,158 @@ async def upload(
                     db.commit()
 
             idx += 1
+
+        return {
+            "code": status.HTTP_200_OK,
+            "message": "Success Upload DPNA",
+        }
+
+    except Exception as e:
+        print(e)
+        db.rollback()
+        err = str(e.args[0]).split("\n")
+        data = {"message": err[errArray(len(err))]}
+        raise HandlerCustom(data=data)
+
+
+@app.get("/get-template/{id}", response_model=PerkuliahanResponseSchema)
+async def bg_task_template(
+    db: Session = Depends(db),
+    background_tasks=BackgroundTasks,
+    token: str = Header(default=None),
+    id: int = None,
+    # data: dict = None,
+):
+    # id = int(data["id"])
+    checkExpDPNA = db.query(CheckExportDPNA).filter_by(perkuliahan_id=id).first()
+    if not checkExpDPNA:
+        background_tasks.add_task(get_template(db, id=id))
+    else:
+        dir = checkExpDPNA.template_name
+        return FileResponse(path=dir, filename=dir.replace("files/", ""))
+
+
+def get_template(db, id: int):
+    pk = db.query(Perkuliahan).filter_by(id=id).first()
+    matkul = mataKuliah.getByID(db, pk.mata_kuliah_id, "token")
+    ta = tahunAjaran.getByID(db, pk.tahun_ajaran_id, "token")
+    mapping = db.query(MappingMahasiswa).filter_by(perkuliahan_id=pk.id).all()
+
+    wb = load_workbook("files/template_cpmk.xlsx")
+
+    SH_CPMK = wb["CPMK-CPL"]
+    SH_TUGAS = wb["NILAI TUGAS"]
+    SH_PRAKTEK = wb["NILAI PRAKTEK"]
+    SH_UTS = wb["NILAI UTS"]
+    SH_UAS = wb["NILAI UAS"]
+    SH_SIAP = wb["FORM NILAI SIAP"]
+
+    SH_CPMK["C1"] = matkul.kode_mk
+    SH_CPMK["C2"] = ta.tahun_ajaran
+    SH_CPMK["C3"] = pk.semester
+    SH_CPMK["C4"] = pk.kelas
+
+    no = 1
+    row = 8
+    print(mapping)
+    for map in mapping:
+        mhs = db.query(Mahasiswa).filter_by(id=map.mahasiswa_id).first()
+        SH_TUGAS["A" + str(row)] = no
+        SH_TUGAS["B" + str(row)] = mhs.nim
+        SH_TUGAS["C" + str(row)] = mhs.full_name
+
+        SH_PRAKTEK["A" + str(row)] = no
+        SH_PRAKTEK["B" + str(row)] = mhs.nim
+        SH_PRAKTEK["C" + str(row)] = mhs.full_name
+
+        SH_UTS["A" + str(row)] = no
+        SH_UTS["B" + str(row)] = mhs.nim
+        SH_UTS["C" + str(row)] = mhs.full_name
+
+        SH_UAS["A" + str(row)] = no
+        SH_UAS["B" + str(row)] = mhs.nim
+        SH_UAS["C" + str(row)] = mhs.full_name
+
+        SH_SIAP["A" + str(row)] = mhs.nim
+        SH_SIAP["B" + str(row)] = mhs.full_name
+
+        no += 1
+        row += 1
+
+    now = datetime.now().strftime("%Y_%m_%d-%I_%M_%S")
+    path = "files/{}_{}_{}.xlsx".format(
+        (matkul.mata_kuliah).lower().replace(" ", "_"), pk.semester.lower(), now
+    )
+    wb.save(path)
+
+    exp = CheckExportDPNA(
+        **{
+            "perkuliahan_id": id,
+            "template_name": path,
+        }
+    )
+    db.add(exp)
+    db.commit()
+
+
+@app.post("/cpmk" + "-upload")
+async def upload_cpmk(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    request: Request = None,
+    data: dict = None,
+):
+    data = data["data"]
+    try:
+        SH_CPMK = data[0]
+        SH_TUGAS = data[1]
+        SH_PRAKTEK = data[2]
+        SH_UTS = data[3]
+        SH_UAS = data[4]
+        SH_SIAP = data[5]
+
+        # CPMK
+        c1 = SH_CPMK[0][2]
+        if len(c1.split("-")) != 2:
+            raise ValueError("Format cell C1 (Kode MK - Matkul) tidak valid!")
+
+        kode_mk = str(c1.split("-")[0]).replace(":", "").strip()
+        tahun_ajaran = SH_CPMK[1][2]
+        semester = SH_CPMK[2][2]
+        kelas = str(SH_CPMK[3][2]).replace(":", "").strip()
+        sks = str(SH_CPMK[8][2]).replace(":", "").strip()
+
+        checkMatkul = db.query(MataKuliah).filter_by(kode_mk=kode_mk).first()
+        if not checkMatkul:
+            raise ValueError("Mata Kuliah tidak tersedia!")
+
+        ta = db.query(TahunAjaran).filter_by(tahun_ajaran=tahun_ajaran).first()
+        if not ta:
+            raise ValueError("Tahun Ajaran tidak tersedia!")
+
+        checkPk = (
+            db.query(Perkuliahan)
+            .filter_by(mata_kuliah_id=checkMatkul.id)
+            .filter_by(tahun_ajaran_id=ta.id)
+            .filter_by(semester=semester)
+            .filter_by(kelas=kelas)
+            .first()
+        )
+
+        if not checkPk:
+            raise ValueError("Perkuliahan tidak tersedia!")
+
+        perkuliahan.insert_cpl(db, checkPk.id, SH_CPMK)
+        perkuliahan.insert_cpmk(db, checkPk.id, SH_CPMK)
+        perkuliahan.insert_nilai(db, checkPk.id, SH_TUGAS, NilaiTugas, "tugas")
+        perkuliahan.insert_nilai(db, checkPk.id, SH_PRAKTEK, NilaiPraktek, "praktek")
+        perkuliahan.insert_nilai(db, checkPk.id, SH_UTS, NilaiUTS, "uts")
+        perkuliahan.insert_nilai(db, checkPk.id, SH_UAS, NilaiUAS, "uas")
+
+        return {
+            "code": status.HTTP_200_OK,
+            "message": "Success Upload CPMK",
+        }
 
     except Exception as e:
         print(e)

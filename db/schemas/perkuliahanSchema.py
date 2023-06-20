@@ -40,6 +40,7 @@ class PerkuliahanSchema(BasePerkuliahanSchema):
     prodi: Optional[ProdiSchema] = None
     tahunAjaran: Optional[TahunAjaranSchema] = None
     mahasiswa: List[MahasiswaSchema] = []
+    cpl = []
 
     class Config:
         orm_mode = True

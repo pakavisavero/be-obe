@@ -1,21 +1,26 @@
-from dotenv import load_dotenv
-from fastapi import HTTPException, Depends
-from starlette.middleware.base import BaseHTTPMiddleware
+from fastapi import HTTPException
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
-import redis
+from sqlalchemy.orm import Session
+from starlette.middleware.base import BaseHTTPMiddleware
 
-# import bcrypt
+from db.models import *
+from controller import user
+
+from dotenv import load_dotenv
+from datetime import datetime, timedelta
+import redis
 import os
 import jwt
-from pathlib import Path
+import bcrypt
 
-# db_token = int(os.environ.get("REDIS_TOKEN_DB"))
-# db_user_access = int(os.environ.get("REDIS_USER_ACCESS_DB"))
-# db_user_access = int(os.environ.get("REDIS_USER_ACCESS_DB"))
+load_dotenv(".env")
 
-r = redis.Redis(host="localhost", port=6379, db=10)
-r2 = redis.Redis(host="localhost", port=6379, db=11)
+db_token = int(os.environ.get("REDIS_TOKEN_DB"))
+access_token = int(os.environ.get("REDIS_USER_ACCESS_DB"))
+
+r = redis.Redis(host="localhost", port=6379, db=1)
+r2 = redis.Redis(host="localhost", port=6379, db=2)
 
 
 class RedisType:
@@ -67,6 +72,49 @@ class ValidatePermission(BaseHTTPMiddleware):
             return response
 
 
+# def authLogin(db: Session, email, password):
+#     try:
+#         bytes = password.encode("utf-8")
+#         user = db.query(User).filter_by(email=email).first()
+
+#         if user:
+#             res = bcrypt.checkpw(bytes, user.password)
+#             user.last_login = datetime.now()
+#             db.commit()
+
+#             if res:
+#                 if not user.is_active:
+#                     return {
+#                         "code": status.HTTP_404_NOT_FOUND,
+#                         "message": "User Not Active",
+#                     }
+
+#                 token = encode_token(db, user.id)
+#                 u_access = get_user_access(db, user.id)
+#                 encode_u_access = encode_user_access(u_access)
+#                 setDataInRedis(token, user.id, RedisType.TOKEN)
+
+#                 return {
+#                     "code": status.HTTP_200_OK,
+#                     "message": "Succes get token",
+#                     "token": token,
+#                     "user_access": encode_u_access,
+#                 }
+#             else:
+#                 return {
+#                     "code": status.HTTP_404_NOT_FOUND,
+#                     "message": "invalid  password",
+#                 }
+#         return {
+#             "code": status.HTTP_404_NOT_FOUND,
+#             "message": "User Not Found",
+#         }
+
+#     except Exception as e:
+#         print("ERROR", e)
+#         return False
+
+
 def setDataInRedis(key, value, type):
     load_dotenv(".env")
     exp = int(os.environ.get("REDIS_EXP"))
@@ -93,12 +141,68 @@ def getDataInRedis(key, type):
         return False
 
 
+# def get_user_access(db, user_id):
+#     role = db.query(RoleMaster).filter_by(user_id=user_id).first()
+#     access = db.query(RolePermission).filter_by(role_id=role.id).first()
+
+#     user_access = []
+#     for u in access:
+#         temp = (
+#             {
+#                 "module_id": u.module_id,
+#                 "access": [
+#                     {
+#                         "view": u.view,
+#                         "add": u.add,
+#                         "edit": u.edit,
+#                         "print": u.printt,
+#                         "export": u.export,
+#                     }
+#                 ],
+#             },
+#         )
+
+#         user_access.append(temp)
+
+#     return user_access
+
+
+# def encode_user_access(user_access):
+#     exp = int(os.environ.get("JWT_EXP"))
+#     payload = {
+#         "exp": datetime.utcnow() + timedelta(minutes=exp),
+#         "iat": datetime.utcnow(),
+#         "user_access": user_access,
+#     }
+
+#     return jwt.encode(payload, "SECRET", algorithm="HS256")
+
+
+# def encode_token(db, user_id):
+#     exp = int(os.environ.get("JWT_EXP"))
+
+#     dataUser = user.getByID(db, user_id)
+#     roleName = db.query(UserRole).filter_by(user_id=user_id).first()
+
+#     payload = {
+#         "exp": datetime.utcnow() + timedelta(minutes=exp),
+#         "iat": datetime.utcnow(),
+#         "user_id": user_id,
+#         "email": dataUser.email,
+#         "fullName": dataUser.full_name,
+#         "role_name": roleName.roleMaster.role_name,
+#         "role_id": dataUser.roleMaster.id,
+#     }
+
+#     return jwt.encode(payload, "SECRET", algorithm="HS256")
+
+
 def decode_token(token):
     try:
         payload = jwt.decode(token, "SECRET", algorithms=["HS256"])
         return {
             "user_id": payload["user_id"],
-            "client_id": payload["client_id"],
+            "email": payload["email"],
             "username": payload["username"],
         }
 

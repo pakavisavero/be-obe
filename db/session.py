@@ -1,5 +1,5 @@
-from .database import Session
-from .middleware import decode_token
+from db.database import Session
+from db.middleware import decode_token
 
 
 def db():

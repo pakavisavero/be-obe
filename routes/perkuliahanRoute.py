@@ -10,21 +10,14 @@ from db.database import Session
 from db.schemas.perkuliahanSchema import (
     PerkuliahanResponseSchema,
     PerkuliahanCreateSchema,
-    PerkuliahanUpdateSchema,
     PerkuliahanDeleteSchema,
 )
 
 from HandlerCustom import HandlerCustom
-from db.helper import decode_token
 from db.models import *
 
-from sqlalchemy.orm import Session as tempSessionn
 from openpyxl import load_workbook
-from fastapi.responses import FileResponse, JSONResponse
-import os
-import sys
-import re
-from sqlalchemy import event
+from fastapi.responses import FileResponse
 from datetime import datetime
 
 
@@ -160,6 +153,7 @@ async def upload(
         headerLen = 10
         idx = 0
         for value in data:
+            print(value)
             if idx >= 4 and len(value) > 0:
                 dis = headerLen - len(value)
                 if dis > 0:
@@ -334,7 +328,7 @@ async def upload_dpna(
         idx = 0
         headerLen = 2
         for value in data["data"]:
-            if idx >= 16:
+            if idx >= 7:
                 dis = headerLen - len(value)
                 if dis > 0:
                     for _ in range(0, dis):
@@ -480,7 +474,6 @@ async def upload_cpmk(
         SH_PRAKTEK = data[2]
         SH_UTS = data[3]
         SH_UAS = data[4]
-        SH_SIAP = data[5]
 
         # CPMK
         c1 = SH_CPMK[0][2]

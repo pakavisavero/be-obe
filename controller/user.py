@@ -78,7 +78,7 @@ def getAllPagingFilteredSpecialDosen(
     return {"data": data, "total": total}
 
 
-def getByID(db: Session, id: int, token: str):
+def getByID(db: Session, id: int):
     data = db.query(User).filter_by(id=id).first()
 
     helperRetrieveDosen(db, data)

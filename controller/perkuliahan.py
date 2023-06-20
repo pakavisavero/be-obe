@@ -18,12 +18,36 @@ def helperRetrievePerkuliahan(db, data):
     for dt in data:
         mapping = db.query(MappingMahasiswa).filter_by(perkuliahan_id=dt.id).all()
         for map in mapping:
+            filter = {"mapping_mhs_id": map.id}
             mhs = db.query(Mahasiswa).filter_by(id=map.mahasiswa_id).first()
+            tugas = db.query(NilaiTugas).filter_by(**filter).first()
+            uts = db.query(NilaiUTS).filter_by(**filter).first()
+            uas = db.query(NilaiUAS).filter_by(**filter).first()
+            praktek = db.query(NilaiPraktek).filter_by(**filter).first()
 
+            raport = {
+                "tugas": tugas,
+                "uts": uts,
+                "uas": uas,
+                "praktek": praktek,
+            }
+
+            setattr(mhs, "raport", raport)
             mahasiswa.append(mhs)
 
         setattr(dt, "mahasiswa", mahasiswa.copy())
         mahasiswa.clear()
+
+        # cpmks = db.query(CPMK).filter_by(perkuliahan_id=dt.id).all()
+        # ids = []
+        # for cpmk in cpmks:
+        #     mapping = db.query(MappingCpmkCpl).filter_by(cpml_id=cpmk.id).first()
+        #     for map in mapping:
+        #         if map.cpl_id not in ids:
+        #             ids.append(map.cpl_id)
+
+        # for id in ids:
+        #     data = db.query(MappingCpmkCpl).filter()
 
 
 def errArray(idx):
@@ -108,10 +132,13 @@ def insert_cpl(db: Session, pk: int, SH_CPMK):
     endCPL = 32
     rowLen = 28
     for row in range(startCPL, endCPL + 1):
+        print("ROW : " + str(row))
+        print(len(SH_CPMK[row]))
+
         dis = rowLen - len(SH_CPMK[row])
         if dis > 0:
             for _ in range(0, dis):
-                SH_CPMK[row].append(None)
+                SH_CPMK[row].append("")
 
         chars_to_remove = ["[", "]", "-"]
         sc = set(chars_to_remove)
@@ -119,7 +146,7 @@ def insert_cpl(db: Session, pk: int, SH_CPMK):
         name = "".join([c for c in SH_CPMK[row][26] if c not in sc]).strip()
         statement = SH_CPMK[row][27]
 
-        if statement == None:
+        if statement == "":
             break
 
         checkCPL = db.query(CPL).filter_by(name=name).first()
@@ -134,6 +161,8 @@ def insert_cpl(db: Session, pk: int, SH_CPMK):
             )
             db.add(cpl)
             db.commit()
+
+    print("success insert CPL ...")
 
 
 def insert_cpmk(db: Session, pk: int, SH_CPMK):
@@ -154,6 +183,7 @@ def insert_cpmk(db: Session, pk: int, SH_CPMK):
             break
 
         checkCPMK = db.query(CPMK).filter_by(name=name).first()
+
         if not checkCPMK:
             cpmk = CPMK(
                 **{
@@ -209,6 +239,8 @@ def insert_cpmk(db: Session, pk: int, SH_CPMK):
                     db.commit()
                     checkMap = map
 
+    print("success insert CPMK ...")
+
 
 def insert_nilai(db: Session, pk: int, SHEET, Schema, param):
     rowLen = 17
@@ -243,29 +275,33 @@ def insert_nilai(db: Session, pk: int, SHEET, Schema, param):
                 print("Tidak ada Mapping!")
                 break
 
-            print("sampe sini ../")
             for x in range(4, rowLen):
                 pos = row[x]
                 if pos != 0:
                     cpmk = (
                         db.query(CPMK)
                         .filter_by(perkuliahan_id=pk)
-                        .filter_by(name="CPMK" + str(x - 2))
+                        .filter_by(name="CPMK" + str(x - 3))
                         .first()
                     )
 
                     if cpmk:
+                        print("sampe sini ../")
                         data = Schema(
                             **{
                                 "mapping_mhs_id": checkMap.id,
                                 "cpmk_id": cpmk.id,
                                 "nilai_" + param: nilai_total,
                                 "nilai_cpmk": pos,
-                                "bobot_cpmk": listBobot[x - 3],
+                                "bobot_cpmk": listBobot[x - 4],
                                 "is_active": True,
                             }
                         )
                         db.add(data)
                         db.commit()
 
+                    else:
+                        print("Gagal sampe sini ../")
         idx += 1
+
+    print("success insert nilai {} ...".format(param))

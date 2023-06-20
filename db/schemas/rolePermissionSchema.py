@@ -14,9 +14,9 @@ class BaseRolePermissionSchema(BaseModel):
     module_id: Optional[int] = None
 
     view: Optional[bool] = False
-    write: Optional[bool] = False
-    delete: Optional[bool] = False
-    print: Optional[bool] = False
+    add: Optional[bool] = False
+    edit: Optional[bool] = False
+    printt: Optional[bool] = False
     export: Optional[bool] = False
     is_active: Optional[bool] = None
 

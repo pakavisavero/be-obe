@@ -30,6 +30,7 @@ class MahasiswaSchema(BaseMahasiswaSchema):
     status: Optional[StatusMahasiswaSchema] = None
     doswal: Optional[UserSchema] = None
     perkuliahan = []
+    raport = {}
 
     class Config:
         orm_mode = True

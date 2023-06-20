@@ -369,9 +369,9 @@ class RolePermission(Base):
     module_id = Column(BigInteger, ForeignKey(Module.id))
 
     view = Column(Boolean, default=False)
-    write = Column(Boolean, default=False)
-    delete = Column(Boolean, default=False)
-    print = Column(Boolean, default=False)
+    add = Column(Boolean, default=False)
+    edit = Column(Boolean, default=False)
+    printt = Column(Boolean, default=False)
     export = Column(Boolean, default=False)
     is_active = Column(Boolean, default=False)
 

@@ -9,6 +9,7 @@ tz = pytz.timezone("Asia/Jakarta")
 class BaseTahunAjaranSchema(BaseModel):
     id: Optional[int] = None
 
+    name: Optional[str] = None
     tahun_ajaran: Optional[str] = None
     is_active: Optional[bool] = None
 

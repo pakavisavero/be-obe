@@ -8,6 +8,7 @@ from db.schemas.prodiSchema import ProdiSchema
 from db.schemas.mataKuliahSchema import MataKuliahSchema
 from db.schemas.tahunAjaranSchema import TahunAjaranSchema
 from db.schemas.mahasiswaSchema import MahasiswaSchema
+from db.schemas.docstatuspkSchema import DocStatusPKSchema
 
 tz = pytz.timezone("Asia/Jakarta")
 
@@ -20,6 +21,7 @@ class BasePerkuliahanSchema(BaseModel):
     pj_dosen_id: Optional[int] = None
     mata_kuliah_id: Optional[int] = None
     prodi_id: Optional[int] = None
+    doc_status_id: Optional[int] = None
 
     kelas: Optional[str] = None
     semester: Optional[str] = None
@@ -40,6 +42,7 @@ class PerkuliahanSchema(BasePerkuliahanSchema):
     prodi: Optional[ProdiSchema] = None
     tahunAjaran: Optional[TahunAjaranSchema] = None
     mahasiswa: List[MahasiswaSchema] = []
+    docstatus: Optional[DocStatusPKSchema] = None
     cpl = []
 
     class Config:

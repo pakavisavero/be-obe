@@ -18,6 +18,7 @@ from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
 TAHUN_AJARAN = "/tahun-ajaran"
+MODULE_NAME = "Tahun Ajaran"
 
 
 def errArray(idx):
@@ -28,7 +29,7 @@ def errArray(idx):
 
 
 @app.get(TAHUN_AJARAN + "s", response_model=TahunAjaranResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_all_tahun_ajaran(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -56,11 +57,12 @@ async def get_all_tahun_ajaran(
 
 
 @app.get(TAHUN_AJARAN + "/{id}", response_model=TahunAjaranResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_tahun_ajaran(
     db: Session = Depends(db),
     token: str = Header(default=None),
     id: int = None,
+    request: Request = None,
 ):
     data = tahunAjaran.getByID(db, id, token)
     return {
@@ -71,11 +73,12 @@ async def get_tahun_ajaran(
 
 
 @app.post(TAHUN_AJARAN, response_model=TahunAjaranResponseSchema)
-# @check_access_module
+@check_access_module
 async def submit_tahun_ajaran(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: TahunAjaranCreateSchema = None,
+    request: Request = None,
 ):
     username = getUsername(token)
 
@@ -95,11 +98,12 @@ async def submit_tahun_ajaran(
 
 
 @app.put(TAHUN_AJARAN, response_model=TahunAjaranResponseSchema)
-# @check_access_module
+@check_access_module
 async def update_tahun_ajaran(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: TahunAjaranUpdateSchema = None,
+    request: Request = None,
 ):
     username = getUsername(token)
     res = tahunAjaran.update(db, username, data)
@@ -117,7 +121,6 @@ async def update_tahun_ajaran(
 
 
 @app.delete(TAHUN_AJARAN)
-# @check_access_module
 async def delete_tahun_ajaran(
     db: Session = Depends(db),
     token: str = Header(default=None),

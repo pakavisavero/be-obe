@@ -18,6 +18,7 @@ from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
 MATA_KULIAH = "/mata-kuliah"
+MODULE_NAME = "Mata Kuliah"
 
 
 def errArray(idx):
@@ -28,12 +29,13 @@ def errArray(idx):
 
 
 @app.get(MATA_KULIAH + "s", response_model=MataKuliahResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_all_mata_kuliah(
     db: Session = Depends(db),
     token: str = Header(default=None),
     request: Request = None,
     page: int = 0,
+    module_access=MODULE_NAME,
 ):
     filtered_data = help_filter(request)
     if filtered_data:
@@ -56,11 +58,13 @@ async def get_all_mata_kuliah(
 
 
 @app.get(MATA_KULIAH + "/{id}", response_model=MataKuliahResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_mata_kuliah(
     db: Session = Depends(db),
     token: str = Header(default=None),
     id: int = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     data = mataKuliah.getByID(db, id, token)
     return {
@@ -71,11 +75,13 @@ async def get_mata_kuliah(
 
 
 @app.post(MATA_KULIAH, response_model=MataKuliahResponseSchema)
-# @check_access_module
+@check_access_module
 async def submit_mata_kuliah(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: MataKuliahCreateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
 
@@ -95,11 +101,13 @@ async def submit_mata_kuliah(
 
 
 @app.put(MATA_KULIAH, response_model=MataKuliahResponseSchema)
-# @check_access_module
+@check_access_module
 async def update_mata_kuliah(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: MataKuliahUpdateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
     res = mataKuliah.update(db, username, data)
@@ -117,10 +125,10 @@ async def update_mata_kuliah(
 
 
 @app.delete(MATA_KULIAH)
-# @check_access_module
 async def delete_mata_kuliah(
     db: Session = Depends(db),
     token: str = Header(default=None),
+    request: Request = None,
     data: MataKuliahDeleteSchema = None,
 ):
     return {

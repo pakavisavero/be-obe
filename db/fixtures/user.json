@@ -7,6 +7,7 @@
             "prodi_id": 8,
             "email": "superadmin@gmail.com",
             "username": "superadmin",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -17,6 +18,7 @@
             "prodi_id": 8,
             "email": "admin@gmail.com",
             "username": "admin",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -27,6 +29,7 @@
             "prodi_id": 8,
             "email": "operator@gmail.com",
             "username": "operator",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -37,6 +40,7 @@
             "prodi_id": 8,
             "email": "sudjadi@gmail.com",
             "username": "sudjadi",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -47,6 +51,7 @@
             "prodi_id": 8,
             "email": "nugroho@gmail.com",
             "username": "nugroho",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -57,6 +62,7 @@
             "prodi_id": 8,
             "email": "agung@gmail.com",
             "username": "agung",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -67,6 +73,7 @@
             "prodi_id": 8,
             "email": "jakwin@gmail.com",
             "username": "jaka",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -77,6 +84,7 @@
             "prodi_id": 8,
             "email": "bambang@gmail.com",
             "username": "bambang",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -87,6 +95,7 @@
             "prodi_id": 8,
             "email": "wahyudi@gmail.com",
             "username": "wahyudi",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -97,6 +106,7 @@
             "prodi_id": 8,
             "email": "sumardi@gmail.com",
             "username": "sumardi",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -107,6 +117,7 @@
             "prodi_id": 8,
             "email": "achmad@gmail.com",
             "username": "achmad",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -117,6 +128,7 @@
             "prodi_id": 8,
             "email": "wahyul@gmail.com",
             "username": "wahyul",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -127,6 +139,7 @@
             "prodi_id": 8,
             "email": "imamsantoso@gmail.com",
             "username": "imam",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -137,6 +150,7 @@
             "prodi_id": 8,
             "email": "karnots@gmail.com",
             "username": "karnots",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -147,6 +161,7 @@
             "prodi_id": 8,
             "email": "sukiswo@gmail.com",
             "username": "sukiswo",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -157,6 +172,7 @@
             "prodi_id": 8,
             "email": "yuli@gmail.com",
             "username": "yuli",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -167,6 +183,7 @@
             "prodi_id": 8,
             "email": "aghus@gmail.com",
             "username": "sofwan",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -177,6 +194,7 @@
             "prodi_id": 8,
             "email": "ajub@gmail.com",
             "username": "ajub",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -187,6 +205,7 @@
             "prodi_id": 8,
             "email": "aris@gmail.com",
             "username": "aris",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -197,6 +216,7 @@
             "prodi_id": 8,
             "email": "syakur@gmail.com",
             "username": "syakur",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -207,6 +227,7 @@
             "prodi_id": 8,
             "email": "mamansoemantri@gmail.com",
             "username": "maman",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -217,6 +238,7 @@
             "prodi_id": 8,
             "email": "facta@gmail.com",
             "username": "facta",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -227,6 +249,7 @@
             "prodi_id": 8,
             "email": "darjat@gmail.com",
             "username": "darjat",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -237,6 +260,7 @@
             "prodi_id": 8,
             "email": "handoko@gmail.com",
             "username": "handoko",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -247,6 +271,7 @@
             "prodi_id": 8,
             "email": "IwanSet@gmail.com",
             "username": "iwan",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -257,6 +282,7 @@
             "prodi_id": 8,
             "email": "budi@gmail.com",
             "username": "budi",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -267,6 +293,7 @@
             "prodi_id": 8,
             "email": "trias@gmail.com",
             "username": "trias",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -277,6 +304,7 @@
             "prodi_id": 8,
             "email": "eko@gmail.com",
             "username": "eko",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -287,6 +315,7 @@
             "prodi_id": 8,
             "email": "munawar@gmail.com",
             "username": "munawar",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -297,6 +326,7 @@
             "prodi_id": 8,
             "email": "enda@gmail.com",
             "username": "enda",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -307,6 +337,7 @@
             "prodi_id": 8,
             "email": "teguhprakoso@gmail.com",
             "username": "teguh",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -317,6 +348,7 @@
             "prodi_id": 8,
             "email": "marfan@gmail.com",
             "username": "arfan",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -327,6 +359,7 @@
             "prodi_id": 8,
             "email": "denis@gmail.com",
             "username": "denis",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -337,6 +370,7 @@
             "prodi_id": 8,
             "email": "yosua@gmail.com",
             "username": "yosua",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -347,6 +381,7 @@
             "prodi_id": 8,
             "email": "hadhaaf@gmail.com",
             "username": "hadha",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
@@ -357,6 +392,7 @@
             "prodi_id": 8,
             "email": "ayuketut@gmail.com",
             "username": "ayuketut",
+            "password": "test@2023",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"

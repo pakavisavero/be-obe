@@ -14,10 +14,8 @@ from db.schemas.mahasiswaSchema import (
     MahasiswaDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
-
 MAHASISWA = "/mahasiswa"
+MODULE_NAME = "Mahasiswa"
 
 
 def errArray(idx):
@@ -28,39 +26,49 @@ def errArray(idx):
 
 
 @app.get(MAHASISWA + "s", response_model=MahasiswaResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_all_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),
     request: Request = None,
     page: int = 0,
+    module_access=MODULE_NAME,
 ):
-    filtered_data = help_filter(request)
-    if filtered_data:
-        query = mahasiswa.getAllPagingFiltered(db, page, filtered_data, token)
+    try:
+        filtered_data = help_filter(request)
+        if filtered_data:
+            query = mahasiswa.getAllPagingFiltered(db, page, filtered_data, token)
 
+            return {
+                "code": status.HTTP_200_OK,
+                "message": "Success retrieve filtered mahasiswa",
+                "data": query["data"],
+                "total": query["total"],
+            }
+        else:
+            query = mahasiswa.getAllPaging(db, page, token)
+            return {
+                "code": status.HTTP_200_OK,
+                "message": "Success retrieve all mahasiswa",
+                "data": query["data"],
+                "total": query["total"],
+            }
+
+    except Exception as e:
         return {
-            "code": status.HTTP_200_OK,
-            "message": "Success retrieve filtered mahasiswa",
-            "data": query["data"],
-            "total": query["total"],
-        }
-    else:
-        query = mahasiswa.getAllPaging(db, page, token)
-        return {
-            "code": status.HTTP_200_OK,
-            "message": "Success retrieve all mahasiswa",
-            "data": query["data"],
-            "total": query["total"],
+            "code": status.HTTP_400_BAD_REQUEST,
+            "message": "error retrieve mahasiswa",
         }
 
 
 @app.get(MAHASISWA + "/{id}", response_model=MahasiswaResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),
     id: int = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     data = mahasiswa.getByID(db, id, token)
     return {
@@ -71,11 +79,13 @@ async def get_mahasiswa(
 
 
 @app.post(MAHASISWA, response_model=MahasiswaResponseSchema)
-# @check_access_module
+@check_access_module
 async def submit_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: MahasiswaCreateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
 
@@ -95,11 +105,13 @@ async def submit_mahasiswa(
 
 
 @app.put(MAHASISWA, response_model=MahasiswaResponseSchema)
-# @check_access_module
+@check_access_module
 async def update_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: MahasiswaUpdateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
     res = mahasiswa.update(db, username, data)
@@ -117,7 +129,6 @@ async def update_mahasiswa(
 
 
 @app.delete(MAHASISWA)
-# @check_access_module
 async def delete_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),

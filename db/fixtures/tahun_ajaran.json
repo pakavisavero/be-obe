@@ -3,12 +3,14 @@
     "data": [
         {
             "tahun_ajaran": "2021/2022",
-            "is_active": 1,
+            "name": "2021",
+            "is_active": 0,
             "created_by": "System",
             "modified_by": "System"
         },
         {
             "tahun_ajaran": "2022/2023",
+            "name": "2022",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"

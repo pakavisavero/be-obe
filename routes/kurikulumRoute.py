@@ -14,9 +14,6 @@ from db.schemas.kurikulumSchema import (
     KurikulumDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
-
 KURIKULUM = "/kurikulum"
 
 

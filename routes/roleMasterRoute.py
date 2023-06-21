@@ -18,6 +18,7 @@ from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
 ROLE_MASTER = "/role-master"
+MODULE_NAME = "Role Master"
 
 
 def errArray(idx):
@@ -28,12 +29,13 @@ def errArray(idx):
 
 
 @app.get(ROLE_MASTER + "s", response_model=RoleMasterResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_all_role_master(
     db: Session = Depends(db),
     token: str = Header(default=None),
     request: Request = None,
     page: int = 0,
+    module_access=MODULE_NAME,
 ):
     filtered_data = help_filter(request)
     if filtered_data:
@@ -56,11 +58,13 @@ async def get_all_role_master(
 
 
 @app.get(ROLE_MASTER + "/{id}", response_model=RoleMasterResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_role_master(
     db: Session = Depends(db),
     token: str = Header(default=None),
     id: int = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     data = roleMaster.getByID(db, id, token)
     return {
@@ -71,11 +75,13 @@ async def get_role_master(
 
 
 @app.post(ROLE_MASTER, response_model=RoleMasterResponseSchema)
-# @check_access_module
+@check_access_module
 async def submit_role_master(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: RoleMasterCreateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
 
@@ -95,11 +101,13 @@ async def submit_role_master(
 
 
 @app.put(ROLE_MASTER, response_model=RoleMasterResponseSchema)
-# @check_access_module
+@check_access_module
 async def update_role_master(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: RoleMasterUpdateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
     res = roleMaster.update(db, username, data)
@@ -117,7 +125,6 @@ async def update_role_master(
 
 
 @app.delete(ROLE_MASTER)
-# @check_access_module
 async def delete_role_master(
     db: Session = Depends(db),
     token: str = Header(default=None),

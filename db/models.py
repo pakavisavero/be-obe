@@ -8,6 +8,7 @@ from sqlalchemy import (
     BigInteger,
     Text,
     DECIMAL,
+    LargeBinary,
 )
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -28,6 +29,8 @@ class ModuleGroup(Base):
     id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
 
     module_name = Column(String(length=255))
+    path = Column(String(length=255), nullable=True)
+    icon = Column(String(length=255), nullable=False)
     is_active = Column(Boolean, default=True)
 
     created_at = Column(DateTime, default=datetime.now())
@@ -43,7 +46,7 @@ class Module(Base):
     module_group_id = Column(BigInteger, ForeignKey(ModuleGroup.id))
 
     module_name = Column(String(length=255))
-    route = Column(String(length=200))
+    path = Column(String(length=255), nullable=False)
     is_active = Column(Boolean, default=True)
 
     created_at = Column(DateTime, default=datetime.now())
@@ -94,7 +97,7 @@ class User(Base):
     email = Column(String(length=255), unique=True)
     nip = Column(String(length=100), unique=True)
     username = Column(String(length=255), nullable=True)
-    password = Column(String(length=255), nullable=True)
+    password = Column(LargeBinary)
     full_name = Column(String(length=255))
     email_verified_at = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
@@ -236,8 +239,22 @@ class TahunAjaran(Base):
 
     id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
 
+    name = Column(String(150))
     tahun_ajaran = Column(String(150))
     is_active = Column(Boolean, default=True)
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+
+class DocStatusPK(Base):
+    __tablename__ = "status_doc_perkuliahans"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+
+    status = Column(String)
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
@@ -256,6 +273,7 @@ class Perkuliahan(Base):
     mata_kuliah_id = Column(BigInteger, ForeignKey(MataKuliah.id))
     prodi_id = Column(BigInteger, ForeignKey(Prodi.id))
     tahun_ajaran_id = Column(BigInteger, ForeignKey(TahunAjaran.id))
+    doc_status_id = Column(BigInteger, ForeignKey(DocStatusPK.id))
 
     kelas = Column(String(length=100))
     semester = Column(String(length=200))
@@ -273,6 +291,7 @@ class Perkuliahan(Base):
     mataKuliah = relationship("MataKuliah", foreign_keys=[mata_kuliah_id])
     prodi = relationship("Prodi", foreign_keys=[prodi_id])
     tahunAjaran = relationship("TahunAjaran", foreign_keys=[tahun_ajaran_id])
+    docstatus = relationship("DocStatusPK", foreign_keys=[doc_status_id])
 
 
 class Konsentrasi(Base):

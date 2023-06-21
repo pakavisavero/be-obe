@@ -1,4 +1,4 @@
-from db.models import RoleMaster
+from db.models import *
 from db.database import Session
 from db.schemas.roleMasterSchema import (
     RoleMasterCreateSchema,
@@ -12,6 +12,12 @@ import pytz
 tz = pytz.timezone("Asia/Jakarta")
 
 
+def helperRetrieveRole(db, data):
+    for dt in data:
+        permissions = db.query(RolePermission).filter_by(role_id=dt.id).all()
+        setattr(dt, "permissions", permissions)
+
+
 def errArray(idx):
     if idx < 2:
         return 0
@@ -22,6 +28,7 @@ def errArray(idx):
 def getAll(db: Session, token: str):
     data = db.query(RoleMaster).all()
 
+    helperRetrieveRole(db, data)
     return data
 
 
@@ -31,18 +38,21 @@ def getAllPaging(db: Session, offset: int, token: str):
     data = base_query.all()
     total = base_query.count()
 
+    helperRetrieveRole(db, data)
     return {"data": data, "total": total}
 
 
 def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
     data, total = helper_static_filter(db, RoleMaster, filtered, offset)
 
+    helperRetrieveRole(db, data)
     return {"data": data, "total": total}
 
 
 def getByID(db: Session, id: int, token: str):
     data = db.query(RoleMaster).filter_by(id=id).first()
 
+    helperRetrieveRole(db, [data])
     return data
 
 

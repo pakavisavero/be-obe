@@ -3,7 +3,7 @@ from typing import Union, List, Optional
 from datetime import datetime
 import pytz
 
-from db.schemas.prodiSchema import ProdiSchema
+from db.schemas.moduleSchema import ModuleSchema
 
 tz = pytz.timezone("Asia/Jakarta")
 
@@ -27,7 +27,7 @@ class BaseRolePermissionSchema(BaseModel):
 
 
 class RolePermissionSchema(BaseRolePermissionSchema):
-    prodi: Optional[ProdiSchema] = None
+    module: Optional[ModuleSchema] = None
 
     class Config:
         orm_mode = True

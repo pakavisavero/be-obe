@@ -1,0 +1,20 @@
+{
+    "model": "models.DocStatusPK",
+    "data": [
+        {
+            "status": "Menunggu Upload DPNA",
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "status": "Menunggu Upload CPMK",
+            "created_by": "System",
+            "modified_by": "System"
+        },
+        {
+            "status": "Selesai",
+            "created_by": "System",
+            "modified_by": "System"
+        }
+    ]
+}

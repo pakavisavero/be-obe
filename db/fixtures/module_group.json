@@ -3,30 +3,36 @@
     "data": [
         {
             "module_name": "Dashboard",
+            "path": "/dashboards/crm",
+            "icon": "HomeOutline",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
         {
             "module_name": "Master Data",
+            "icon": "MasterIcon",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
         {
             "module_name": "User Management",
+            "icon": "SettingIcon",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
         {
             "module_name": "Transaction",
+            "icon": "TransactionIcon",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"
         },
         {
             "module_name": "Reporting",
+            "icon": "ReportIcon",
             "is_active": 1,
             "created_by": "System",
             "modified_by": "System"

@@ -5,10 +5,13 @@ from db.schemas.perkuliahanSchema import (
     PerkuliahanUpdateSchema,
 )
 
-from .utils import helper_static_filter
+from .utils import helper_static_filter, identifyRole
 from datetime import datetime
 from db.models import *
+from db.middleware import decode_token
 import pytz
+from sqlalchemy import or_
+from sqlalchemy.orm import load_only
 
 tz = pytz.timezone("Asia/Jakarta")
 
@@ -38,16 +41,24 @@ def helperRetrievePerkuliahan(db, data):
         setattr(dt, "mahasiswa", mahasiswa.copy())
         mahasiswa.clear()
 
-        # cpmks = db.query(CPMK).filter_by(perkuliahan_id=dt.id).all()
-        # ids = []
-        # for cpmk in cpmks:
-        #     mapping = db.query(MappingCpmkCpl).filter_by(cpml_id=cpmk.id).first()
-        #     for map in mapping:
-        #         if map.cpl_id not in ids:
-        #             ids.append(map.cpl_id)
+        listOfCPl = []
+        cpls = db.query(CPL).all()
+        for cpl in cpls:
+            cpmk = (
+                db.query(CPMK)
+                .filter_by(perkuliahan_id=dt.id)
+                .options(load_only("id"))
+                .all()
+            )
 
-        # for id in ids:
-        #     data = db.query(MappingCpmkCpl).filter()
+            print(cpmk)
+
+            # if cpmk:
+            #     listOfCPl.append(
+            #         {"name": cpl.name, "statement": cpl.statement, "cpmk": cpmk}
+            #     )
+
+        setattr(dt, "cpl", listOfCPl)
 
 
 def errArray(idx):
@@ -61,21 +72,44 @@ def getAll(db: Session, token: str):
     data = db.query(Perkuliahan).all()
 
     helperRetrievePerkuliahan(db, data)
+
     return data
 
 
 def getAllPaging(db: Session, offset: int, token: str):
-    base_query = db.query(Perkuliahan)
+    data = db.query(Perkuliahan)
+    role = identifyRole(token)
 
-    data = base_query.all()
-    total = base_query.count()
+    if role["role"] == "Dosen":
+        data = data.filter(
+            or_(
+                Perkuliahan.dosen_id == role["user_id"],
+                Perkuliahan.dosen2_id == role["user_id"],
+                Perkuliahan.dosen3_id == role["user_id"],
+            )
+        ).all()
 
+    else:
+        data = data.all()
+
+    total = len(data)
     helperRetrievePerkuliahan(db, data)
     return {"data": data, "total": total}
 
 
 def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
-    data, total = helper_static_filter(db, Perkuliahan, filtered, offset)
+    xtra = {}
+    xtraOr = {}
+    role = identifyRole(token)
+
+    if role["role"] == "Dosen":
+        xtraOr = or_(
+            Perkuliahan.dosen_id == role["user_id"],
+            Perkuliahan.dosen2_id == role["user_id"],
+            Perkuliahan.dosen3_id == role["user_id"],
+        )
+
+    data, total = helper_static_filter(db, Perkuliahan, filtered, offset, xtra, xtraOr)
 
     helperRetrievePerkuliahan(db, data)
     return {"data": data, "total": total}

@@ -14,10 +14,8 @@ from db.schemas.userSchema import (
     UserDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
-
 USER = "/user"
+MODULE_NAME = "Users"
 
 
 def errArray(idx):
@@ -28,12 +26,13 @@ def errArray(idx):
 
 
 @app.get(USER + "s", response_model=UserResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_all_user(
     db: Session = Depends(db),
     token: str = Header(default=None),
     request: Request = None,
     page: int = 0,
+    module_access=MODULE_NAME,
 ):
     filtered_data = help_filter(request)
     if filtered_data:
@@ -56,12 +55,13 @@ async def get_all_user(
 
 
 @app.get("/dosens", response_model=UserResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_all_dosen(
     db: Session = Depends(db),
     token: str = Header(default=None),
     request: Request = None,
     page: int = 0,
+    module_access=MODULE_NAME,
 ):
     filtered_data = help_filter(request)
     if filtered_data:
@@ -89,13 +89,15 @@ async def get_all_dosen(
 
 
 @app.get(USER + "/{id}", response_model=UserResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_user(
     db: Session = Depends(db),
     token: str = Header(default=None),
     id: int = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
-    data = user.getByID(db, id, token)
+    data = user.getByID(db, id)
     return {
         "code": status.HTTP_200_OK,
         "message": "Success get user",
@@ -104,11 +106,13 @@ async def get_user(
 
 
 @app.post(USER, response_model=UserResponseSchema)
-# @check_access_module
+@check_access_module
 async def submit_user(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: UserCreateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
 
@@ -128,11 +132,13 @@ async def submit_user(
 
 
 @app.put(USER, response_model=UserResponseSchema)
-# @check_access_module
+@check_access_module
 async def update_user(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: UserUpdateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
     res = user.update(db, username, data)
@@ -150,7 +156,6 @@ async def update_user(
 
 
 @app.delete(USER)
-# @check_access_module
 async def delete_user(
     db: Session = Depends(db),
     token: str = Header(default=None),

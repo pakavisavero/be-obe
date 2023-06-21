@@ -18,6 +18,7 @@ from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
 MODULE = "/module"
+MODULE_NAME = "Module"
 
 
 def errArray(idx):
@@ -28,12 +29,13 @@ def errArray(idx):
 
 
 @app.get(MODULE + "s", response_model=ModuleResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_all_modules(
     db: Session = Depends(db),
     token: str = Header(default=None),
     request: Request = None,
     page: int = 0,
+    module_access=MODULE_NAME,
 ):
     filtered_data = help_filter(request)
     if filtered_data:
@@ -56,11 +58,12 @@ async def get_all_modules(
 
 
 @app.get(MODULE + "/{id}", response_model=ModuleResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_module(
     db: Session = Depends(db),
     token: str = Header(default=None),
     id: int = None,
+    module_access=MODULE_NAME,
 ):
     data = module.getByID(db, id, token)
     return {
@@ -71,11 +74,12 @@ async def get_module(
 
 
 @app.post(MODULE, response_model=ModuleResponseSchema)
-# @check_access_module
+@check_access_module
 async def submit_module(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: ModuleCreateSchema = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
 
@@ -95,11 +99,12 @@ async def submit_module(
 
 
 @app.put(MODULE, response_model=ModuleResponseSchema)
-# @check_access_module
+@check_access_module
 async def update_module(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: ModuleUpdateSchema = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
     res = module.update(db, username, data)
@@ -117,7 +122,6 @@ async def update_module(
 
 
 @app.delete(MODULE)
-# @check_access_module
 async def delete_module(
     db: Session = Depends(db),
     token: str = Header(default=None),

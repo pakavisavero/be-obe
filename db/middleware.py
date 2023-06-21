@@ -5,10 +5,9 @@ from sqlalchemy.orm import Session
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from db.models import *
-from controller import user
-
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
+
 import redis
 import os
 import jwt
@@ -19,8 +18,8 @@ load_dotenv(".env")
 db_token = int(os.environ.get("REDIS_TOKEN_DB"))
 access_token = int(os.environ.get("REDIS_USER_ACCESS_DB"))
 
-r = redis.Redis(host="localhost", port=6379, db=1)
-r2 = redis.Redis(host="localhost", port=6379, db=2)
+r = redis.Redis(host="localhost", port=6379, db=db_token)
+r2 = redis.Redis(host="localhost", port=6379, db=access_token)
 
 
 class RedisType:
@@ -39,10 +38,11 @@ class ValidatePermission(BaseHTTPMiddleware):
             "/redoc",
             "/openapi.json",
             "/favicon.ico",
+            "/get-template",
         ]
 
-        # if path in pathExclude:
-        #    return response
+        if path in pathExclude:
+            return response
 
         for pe in pathExclude:
             if path.find(pe) > -1:
@@ -72,47 +72,76 @@ class ValidatePermission(BaseHTTPMiddleware):
             return response
 
 
-# def authLogin(db: Session, email, password):
-#     try:
-#         bytes = password.encode("utf-8")
-#         user = db.query(User).filter_by(email=email).first()
+def authLogin(db: Session, email: str, password: str):
+    try:
+        bytes = password.encode("utf-8")
+        user = db.query(User).filter_by(email=email).first()
 
-#         if user:
-#             res = bcrypt.checkpw(bytes, user.password)
-#             user.last_login = datetime.now()
-#             db.commit()
+        if user:
+            res = bcrypt.checkpw(bytes, user.password)
+            user.last_login = datetime.now()
+            db.commit()
 
-#             if res:
-#                 if not user.is_active:
-#                     return {
-#                         "code": status.HTTP_404_NOT_FOUND,
-#                         "message": "User Not Active",
-#                     }
+            if res:
+                if not user.is_active:
+                    return {
+                        "code": status.HTTP_404_NOT_FOUND,
+                        "message": "User Not Active",
+                    }
 
-#                 token = encode_token(db, user.id)
-#                 u_access = get_user_access(db, user.id)
-#                 encode_u_access = encode_user_access(u_access)
-#                 setDataInRedis(token, user.id, RedisType.TOKEN)
+                u_access = get_user_access(db, user.id)
+                groups = get_list_groups(db, user.id)
 
-#                 return {
-#                     "code": status.HTTP_200_OK,
-#                     "message": "Succes get token",
-#                     "token": token,
-#                     "user_access": encode_u_access,
-#                 }
-#             else:
-#                 return {
-#                     "code": status.HTTP_404_NOT_FOUND,
-#                     "message": "invalid  password",
-#                 }
-#         return {
-#             "code": status.HTTP_404_NOT_FOUND,
-#             "message": "User Not Found",
-#         }
+                token = encode_token(db, user.id)
+                encode_u_access = encode_user_access(u_access)
+                encode_group = encode_groups(groups)
 
-#     except Exception as e:
-#         print("ERROR", e)
-#         return False
+                setDataInRedis(token, user.id, RedisType.TOKEN)
+                setDataInRedis(user.id, encode_u_access, RedisType.USER_ACCESS)
+
+                return {
+                    "code": status.HTTP_200_OK,
+                    "message": "Succes get token",
+                    "token": token,
+                    "user_access": encode_u_access,
+                    "groups": encode_group,
+                }
+            else:
+                return {
+                    "code": status.HTTP_404_NOT_FOUND,
+                    "message": "invalid password",
+                }
+
+        return {
+            "code": status.HTTP_404_NOT_FOUND,
+            "message": "User Not Found",
+        }
+
+    except Exception as e:
+        print("ERROR", e)
+        return False
+
+
+def authLogout(token: str, db: Session):
+    try:
+        tokenDecode = decode_token(token)
+        user = db.query(User).filter_by(id=tokenDecode["user_id"]).first()
+        if user:
+            r.delete(token)
+            r2.delete(tokenDecode["user_id"])
+            return {
+                "code": status.HTTP_200_OK,
+                "message": "Success Logout",
+            }
+        else:
+            return {
+                "code": status.HTTP_404_NOT_FOUND,
+                "message": "User Not Found",
+            }
+
+    except Exception as e:
+        print("ERROR", e)
+        return False
 
 
 def setDataInRedis(key, value, type):
@@ -141,69 +170,128 @@ def getDataInRedis(key, type):
         return False
 
 
-# def get_user_access(db, user_id):
-#     role = db.query(RoleMaster).filter_by(user_id=user_id).first()
-#     access = db.query(RolePermission).filter_by(role_id=role.id).first()
+def get_list_groups(db, user_id):
+    role = db.query(UserRole).filter_by(user_id=user_id).first()
+    access = db.query(RolePermission).filter_by(role_id=role.role_id).all()
 
-#     user_access = []
-#     for u in access:
-#         temp = (
-#             {
-#                 "module_id": u.module_id,
-#                 "access": [
-#                     {
-#                         "view": u.view,
-#                         "add": u.add,
-#                         "edit": u.edit,
-#                         "print": u.printt,
-#                         "export": u.export,
-#                     }
-#                 ],
-#             },
-#         )
+    groups = []
+    for u in access:
+        if u.view:
+            groupName = u.module.moduleGroup.module_name
+            if len(groups) > 0:
+                isExist = False
+                for i, _ in enumerate(groups):
+                    if groups[i]["group"] == groupName:
+                        groups[i]["modules"].append(
+                            {"name": u.module.module_name, "path": u.module.path}
+                        )
+                        isExist = True
 
-#         user_access.append(temp)
+                if not isExist:
+                    arr = [{"name": u.module.module_name, "path": u.module.path}]
+                    groups.append(
+                        {
+                            "group": groupName,
+                            "modules": arr,
+                            "icon": u.module.moduleGroup.icon,
+                            "path": u.module.moduleGroup.path,
+                        }
+                    )
 
-#     return user_access
+            else:
+                arr = [{"name": u.module.module_name}]
+                groups.append(
+                    {
+                        "group": groupName,
+                        "modules": arr,
+                        "icon": u.module.moduleGroup.icon,
+                        "path": u.module.moduleGroup.path,
+                    }
+                )
 
-
-# def encode_user_access(user_access):
-#     exp = int(os.environ.get("JWT_EXP"))
-#     payload = {
-#         "exp": datetime.utcnow() + timedelta(minutes=exp),
-#         "iat": datetime.utcnow(),
-#         "user_access": user_access,
-#     }
-
-#     return jwt.encode(payload, "SECRET", algorithm="HS256")
-
-
-# def encode_token(db, user_id):
-#     exp = int(os.environ.get("JWT_EXP"))
-
-#     dataUser = user.getByID(db, user_id)
-#     roleName = db.query(UserRole).filter_by(user_id=user_id).first()
-
-#     payload = {
-#         "exp": datetime.utcnow() + timedelta(minutes=exp),
-#         "iat": datetime.utcnow(),
-#         "user_id": user_id,
-#         "email": dataUser.email,
-#         "fullName": dataUser.full_name,
-#         "role_name": roleName.roleMaster.role_name,
-#         "role_id": dataUser.roleMaster.id,
-#     }
-
-#     return jwt.encode(payload, "SECRET", algorithm="HS256")
+    return groups
 
 
-def decode_token(token):
+def get_user_access(db, user_id):
+    role = db.query(UserRole).filter_by(user_id=user_id).first()
+    access = db.query(RolePermission).filter_by(role_id=role.role_id).all()
+
+    user_access = []
+
+    for u in access:
+        temp = (
+            {
+                "module_id": u.module_id,
+                "access": [
+                    {
+                        "view": u.view,
+                        "add": u.add,
+                        "edit": u.edit,
+                        "print": u.printt,
+                        "export": u.export,
+                    }
+                ],
+            },
+        )
+
+        user_access.append(temp)
+
+    return user_access
+
+
+def encode_groups(groups):
+    exp = int(os.environ.get("JWT_EXP"))
+    payload = {
+        "exp": datetime.utcnow() + timedelta(minutes=exp),
+        "iat": datetime.utcnow(),
+        "groups": groups,
+    }
+
+    return jwt.encode(payload, "SECRET", algorithm="HS256")
+
+
+def encode_user_access(user_access):
+    exp = int(os.environ.get("JWT_EXP"))
+    payload = {
+        "exp": datetime.utcnow() + timedelta(minutes=exp),
+        "iat": datetime.utcnow(),
+        "user_access": user_access,
+    }
+
+    return jwt.encode(payload, "SECRET", algorithm="HS256")
+
+
+def encode_token(db, user_id):
+    exp = int(os.environ.get("JWT_EXP"))
+
+    dataUser = db.query(User).filter_by(id=user_id).first()
+    roleName = db.query(UserRole).filter_by(user_id=user_id).first()
+
+    payload = {
+        "exp": datetime.utcnow() + timedelta(minutes=exp),
+        "iat": datetime.utcnow(),
+        "user_id": user_id,
+        "email": dataUser.email,
+        "fullName": dataUser.full_name,
+        "role": roleName.roleMaster.role_name,
+        "role_id": roleName.roleMaster.id,
+        "username": dataUser.username,
+    }
+
+    return jwt.encode(payload, "SECRET", algorithm="HS256")
+
+
+def decode_token(token, all=False):
     try:
         payload = jwt.decode(token, "SECRET", algorithms=["HS256"])
+        if all:
+            return payload
+
         return {
             "user_id": payload["user_id"],
             "email": payload["email"],
             "username": payload["username"],
+            "role": payload["role"],
         }
 
     except jwt.ExpiredSignatureError:
@@ -216,6 +304,17 @@ def decode_user_access(user_access):
     try:
         payload = jwt.decode(user_access, "SECRET", algorithms=["HS256"])
         return {"user_access": payload["user_access"]}
+
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Signature has expired")
+    except jwt.InvalidTokenError as e:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+
+def decode_group(group):
+    try:
+        payload = jwt.decode(group, "SECRET", algorithms=["HS256"])
+        return {"group": payload["groups"]}
 
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Signature has expired")

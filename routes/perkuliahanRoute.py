@@ -19,9 +19,11 @@ from db.models import *
 from openpyxl import load_workbook
 from fastapi.responses import FileResponse
 from datetime import datetime
+from controller.utils import DocStatus
 
 
 PERKULIAHAN = "/perkuliahan"
+MODULE_NAME = "Perkuliahan"
 
 
 def errArray(idx):
@@ -32,12 +34,13 @@ def errArray(idx):
 
 
 @app.get(PERKULIAHAN + "s", response_model=PerkuliahanResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_all_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
     request: Request = None,
     page: int = 0,
+    module_access=MODULE_NAME,
 ):
     filtered_data = help_filter(request)
     if filtered_data:
@@ -60,11 +63,13 @@ async def get_all_perkuliahan(
 
 
 @app.get(PERKULIAHAN + "/{id}", response_model=PerkuliahanResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
     id: int = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     data = perkuliahan.getByID(db, id, token)
     return {
@@ -75,11 +80,13 @@ async def get_perkuliahan(
 
 
 @app.post(PERKULIAHAN, response_model=PerkuliahanResponseSchema)
-# @check_access_module
+@check_access_module
 async def submit_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: PerkuliahanCreateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
 
@@ -99,11 +106,13 @@ async def submit_perkuliahan(
 
 
 @app.put(PERKULIAHAN, response_model=PerkuliahanResponseSchema)
-# @check_access_module
+@check_access_module
 async def update_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: dict = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
     res = perkuliahan.update(db, username, data)
@@ -121,7 +130,6 @@ async def update_perkuliahan(
 
 
 @app.delete(PERKULIAHAN)
-# @check_access_module
 async def delete_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -201,7 +209,10 @@ async def upload(
 
                 ta = db.query(TahunAjaran).filter_by(tahun_ajaran=thn_ajaran).first()
                 if not ta:
-                    ta = TahunAjaran(**{"tahun_ajaran": thn_ajaran, "is_active": True})
+                    head, _, _ = thn_ajaran.partition("/")
+                    ta = TahunAjaran(
+                        **{"name": head, "tahun_ajaran": thn_ajaran, "is_active": True}
+                    )
                     db.add(ta)
                     db.commit()
                     db.refresh(ta)
@@ -243,6 +254,7 @@ async def upload(
 
                 data["dosen_id"] = existDosen1.id
                 data["pj_dosen_id"] = existDosen1.id
+                data["doc_status_id"] = int(DocStatus.MENUNGGU_UPLOAD_DPNA.value)
 
                 if nip_dosen2:
                     existDosen2 = db.query(User).filter_by(nip=nip_dosen2).first()
@@ -294,7 +306,9 @@ async def upload_dpna(
     data: dict = None,
     request: Request = None,
 ):
+    id = data["id"]
     header = data["data"]
+
     try:
         c1 = header[0][1]
         if len(c1.split("-")) != 2:
@@ -309,9 +323,18 @@ async def upload_dpna(
         if not checkMatkul:
             raise ValueError("Mata Kuliah tidak tersedia!")
 
-        ta = db.query(TahunAjaran).filter_by(tahun_ajaran=tahun_ajaran).first()
+        ta = db.query(TahunAjaran).filter_by(name=tahun_ajaran).first()
         if not ta:
             raise ValueError("Tahun Ajaran tidak tersedia!")
+
+        pkActive = db.query(Perkuliahan).filter_by(id=id).first()
+        if (
+            (pkActive.mata_kuliah_id != checkMatkul.id)
+            or (pkActive.tahun_ajaran_id != ta.id)
+            or (pkActive.semester != semester)
+            or (pkActive.kelas != kelas)
+        ):
+            raise ValueError("Data Perkuliahan tidak selaras!")
 
         checkPk = (
             db.query(Perkuliahan)
@@ -321,6 +344,9 @@ async def upload_dpna(
             .filter_by(kelas=kelas)
             .first()
         )
+
+        setattr(checkPk, "doc_status_id", int(DocStatus.MENUNGGU_UPLOAD_CPMK.value))
+        db.commit()
 
         if not checkPk:
             raise ValueError("Perkuliahan tidak tersedia!")
@@ -467,7 +493,9 @@ async def upload_cpmk(
     request: Request = None,
     data: dict = None,
 ):
+    id = data["id"]
     data = data["data"]
+
     try:
         SH_CPMK = data[0]
         SH_TUGAS = data[1]
@@ -486,6 +514,7 @@ async def upload_cpmk(
         kelas = str(SH_CPMK[3][2]).replace(":", "").strip()
         sks = str(SH_CPMK[8][2]).replace(":", "").strip()
 
+        # Check If Related
         checkMatkul = db.query(MataKuliah).filter_by(kode_mk=kode_mk).first()
         if not checkMatkul:
             raise ValueError("Mata Kuliah tidak tersedia!")
@@ -493,6 +522,15 @@ async def upload_cpmk(
         ta = db.query(TahunAjaran).filter_by(tahun_ajaran=tahun_ajaran).first()
         if not ta:
             raise ValueError("Tahun Ajaran tidak tersedia!")
+
+        pkActive = db.query(Perkuliahan).filter_by(id=id).first()
+        if (
+            (pkActive.mata_kuliah_id != checkMatkul.id)
+            or (pkActive.tahun_ajaran_id != ta.id)
+            or (pkActive.semester != semester)
+            or (pkActive.kelas != kelas)
+        ):
+            raise ValueError("Data Perkuliahan tidak selaras!")
 
         checkPk = (
             db.query(Perkuliahan)

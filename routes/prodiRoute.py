@@ -14,10 +14,8 @@ from db.schemas.prodiSchema import (
     ProdiDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
-
 PRODI = "/prodi"
+MODULE_NAME = "Program Studi"
 
 
 def errArray(idx):
@@ -28,12 +26,13 @@ def errArray(idx):
 
 
 @app.get(PRODI + "s", response_model=ProdiResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_all_prodi(
     db: Session = Depends(db),
     token: str = Header(default=None),
     request: Request = None,
     page: int = 0,
+    module_access=MODULE_NAME,
 ):
     filtered_data = help_filter(request)
     if filtered_data:
@@ -56,11 +55,13 @@ async def get_all_prodi(
 
 
 @app.get(PRODI + "/{id}", response_model=ProdiResponseSchema)
-# @check_access_module
+@check_access_module
 async def get_prodi(
     db: Session = Depends(db),
     token: str = Header(default=None),
     id: int = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     data = prodi.getByID(db, id, token)
     return {
@@ -71,11 +72,13 @@ async def get_prodi(
 
 
 @app.post(PRODI, response_model=ProdiResponseSchema)
-# @check_access_module
+@check_access_module
 async def submit_prodi(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: ProdiCreateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
 
@@ -95,11 +98,13 @@ async def submit_prodi(
 
 
 @app.put(PRODI, response_model=ProdiResponseSchema)
-# @check_access_module
+@check_access_module
 async def update_prodi(
     db: Session = Depends(db),
     token: str = Header(default=None),
     data: ProdiUpdateSchema = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
 ):
     username = getUsername(token)
     res = prodi.update(db, username, data)
@@ -117,7 +122,6 @@ async def update_prodi(
 
 
 @app.delete(PRODI)
-# @check_access_module
 async def delete_prodi(
     db: Session = Depends(db),
     token: str = Header(default=None),

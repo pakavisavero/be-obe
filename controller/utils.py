@@ -1,17 +1,20 @@
-from datetime import datetime, timedelta
-from sqlalchemy import cast, String, Date, desc, or_
-
-from HandlerCustom import HandlerCustom
-from functools import wraps
-import jwt
 from fastapi.responses import JSONResponse
 from fastapi import status
-import redis
-import json
+
+from datetime import datetime, timedelta
+from sqlalchemy import cast, String, Date, desc, or_
+from HandlerCustom import HandlerCustom
+from functools import wraps
+from db.middleware import r, r2, decode_user_access, decode_token
+import jwt
+from enum import Enum
+from db.models import *
 
 
-r = redis.Redis(host="localhost", port=6379, db=5)
-r2 = redis.Redis(host="localhost", port=6379, db=6)
+class DocStatus(Enum):
+    MENUNGGU_UPLOAD_DPNA = 1
+    MENUNGGU_UPLOAD_CPMK = 2
+    SELESAI = 3
 
 
 def is_foreign_key(column):
@@ -36,42 +39,12 @@ def decodeToken(token):
     return jwt.decode(token, "SECRET", algorithms=["HS256"])
 
 
-def check_access_module(func):
-    @wraps(func)
-    async def wrapper(*args, **kwargs):
-        token = kwargs.get("token")
-        if not token:
-            return JSONResponse(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                content={
-                    "message": "Missing token",
-                },
-            )
-        user = decodeToken(token)
-        role_id = user.get("role_id")
-        try:
-            r_check = r.exists(token)
-            r2_check = r2.exists(role_id)
-            if not r2_check or not r_check:
-                return JSONResponse(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    content={
-                        "message": "Access denied",
-                    },
-                )
-
-            return await func(*args, **kwargs)
-
-        except Exception as e:
-            return JSONResponse(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                content={"message": str(e)},
-            )
-
-    return wrapper
+def identifyRole(token):
+    token = decode_token(token)
+    return token
 
 
-def helper_static_filter(db, Schema, filtered, offset, xtra={}):
+def helper_static_filter(db, Schema, filtered, offset, xtra={}, xtraOr={}):
     page_size = 10
     is_paging = True
     dict_string = {}
@@ -81,6 +54,9 @@ def helper_static_filter(db, Schema, filtered, offset, xtra={}):
     list_dates = []
     key_dates = ""
     base_query = db.query(Schema)
+
+    if xtraOr != {}:
+        base_query = base_query.filter(xtraOr)
 
     for key in filtered:
         if key == "page_size":
@@ -216,11 +192,7 @@ def helper_create(Schema, db, data):
 
 def helper_update(Schema, db, data, cb):
     try:
-        (
-            db.query(Schema)
-            .filter_by(id=data.id)
-            .update(dict(data))
-        )
+        (db.query(Schema).filter_by(id=data.id).update(dict(data)))
 
         db.commit()
         return cb(db, data.id)
@@ -229,105 +201,6 @@ def helper_update(Schema, db, data, cb):
         err = e.args[0].split("\n")
         data = {"message": err[errArray(len(err))]}
         print(e)
-        raise HandlerCustom(data=data)
-
-
-# Create Parent Contract
-def helper_create_parent_contract(Schema, db, data, SchemaChild, child):
-    try:
-        ns = Schema(**data)
-        db.add(ns)
-        db.commit()
-
-        if child:
-            for a in child:
-                if "id" in a:
-                    del a["id"]
-                ns.attachment.append(SchemaChild(**a))
-
-        db.commit()
-
-        return ns
-
-    except Exception as e:
-        print(e)
-        err = e.args[0].split("\n")
-        data = {"message": err[errArray(len(err))]}
-        raise HandlerCustom(data=data)
-
-
-# Create Parent SLA
-
-
-def helper_create_parent_sla(Schema, db, data, SchemaChild, child):
-    try:
-        print(data)
-        ns = Schema(**data)
-        db.add(ns)
-        db.commit()
-
-        if child:
-            for a in child:
-                if "id" in a:
-                    del a["id"]
-                ns.slaDetail.append(SchemaChild(**a))
-
-        db.commit()
-
-        return ns
-
-    except Exception as e:
-        print(e)
-        err = e.args[0].split("\n")
-        data = {"message": err[errArray(len(err))]}
-        raise HandlerCustom(data=data)
-
-
-# Create Parent Stock Warranty
-def helper_create_parent_stock_warranty(Schema, db, data, SchemaChild, child):
-    try:
-        ns = Schema(**data)
-        db.add(ns)
-        db.commit()
-
-        if child:
-            for a in child:
-                if "id" in a:
-                    del a["id"]
-                ns.warranty_serial.append(SchemaChild(**a))
-
-        db.commit()
-
-        return ns
-
-    except Exception as e:
-        print(e)
-        err = e.args[0].split("\n")
-        data = {"message": err[errArray(len(err))]}
-        raise HandlerCustom(data=data)
-
-
-# Create Parent Contract
-def helper_create_parent_contract_pm(Schema, db, data, SchemaChild, child):
-    try:
-        ns = Schema(**data)
-        db.add(ns)
-        db.commit()
-
-        if child:
-            for a in child:
-                if "id" in a:
-                    del a["id"]
-                ns.period.append(SchemaChild(**a))
-
-        db.commit()
-
-        return ns
-
-    except Exception as e:
-        print(e)
-        err = e.args[0].split("\n")
-        data = {"message": err[errArray(len(err))]}
         raise HandlerCustom(data=data)
 
 
@@ -342,117 +215,6 @@ def helper_update_parent(Schema, db, data, values):
 
     except Exception as e:
         print(e)
-        err = e.args[0].split("\n")
-        data = {"message": err[errArray(len(err))]}
-        raise HandlerCustom(data=data)
-
-
-def helper_update_sla(
-    Schema,
-    db,
-    data,
-    values,
-    parent,
-):
-    try:
-        if "copyId" in data:
-            check = db.query(Schema).filter_by(id=data["copyId"]).first()
-            del data["copyId"]
-            if check:
-                for key, value in data.items():
-                    if key in values:
-                        setattr(check, key, value)
-            else:
-                parent.slaDetail.append(Schema(**data))
-        else:
-            parent.slaDetail.append(Schema(**data))
-
-        db.commit()
-
-    except Exception as e:
-        err = e.args[0].split("\n")
-        data = {"message": err[errArray(len(err))]}
-        raise HandlerCustom(data=data)
-
-
-def helper_update_stock_warranty(
-    Schema,
-    db,
-    data,
-    values,
-    parent,
-):
-    try:
-        if "copyId" in data:
-            check = db.query(Schema).filter_by(id=data["copyId"]).first()
-            del data["copyId"]
-            if check:
-                for key, value in data.items():
-                    if key in values:
-                        setattr(check, key, value)
-            else:
-                parent.warranty_serial.append(Schema(**data))
-        else:
-            parent.warranty_serial.append(Schema(**data))
-
-        db.commit()
-
-    except Exception as e:
-        err = e.args[0].split("\n")
-        data = {"message": err[errArray(len(err))]}
-        raise HandlerCustom(data=data)
-
-
-def helper_update_pm_plan(
-    Schema,
-    db,
-    data,
-    values,
-    parent,
-):
-    try:
-        if "copyId" in data:
-            check = db.query(Schema).filter_by(id=data["copyId"]).first()
-            del data["copyId"]
-            if check:
-                for key, value in data.items():
-                    if key in values:
-                        setattr(check, key, value)
-            else:
-                parent.period.append(Schema(**data))
-        else:
-            parent.period.append(Schema(**data))
-
-        db.commit()
-
-    except Exception as e:
-        err = e.args[0].split("\n")
-        data = {"message": err[errArray(len(err))]}
-        raise HandlerCustom(data=data)
-
-
-def helper_update_contract(
-    Schema,
-    db,
-    data,
-    values,
-    parent,
-):
-    try:
-        if "copyId" in data:
-            check = db.query(Schema).filter_by(id=data["copyId"]).first()
-            del data["copyId"]
-            if check:
-                for key, value in data.items():
-                    if key in values:
-                        setattr(check, key, value)
-            else:
-                parent.attachment.append(Schema(**data))
-        else:
-            parent.attachment.append(Schema(**data))
-        db.commit()
-
-    except Exception as e:
         err = e.args[0].split("\n")
         data = {"message": err[errArray(len(err))]}
         raise HandlerCustom(data=data)
@@ -520,3 +282,51 @@ def helper_update_multi_child(Schema, db, data, values, parent, nameChild):
         err = e.args[0].split("\n")
         data = {"message": err[errArray(len(err))]}
         raise HandlerCustom(data=data)
+
+
+def check_access_module(func):
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        token = decode_token(kwargs.get("token"), True)
+        request = kwargs.get("request")
+        db = kwargs.get("db")
+        module = kwargs.get("module_access")
+        action = ""
+
+        user = db.query(User).filter_by(id=token.get("user_id")).first()
+        if user:
+            module_id = db.query(Module).filter_by(module_name=module).first()
+            if module_id:
+                if request.method == "POST":
+                    action = "add"
+
+                elif request.method == "PUT":
+                    action = "edit"
+
+                elif request.method == "GET":
+                    action = "view"
+
+                granted = (
+                    db.query(RolePermission)
+                    .filter_by(module_id=module_id.id)
+                    .filter_by(role_id=token.get("role_id"))
+                    .first()
+                )
+
+                if not getattr(granted, action):
+                    raise HandlerCustom(
+                        data={
+                            "message": "Your don't have access to {0} this module".format(
+                                action
+                            )
+                        }
+                    )
+            else:
+                raise HandlerCustom(data={"message": "Module not found"})
+
+        else:
+            raise HandlerCustom(data={"message": "User not found"})
+
+        return await func(*args, **kwargs)
+
+    return wrapper

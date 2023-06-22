@@ -8,7 +8,6 @@ from db.schemas.perkuliahanSchema import (
 from .utils import helper_static_filter, identifyRole
 from datetime import datetime
 from db.models import *
-from db.middleware import decode_token
 import pytz
 from sqlalchemy import or_
 from sqlalchemy.orm import load_only
@@ -41,22 +40,46 @@ def helperRetrievePerkuliahan(db, data):
         setattr(dt, "mahasiswa", mahasiswa.copy())
         mahasiswa.clear()
 
+        cpmk = (
+            db.query(CPMK)
+            .filter_by(perkuliahan_id=dt.id)
+            .options(load_only("id"))
+            .all()
+        )
+
+        idsCpmk = [x.id for x in cpmk]
+        idsCpl = (
+            db.query(MappingCpmkCpl)
+            .filter(MappingCpmkCpl.id.in_(idsCpmk))
+            .options(load_only("cpl_id"))
+            .distinct(MappingCpmkCpl.cpl_id)
+            .all()
+        )
+
         listOfCPl = []
-        cpls = db.query(CPL).all()
-        for cpl in cpls:
-            cpmk = (
-                db.query(CPMK)
-                .filter_by(perkuliahan_id=dt.id)
-                .options(load_only("id"))
-                .all()
-            )
+        for cpl in idsCpl:
+            qCPl = db.query(CPL).filter_by(id=cpl.cpl_id).first()
+            temp = {"name": qCPl.name, "statement": qCPl.statement, "cpmk": []}
 
-            print(cpmk)
+            for cpmk in idsCpmk:
+                mapping = (
+                    db.query(MappingCpmkCpl)
+                    .filter_by(cpl_id=cpl.cpl_id)
+                    .filter_by(cpmk_id=cpmk)
+                    .first()
+                )
 
-            # if cpmk:
-            #     listOfCPl.append(
-            #         {"name": cpl.name, "statement": cpl.statement, "cpmk": cpmk}
-            #     )
+                if mapping:
+                    qCpmk = mapping.cpmk
+                    temp["cpmk"].append(
+                        {
+                            "name": qCpmk.name,
+                            "statement": qCpmk.statement,
+                        }
+                    )
+
+            listOfCPl.append(temp.copy())
+            temp.clear()
 
         setattr(dt, "cpl", listOfCPl)
 
@@ -166,9 +189,6 @@ def insert_cpl(db: Session, pk: int, SH_CPMK):
     endCPL = 32
     rowLen = 28
     for row in range(startCPL, endCPL + 1):
-        print("ROW : " + str(row))
-        print(len(SH_CPMK[row]))
-
         dis = rowLen - len(SH_CPMK[row])
         if dis > 0:
             for _ in range(0, dis):

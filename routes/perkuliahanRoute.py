@@ -544,6 +544,9 @@ async def upload_cpmk(
         if not checkPk:
             raise ValueError("Perkuliahan tidak tersedia!")
 
+        setattr(checkPk, "doc_status_id", int(DocStatus.SELESAI.value))
+        db.commit()
+
         perkuliahan.insert_cpl(db, checkPk.id, SH_CPMK)
         perkuliahan.insert_cpmk(db, checkPk.id, SH_CPMK)
         perkuliahan.insert_nilai(db, checkPk.id, SH_TUGAS, NilaiTugas, "tugas")

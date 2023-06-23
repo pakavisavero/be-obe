@@ -1,37 +1,104 @@
+import decimal
 from db.models import Perkuliahan
 from db.database import Session
 from db.schemas.perkuliahanSchema import (
     PerkuliahanCreateSchema,
-    PerkuliahanUpdateSchema,
 )
 
 from .utils import helper_static_filter, identifyRole
 from datetime import datetime
 from db.models import *
+from controller.utils import decode_token
 import pytz
 from sqlalchemy import or_
-from sqlalchemy.orm import load_only
+from sqlalchemy import inspect
 
 tz = pytz.timezone("Asia/Jakarta")
+
+
+def get_nilai_huruf(nilai):
+    if nilai >= 80:
+        return ["A", 4, "Lulus"]
+    elif nilai >= 70:
+        return ["B", 3, "Lulus"]
+    elif nilai >= 60:
+        return ["C", 2, "Lulus"]
+    elif nilai >= 51:
+        return ["D", 1, "Tidak Lulus"]
+    else:
+        return ["E", 0, "Tidak Lulus"]
 
 
 def helperRetrievePerkuliahan(db, data):
     mahasiswa = []
     for dt in data:
         mapping = db.query(MappingMahasiswa).filter_by(perkuliahan_id=dt.id).all()
+        # Presentase
+        pres = db.query(PresentasePK).filter_by(perkuliahan_id=dt.id).first()
+        if pres:
+            presDict = {
+                c.key: getattr(pres, c.key) for c in inspect(pres).mapper.column_attrs
+            }
+            setattr(dt, "presentase", presDict)
+
         for map in mapping:
             filter = {"mapping_mhs_id": map.id}
             mhs = db.query(Mahasiswa).filter_by(id=map.mahasiswa_id).first()
-            tugas = db.query(NilaiTugas).filter_by(**filter).first()
-            uts = db.query(NilaiUTS).filter_by(**filter).first()
-            uas = db.query(NilaiUAS).filter_by(**filter).first()
-            praktek = db.query(NilaiPraktek).filter_by(**filter).first()
+            tugas = db.query(NilaiTugas).filter_by(**filter).all()
+            uts = db.query(NilaiUTS).filter_by(**filter).all()
+            uas = db.query(NilaiUAS).filter_by(**filter).all()
+            praktek = db.query(NilaiPraktek).filter_by(**filter).all()
+            nilaiPokok = db.query(NilaiPokok).filter_by(**filter).first()
+
+            for t in tugas:
+                setattr(t, "cpmk", t.cpmk)
+            for u in uts:
+                setattr(u, "cpmk", u.cpmk)
+            for p in praktek:
+                setattr(p, "cpmk", p.cpmk)
+            for u in uas:
+                setattr(u, "cpmk", u.cpmk)
+
+            # Kalkulasi Nilai Akhir
+            if presDict:
+                try:
+                    n_tugas = (
+                        (decimal.Decimal(presDict["nilai_tugas"].replace("%", "")))
+                        * nilaiPokok.nilai_tugas
+                        / 100
+                    )
+                    n_uts = (
+                        (decimal.Decimal(presDict["nilai_uts"].replace("%", "")))
+                        * nilaiPokok.nilai_uts
+                        / 100
+                    )
+                    n_uas = (
+                        (decimal.Decimal(presDict["nilai_uas"].replace("%", "")))
+                        * nilaiPokok.nilai_uas
+                        / 100
+                    )
+                    n_praktek = (
+                        (decimal.Decimal(presDict["nilai_praktek"].replace("%", "")))
+                        * nilaiPokok.nilai_praktek
+                        / 100
+                    )
+
+                    nilai_akhir = n_tugas + n_uts + n_uas + n_praktek
+                    nilai_akhir_alp = get_nilai_huruf(nilai_akhir)
+
+                    setattr(nilaiPokok, "nilai_akhir", nilai_akhir)
+                    setattr(nilaiPokok, "nilai_akhir_huruf", nilai_akhir_alp[0])
+                    setattr(nilaiPokok, "nilai_akhir_bobot", nilai_akhir_alp[1])
+                    setattr(nilaiPokok, "keterangan", nilai_akhir_alp[2])
+                except:
+                    pass
 
             raport = {
-                "tugas": tugas,
-                "uts": uts,
-                "uas": uas,
-                "praktek": praktek,
+                "nilai_pokok": nilaiPokok if nilaiPokok else {},
+                "tugas": tugas if tugas else [],
+                "uts": uts if uts else [],
+                "uas": uas if uas else [],
+                "praktek": praktek if praktek else [],
             }
 
             setattr(mhs, "raport", raport)
@@ -40,48 +107,27 @@ def helperRetrievePerkuliahan(db, data):
         setattr(dt, "mahasiswa", mahasiswa.copy())
         mahasiswa.clear()
 
-        cpmk = (
-            db.query(CPMK)
-            .filter_by(perkuliahan_id=dt.id)
-            .options(load_only("id"))
-            .all()
-        )
+        # CPL & CPMK
+        listOfCPMK = []
+        cpmk = db.query(CPMK).filter_by(perkuliahan_id=dt.id).all()
+        for cp in cpmk:
+            mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
+            temp = {"id": cp.id, "name": cp.name, "statement": cp.statement, "cpl": []}
 
-        idsCpmk = [x.id for x in cpmk]
-        idsCpl = (
-            db.query(MappingCpmkCpl)
-            .filter(MappingCpmkCpl.id.in_(idsCpmk))
-            .options(load_only("cpl_id"))
-            .distinct(MappingCpmkCpl.cpl_id)
-            .all()
-        )
-
-        listOfCPl = []
-        for cpl in idsCpl:
-            qCPl = db.query(CPL).filter_by(id=cpl.cpl_id).first()
-            temp = {"name": qCPl.name, "statement": qCPl.statement, "cpmk": []}
-
-            for cpmk in idsCpmk:
-                mapping = (
-                    db.query(MappingCpmkCpl)
-                    .filter_by(cpl_id=cpl.cpl_id)
-                    .filter_by(cpmk_id=cpmk)
-                    .first()
+            for map in mapping:
+                cpl = map.cpl
+                temp["cpl"].append(
+                    {
+                        "name": cpl.name,
+                        "statement": cpl.statement,
+                        "value": str(int(map.value) * 100) + " %",
+                    }
                 )
 
-                if mapping:
-                    qCpmk = mapping.cpmk
-                    temp["cpmk"].append(
-                        {
-                            "name": qCpmk.name,
-                            "statement": qCpmk.statement,
-                        }
-                    )
-
-            listOfCPl.append(temp.copy())
+            listOfCPMK.append(temp.copy())
             temp.clear()
 
-        setattr(dt, "cpl", listOfCPl)
+        setattr(dt, "cpmk", listOfCPMK)
 
 
 def errArray(idx):
@@ -184,7 +230,9 @@ def delete(db: Session, id: int):
     return db.query(Perkuliahan).filter_by(id=id).delete()
 
 
-def insert_cpl(db: Session, pk: int, SH_CPMK):
+def insert_cpl(db: Session, token: str, pk: int, SH_CPMK):
+    user = decode_token(token)["fullName"]
+
     startCPL = 18
     endCPL = 32
     rowLen = 28
@@ -211,6 +259,8 @@ def insert_cpl(db: Session, pk: int, SH_CPMK):
                     "name": name,
                     "statement": statement,
                     "is_active": True,
+                    "created_by": user,
+                    "modified_by": user,
                 }
             )
             db.add(cpl)
@@ -219,7 +269,9 @@ def insert_cpl(db: Session, pk: int, SH_CPMK):
     print("success insert CPL ...")
 
 
-def insert_cpmk(db: Session, pk: int, SH_CPMK):
+def insert_cpmk(db: Session, token: str, pk: int, SH_CPMK):
+    user = decode_token(token)["fullName"]
+
     startCPMK = 18
     endCPMK = 32
     rowLen = 12
@@ -245,6 +297,8 @@ def insert_cpmk(db: Session, pk: int, SH_CPMK):
                     "name": name,
                     "statement": statement,
                     "is_active": True,
+                    "created_by": user,
+                    "modified_by": user,
                 }
             )
             db.add(cpmk)
@@ -255,6 +309,8 @@ def insert_cpmk(db: Session, pk: int, SH_CPMK):
         base = {
             "cpmk_id": checkCPMK.id,
             "is_active": True,
+            "created_by": user,
+            "modified_by": user,
         }
 
         cpl1 = SH_CPMK[row][3]
@@ -296,7 +352,9 @@ def insert_cpmk(db: Session, pk: int, SH_CPMK):
     print("success insert CPMK ...")
 
 
-def insert_nilai(db: Session, pk: int, SHEET, Schema, param):
+def insert_nilai(db: Session, token: str, pk: int, SHEET, Schema, param):
+    user = decode_token(token)["fullName"]
+
     rowLen = 17
     listBobot = []
     for a in range(4, rowLen):
@@ -311,7 +369,6 @@ def insert_nilai(db: Session, pk: int, SHEET, Schema, param):
                     row.append(None)
 
             nim = str(row[1]).strip()
-            nilai_total = row[3]
 
             checkMhs = db.query(Mahasiswa).filter_by(nim=nim).first()
             if not checkMhs:
@@ -340,15 +397,15 @@ def insert_nilai(db: Session, pk: int, SHEET, Schema, param):
                     )
 
                     if cpmk:
-                        print("sampe sini ../")
                         data = Schema(
                             **{
                                 "mapping_mhs_id": checkMap.id,
                                 "cpmk_id": cpmk.id,
-                                "nilai_" + param: nilai_total,
                                 "nilai_cpmk": pos,
                                 "bobot_cpmk": listBobot[x - 4],
                                 "is_active": True,
+                                "created_by": user,
+                                "modified_by": user,
                             }
                         )
                         db.add(data)
@@ -356,6 +413,26 @@ def insert_nilai(db: Session, pk: int, SHEET, Schema, param):
 
                     else:
                         print("Gagal sampe sini ../")
+
+            if param == "tugas":
+                nilaiPokok = NilaiPokok(
+                    **{
+                        "mapping_mhs_id": checkMap.id,
+                        "nilai_tugas": row[3],
+                        "created_by": user,
+                        "modified_by": user,
+                    }
+                )
+                db.add(nilaiPokok)
+                db.commit()
+
+            else:
+                nilaiPokok = (
+                    db.query(NilaiPokok).filter_by(mapping_mhs_id=checkMap.id).first()
+                )
+                setattr(nilaiPokok, "nilai_" + param, row[3])
+                db.commit()
+
         idx += 1
 
     print("success insert nilai {} ...".format(param))

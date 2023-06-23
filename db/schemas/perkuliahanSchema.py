@@ -43,7 +43,8 @@ class PerkuliahanSchema(BasePerkuliahanSchema):
     tahunAjaran: Optional[TahunAjaranSchema] = None
     mahasiswa: List[MahasiswaSchema] = []
     docstatus: Optional[DocStatusPKSchema] = None
-    cpl = []
+    cpmk = []
+    presentase = {}
 
     class Config:
         orm_mode = True

@@ -17,6 +17,18 @@ class DocStatus(Enum):
     SELESAI = 3
 
 
+def remove_char(text: str):
+    text = text.split(" ")
+    length = len(text)
+    text = text[length - 1]
+
+    char = ["(", ")"]
+    for c in char:
+        text = text.replace(c, "")
+
+    return text.strip()
+
+
 def is_foreign_key(column):
     return True if column.foreign_keys else False
 

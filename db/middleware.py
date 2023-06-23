@@ -291,6 +291,7 @@ def decode_token(token, all=False):
             "user_id": payload["user_id"],
             "email": payload["email"],
             "username": payload["username"],
+            "fullName": payload["fullName"],
             "role": payload["role"],
         }
 

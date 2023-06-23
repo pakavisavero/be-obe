@@ -250,7 +250,7 @@ class TahunAjaran(Base):
 
 
 class DocStatusPK(Base):
-    __tablename__ = "status_doc_perkuliahans"
+    __tablename__ = "doc_status_pk"
 
     id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
 
@@ -457,6 +457,25 @@ class CPMK(Base):
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
 
 
+class NilaiPokok(Base):
+    __tablename__ = "nilai_pokoks"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    mapping_mhs_id = Column(BigInteger, ForeignKey(MappingMahasiswa.id))
+
+    nilai_tugas = Column(DECIMAL)
+    nilai_uts = Column(DECIMAL)
+    nilai_uas = Column(DECIMAL)
+    nilai_praktek = Column(DECIMAL)
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+
+
 class NilaiTugas(Base):
     __tablename__ = "nilai_tugas"
 
@@ -464,7 +483,6 @@ class NilaiTugas(Base):
     mapping_mhs_id = Column(BigInteger, ForeignKey(MappingMahasiswa.id))
     cpmk_id = Column(BigInteger, ForeignKey(CPMK.id))
 
-    nilai_tugas = Column(DECIMAL)
     nilai_cpmk = Column(DECIMAL)
     bobot_cpmk = Column(DECIMAL)
     is_active = Column(Boolean, default=True)
@@ -485,7 +503,6 @@ class NilaiUAS(Base):
     mapping_mhs_id = Column(BigInteger, ForeignKey(MappingMahasiswa.id))
     cpmk_id = Column(BigInteger, ForeignKey(CPMK.id))
 
-    nilai_uas = Column(DECIMAL)
     nilai_cpmk = Column(DECIMAL)
     bobot_cpmk = Column(DECIMAL)
     is_active = Column(Boolean, default=False)
@@ -506,7 +523,6 @@ class NilaiUTS(Base):
     mapping_mhs_id = Column(BigInteger, ForeignKey(MappingMahasiswa.id))
     cpmk_id = Column(BigInteger, ForeignKey(CPMK.id))
 
-    nilai_uts = Column(DECIMAL)
     nilai_cpmk = Column(DECIMAL)
     bobot_cpmk = Column(DECIMAL)
     is_active = Column(Boolean, default=False)
@@ -527,7 +543,6 @@ class NilaiPraktek(Base):
     mapping_mhs_id = Column(BigInteger, ForeignKey(MappingMahasiswa.id))
     cpmk_id = Column(BigInteger, ForeignKey(CPMK.id))
 
-    nilai_praktek = Column(DECIMAL)
     nilai_cpmk = Column(DECIMAL)
     bobot_cpmk = Column(DECIMAL)
     is_active = Column(Boolean, default=False)

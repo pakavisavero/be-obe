@@ -15,7 +15,6 @@ class BaseNilaiUtsSchema(BaseModel):
     mapping_mhs_id: Optional[int] = None
     cpmk_id: Optional[int] = None
 
-    nilai_uts: Optional[Decimal] = None
     nilai_cpmk: Optional[Decimal] = None
     bobot_cpmk: Optional[Decimal] = None
     is_active: Optional[bool] = None

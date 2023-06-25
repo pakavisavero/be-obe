@@ -39,6 +39,7 @@ class ValidatePermission(BaseHTTPMiddleware):
             "/openapi.json",
             "/favicon.ico",
             "/get-template",
+            "/get-form-siap",
         ]
 
         if path in pathExclude:

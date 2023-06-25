@@ -5,24 +5,34 @@ from db.schemas.perkuliahanSchema import (
     PerkuliahanCreateSchema,
 )
 
-from .utils import helper_static_filter, identifyRole
-from datetime import datetime
 from db.models import *
 from controller.utils import decode_token
-import pytz
+
+from datetime import datetime
+from .utils import helper_static_filter, identifyRole
 from sqlalchemy import or_
 from sqlalchemy import inspect
+from openpyxl import load_workbook
+
+import pytz
 
 tz = pytz.timezone("Asia/Jakarta")
 
 
-def get_nilai_huruf(nilai):
+def get_nilai_huruf(nilai, cpmk=[]):
+    init = False
+    ketCPMK = "Lulus"
+    for cp in cpmk:
+        if not init and float(cp.value) < 60:
+            ketCPMK = "Remidi CPMK"
+            init = True
+
     if nilai >= 80:
-        return ["A", 4, "Lulus"]
+        return ["A", 4, ketCPMK]
     elif nilai >= 70:
-        return ["B", 3, "Lulus"]
+        return ["B", 3, ketCPMK]
     elif nilai >= 60:
-        return ["C", 2, "Lulus"]
+        return ["C", 2, ketCPMK]
     elif nilai >= 51:
         return ["D", 1, "Tidak Lulus"]
     else:
@@ -31,122 +41,146 @@ def get_nilai_huruf(nilai):
 
 def helperRetrievePerkuliahan(db, data):
     mahasiswa = []
-    for dt in data:
-        mapping = db.query(MappingMahasiswa).filter_by(perkuliahan_id=dt.id).all()
-        # Presentase
-        pres = db.query(PresentasePK).filter_by(perkuliahan_id=dt.id).first()
-        if pres:
-            presDict = {
-                c.key: getattr(pres, c.key) for c in inspect(pres).mapper.column_attrs
-            }
-            setattr(dt, "presentase", presDict)
-
-        for map in mapping:
-            filter = {"mapping_mhs_id": map.id}
-            mhs = db.query(Mahasiswa).filter_by(id=map.mahasiswa_id).first()
-            tugas = db.query(NilaiTugas).filter_by(**filter).all()
-            uts = db.query(NilaiUTS).filter_by(**filter).all()
-            uas = db.query(NilaiUAS).filter_by(**filter).all()
-            praktek = db.query(NilaiPraktek).filter_by(**filter).all()
-            nilaiPokok = db.query(NilaiPokok).filter_by(**filter).first()
-
-            for t in tugas:
-                setattr(t, "cpmk", t.cpmk)
-            for u in uts:
-                setattr(u, "cpmk", u.cpmk)
-            for p in praktek:
-                setattr(p, "cpmk", p.cpmk)
-            for u in uas:
-                setattr(u, "cpmk", u.cpmk)
-
-            # Kalkulasi Nilai Akhir
-            if presDict:
-                try:
-                    n_tugas = (
-                        (decimal.Decimal(presDict["nilai_tugas"].replace("%", "")))
-                        * nilaiPokok.nilai_tugas
-                        / 100
-                    )
-                    n_uts = (
-                        (decimal.Decimal(presDict["nilai_uts"].replace("%", "")))
-                        * nilaiPokok.nilai_uts
-                        / 100
-                    )
-                    n_uas = (
-                        (decimal.Decimal(presDict["nilai_uas"].replace("%", "")))
-                        * nilaiPokok.nilai_uas
-                        / 100
-                    )
-                    n_praktek = (
-                        (decimal.Decimal(presDict["nilai_praktek"].replace("%", "")))
-                        * nilaiPokok.nilai_praktek
-                        / 100
-                    )
-
-                    nilai_akhir = n_tugas + n_uts + n_uas + n_praktek
-                    nilai_akhir_alp = get_nilai_huruf(nilai_akhir)
-
-                    setattr(nilaiPokok, "nilai_akhir", nilai_akhir)
-                    setattr(nilaiPokok, "nilai_akhir_huruf", nilai_akhir_alp[0])
-                    setattr(nilaiPokok, "nilai_akhir_bobot", nilai_akhir_alp[1])
-                    setattr(nilaiPokok, "keterangan", nilai_akhir_alp[2])
-                except:
-                    pass
-
-            raport = {
-                "nilai_pokok": nilaiPokok if nilaiPokok else {},
-                "tugas": tugas if tugas else [],
-                "uts": uts if uts else [],
-                "uas": uas if uas else [],
-                "praktek": praktek if praktek else [],
-            }
-
-            setattr(mhs, "raport", raport)
-            mahasiswa.append(mhs)
-
-        setattr(dt, "mahasiswa", mahasiswa.copy())
-        mahasiswa.clear()
-
-        # CPL & CPMK
-        listOfCPMK = []
-        cpmk = db.query(CPMK).filter_by(perkuliahan_id=dt.id).all()
-        for cp in cpmk:
-            mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
-            temp = {"id": cp.id, "name": cp.name, "statement": cp.statement, "cpl": []}
+    try:
+        for dt in data:
+            mapping = db.query(MappingMahasiswa).filter_by(perkuliahan_id=dt.id).all()
+            # Presentase
+            pres = db.query(PresentasePK).filter_by(perkuliahan_id=dt.id).first()
+            if pres:
+                presDict = {
+                    c.key: getattr(pres, c.key)
+                    for c in inspect(pres).mapper.column_attrs
+                }
+                setattr(dt, "presentase", presDict)
 
             for map in mapping:
-                cpl = map.cpl
-                temp["cpl"].append(
-                    {
-                        "name": cpl.name,
-                        "statement": cpl.statement,
-                        "value": str(int(map.value) * 100) + " %",
-                    }
-                )
+                filter = {"mapping_mhs_id": map.id}
+                mhs = db.query(Mahasiswa).filter_by(id=map.mahasiswa_id).first()
+                tugas = db.query(NilaiTugas).filter_by(**filter).all()
+                uts = db.query(NilaiUTS).filter_by(**filter).all()
+                uas = db.query(NilaiUAS).filter_by(**filter).all()
+                praktek = db.query(NilaiPraktek).filter_by(**filter).all()
+                nilaiPokok = db.query(NilaiPokok).filter_by(**filter).first()
 
-            listOfCPMK.append(temp.copy())
-            temp.clear()
+                cpmkMahasiswa = db.query(CpmkMahasiswa).filter_by(**filter).all()
+                cplMahasiswa = db.query(CplMahasiswa).filter_by(**filter).all()
 
-        setattr(dt, "cpmk", listOfCPMK)
+                for t in tugas:
+                    setattr(t, "cpmk", t.cpmk)
+                for u in uts:
+                    setattr(u, "cpmk", u.cpmk)
+                for p in praktek:
+                    setattr(p, "cpmk", p.cpmk)
+                for u in uas:
+                    setattr(u, "cpmk", u.cpmk)
+                for cpmk in cpmkMahasiswa:
+                    setattr(cpmk, "cpmk", cpmk.cpmk)
+                for cpl in cplMahasiswa:
+                    setattr(cpl, "cpl", cpl.cpl)
 
-        # Evaluasi
-        listEvaluasi = []
-        for cp in listOfCPMK:
-            evaluasi = db.query(Evaluasi).filter_by(cpmk_id=cp["id"]).first()
-            if evaluasi:
-                setattr(evaluasi, "cpmk", evaluasi.cpmk)
-                listEvaluasi.append(evaluasi)
+                # Kalkulasi Nilai Akhir
+                if presDict:
+                    try:
+                        n_tugas = (
+                            (decimal.Decimal(presDict["nilai_tugas"].replace("%", "")))
+                            * nilaiPokok.nilai_tugas
+                            / 100
+                        )
+                        n_uts = (
+                            (decimal.Decimal(presDict["nilai_uts"].replace("%", "")))
+                            * nilaiPokok.nilai_uts
+                            / 100
+                        )
+                        n_uas = (
+                            (decimal.Decimal(presDict["nilai_uas"].replace("%", "")))
+                            * nilaiPokok.nilai_uas
+                            / 100
+                        )
+                        n_praktek = (
+                            (
+                                decimal.Decimal(
+                                    presDict["nilai_praktek"].replace("%", "")
+                                )
+                            )
+                            * nilaiPokok.nilai_praktek
+                            / 100
+                        )
 
-        if len(listEvaluasi) > 0:
-            setattr(dt, "evaluasi", listEvaluasi)
+                        nilai_akhir = n_tugas + n_uts + n_uas + n_praktek
+                        nilai_akhir_alp = get_nilai_huruf(nilai_akhir, cpmkMahasiswa)
 
-        evaluasiMain = db.query(EvaluasiMain).filter_by(perkuliahan_id=dt.id).first()
-        if evaluasiMain:
-            evalMainDict = {
-                c.key: getattr(evaluasiMain, c.key)
-                for c in inspect(evaluasiMain).mapper.column_attrs
-            }
-            setattr(dt, "evaluasiMain", evalMainDict)
+                        setattr(nilaiPokok, "nilai_akhir", nilai_akhir)
+                        setattr(nilaiPokok, "nilai_akhir_huruf", nilai_akhir_alp[0])
+                        setattr(nilaiPokok, "nilai_akhir_bobot", nilai_akhir_alp[1])
+                        setattr(nilaiPokok, "keterangan", nilai_akhir_alp[2])
+                    except:
+                        pass
+
+                raport = {
+                    "nilai_pokok": nilaiPokok if nilaiPokok else {},
+                    "tugas": tugas if tugas else [],
+                    "uts": uts if uts else [],
+                    "uas": uas if uas else [],
+                    "praktek": praktek if praktek else [],
+                    "cpmkMhs": cpmkMahasiswa if cpmkMahasiswa else [],
+                    "cplMhs": cplMahasiswa if cplMahasiswa else [],
+                }
+
+                setattr(mhs, "raport", raport)
+                mahasiswa.append(mhs)
+
+            setattr(dt, "mahasiswa", mahasiswa.copy())
+            mahasiswa.clear()
+
+            # CPL & CPMK
+            listOfCPMK = []
+            cpmk = db.query(CPMK).filter_by(perkuliahan_id=dt.id).all()
+            for cp in cpmk:
+                mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
+                temp = {
+                    "id": cp.id,
+                    "name": cp.name,
+                    "statement": cp.statement,
+                    "cpl": [],
+                }
+
+                for map in mapping:
+                    cpl = map.cpl
+                    temp["cpl"].append(
+                        {
+                            "name": cpl.name,
+                            "statement": cpl.statement,
+                            "value": str(int(map.value) * 100) + " %",
+                        }
+                    )
+
+                listOfCPMK.append(temp.copy())
+                temp.clear()
+
+            setattr(dt, "cpmk", listOfCPMK)
+
+            # Evaluasi
+            listEvaluasi = []
+            for cp in listOfCPMK:
+                evaluasi = db.query(Evaluasi).filter_by(cpmk_id=cp["id"]).first()
+                if evaluasi:
+                    setattr(evaluasi, "cpmk", evaluasi.cpmk)
+                    listEvaluasi.append(evaluasi)
+
+            if len(listEvaluasi) > 0:
+                setattr(dt, "evaluasi", listEvaluasi)
+
+            evaluasiMain = (
+                db.query(EvaluasiMain).filter_by(perkuliahan_id=dt.id).first()
+            )
+            if evaluasiMain:
+                evalMainDict = {
+                    c.key: getattr(evaluasiMain, c.key)
+                    for c in inspect(evaluasiMain).mapper.column_attrs
+                }
+                setattr(dt, "evaluasiMain", evalMainDict)
+    except:
+        pass
 
 
 def errArray(idx):
@@ -249,7 +283,7 @@ def delete(db: Session, id: int):
     return db.query(Perkuliahan).filter_by(id=id).delete()
 
 
-def insert_cpl(db: Session, token: str, pk: int, SH_CPMK):
+def insertCpl(db: Session, token: str, pk: int, SH_CPMK):
     user = decode_token(token)["fullName"]
 
     startCPL = 18
@@ -288,7 +322,7 @@ def insert_cpl(db: Session, token: str, pk: int, SH_CPMK):
     print("success insert CPL ...")
 
 
-def insert_cpmk(db: Session, token: str, pk: int, SH_CPMK):
+def insertCpmk(db: Session, token: str, pk: int, SH_CPMK):
     user = decode_token(token)["fullName"]
 
     startCPMK = 18
@@ -307,7 +341,9 @@ def insert_cpmk(db: Session, token: str, pk: int, SH_CPMK):
         if statement == None:
             break
 
-        checkCPMK = db.query(CPMK).filter_by(name=name).first()
+        checkCPMK = (
+            db.query(CPMK).filter_by(name=name).filter_by(perkuliahan_id=pk).first()
+        )
 
         if not checkCPMK:
             cpmk = CPMK(
@@ -371,7 +407,7 @@ def insert_cpmk(db: Session, token: str, pk: int, SH_CPMK):
     print("success insert CPMK ...")
 
 
-def insert_nilai(db: Session, token: str, pk: int, SHEET, Schema, param):
+def insertNilai(db: Session, token: str, pk: int, SHEET, Schema, param):
     user = decode_token(token)["fullName"]
 
     rowLen = 17
@@ -457,7 +493,7 @@ def insert_nilai(db: Session, token: str, pk: int, SHEET, Schema, param):
     print("success insert nilai {} ...".format(param))
 
 
-def insertCPLAndCPMKMhs(db: Session, token: str, pk: int, SH_CPL_MHS, SH_CPMK_MHS):
+def insertCPLMahasiswa(db: Session, token: str, pk: int, SH_CPL_MHS):
     user = decode_token(token)["fullName"]
     start = 7
     end = 250
@@ -469,14 +505,9 @@ def insertCPLAndCPMKMhs(db: Session, token: str, pk: int, SH_CPL_MHS, SH_CPMK_MH
             for _ in range(0, dis):
                 SH_CPL_MHS[row].append("")
 
-        dis2 = length - len(SH_CPMK_MHS[row])
-        if dis2 > 0:
-            for _ in range(0, dis2):
-                SH_CPMK_MHS[row].append("")
-
-        nim = (SH_CPL_MHS[row][1]).strip()
+        nim = SH_CPL_MHS[row][1]
         if nim != "":
-            mhsExist = db.query(Mahasiswa).filter_by(nim=nim).first()
+            mhsExist = db.query(Mahasiswa).filter_by(nim=nim.strip()).first()
             if mhsExist:
                 mapping = (
                     db.query(MappingMahasiswa)
@@ -487,48 +518,86 @@ def insertCPLAndCPMKMhs(db: Session, token: str, pk: int, SH_CPL_MHS, SH_CPMK_MH
                 if mapping:
                     for col in range(4, length):
                         if SH_CPL_MHS[row][col] != "":
-                            cpl = (
-                                db.query(CPL)
-                                .filter_by(name=(SH_CPL_MHS[5][col]).strip())
-                                .first()
-                            )
-                            cplMhs = CplMahasiswa(
-                                **{
-                                    "mapping_mhs_id": mapping.id,
-                                    "cpl_id": cpl.id,
-                                    "value": SH_CPL_MHS[row][col],
-                                    "created_by": user,
-                                    "modified_by": user,
-                                }
-                            )
-                            db.add(cplMhs)
-                            db.commit()
-
-                        if SH_CPMK_MHS[row][col - 3] != "":
-                            cpmk = (
-                                db.query(CPMK)
-                                .filter_by(name=(SH_CPMK_MHS[6][col - 3]).strip())
-                                .first()
-                            )
-                            cpmkMhs = CpmkMahasiswa(
-                                **{
-                                    "mapping_mhs_id": mapping.id,
-                                    "cpmk_id": cpmk.id,
-                                    "value": SH_CPMK_MHS[row][col - 3],
-                                    "created_by": user,
-                                    "modified_by": user,
-                                }
-                            )
-
-                            db.add(cpmkMhs)
-                            db.commit()
+                            cplName = SH_CPL_MHS[5][col]
+                            if cplName != "":
+                                cpl = (
+                                    db.query(CPL)
+                                    .filter_by(name=(cplName.strip()))
+                                    .first()
+                                )
+                                cplMhs = CplMahasiswa(
+                                    **{
+                                        "mapping_mhs_id": mapping.id,
+                                        "cpl_id": cpl.id,
+                                        "value": SH_CPL_MHS[row][col],
+                                        "created_by": user,
+                                        "modified_by": user,
+                                    }
+                                )
+                                db.add(cplMhs)
+                                db.commit()
             else:
                 print("Mahasiswa row {} tidak terdaftar!".format(row))
 
-    print("success insert CPL & CPMK Mahasiswa ...")
+    print("success insert CPL Mahasiswa ...")
 
 
-def insert_evaluasi(db: Session, token: str, pk: int, SH_EVALUASI):
+def insertCPMKMahasiswa(db: Session, token: str, pk: int, SH_CPMK_MHS):
+    user = decode_token(token)["fullName"]
+    start = 7
+    end = 250
+    length = 23
+
+    for row in range(start, end):
+        dis = length - len(SH_CPMK_MHS[row])
+        if dis > 0:
+            for _ in range(0, dis):
+                SH_CPMK_MHS[row].append("")
+
+        nim = SH_CPMK_MHS[row][0]
+        if nim != "" and nim != None:
+            mhsExist = db.query(Mahasiswa).filter_by(nim=nim.strip()).first()
+            if mhsExist:
+                mapping = (
+                    db.query(MappingMahasiswa)
+                    .filter_by(perkuliahan_id=pk)
+                    .filter_by(mahasiswa_id=mhsExist.id)
+                    .first()
+                )
+                if mapping:
+                    for col in range(12, length, 2):
+                        if SH_CPMK_MHS[row][col] != "":
+                            cpmkName = SH_CPMK_MHS[6][col]
+                            if cpmkName != "":
+                                cpmk = (
+                                    db.query(CPMK)
+                                    .filter_by(name=cpmkName.strip())
+                                    .first()
+                                )
+                                cpmkMhs = CpmkMahasiswa(
+                                    **{
+                                        "mapping_mhs_id": mapping.id,
+                                        "cpmk_id": cpmk.id,
+                                        "value": SH_CPMK_MHS[row][col],
+                                        "created_by": user,
+                                        "modified_by": user,
+                                    }
+                                )
+
+                                db.add(cpmkMhs)
+                                db.commit()
+
+                            else:
+                                print("stop ...")
+                                break
+
+            else:
+                print("Mahasiswa row {} tidak terdaftar!".format(row))
+
+    print("success insert CPMK Mahasiswa ...")
+
+
+def insertEvaluasi(db: Session, token: str, pk: int, SH_EVALUASI):
     user = decode_token(token)["fullName"]
 
     startEvaluasi = 7
@@ -578,6 +647,7 @@ def insert_evaluasi(db: Session, token: str, pk: int, SH_EVALUASI):
             evaluasi = Evaluasi(
                 **{
                     "cpmk_id": cpmk.id,
+                    "perkuliahan_id": pk,
                     "rerata": rerata,
                     "ambang": ambang,
                     "memenuhi": memenuhi,
@@ -591,3 +661,65 @@ def insert_evaluasi(db: Session, token: str, pk: int, SH_EVALUASI):
             db.commit()
 
     print("success insert Evaluasi ...")
+
+
+def getNilaiSiap(db: Session, id: int):
+    pk = db.query(Perkuliahan).filter_by(id=id).first()
+    matkul = db.query(MataKuliah).filter_by(id=pk.mata_kuliah_id).first()
+    presentase = db.query(PresentasePK).filter_by(perkuliahan_id=pk.id).first()
+    mapping = db.query(MappingMahasiswa).filter_by(perkuliahan_id=pk.id).all()
+
+    wb = load_workbook("files/siap/template_siap.xlsx")
+    sheet = wb["FORM NILAI SIAP"]
+
+    sheet["B1"] = matkul.kode_mk + " - " + matkul.mata_kuliah
+    sheet["B2"] = pk.tahunAjaran.tahun_ajaran
+    sheet["B3"] = pk.semester
+    sheet["B4"] = pk.kelas
+    sheet["B5"] = "S1 - Teknik Elektro"
+
+    perTugas = int(presentase.nilai_tugas.replace("%", "")) / 100
+    perPraktek = int(presentase.nilai_praktek.replace("%", "")) / 100
+    perUts = int(presentase.nilai_uts.replace("%", "")) / 100
+    perUas = int(presentase.nilai_uas.replace("%", "")) / 100
+
+    sheet["E6"] = perTugas
+    sheet["F6"] = perPraktek
+    sheet["G6"] = perUts
+    sheet["H6"] = perUas
+
+    row = 8
+    for map in mapping:
+        mhs = db.query(Mahasiswa).filter_by(id=map.mahasiswa_id).first()
+        nilai = db.query(NilaiPokok).filter_by(mapping_mhs_id=map.id).first()
+
+        sheet["A" + str(row)] = mhs.nim
+        sheet["B" + str(row)] = mhs.full_name.upper()
+        sheet["C" + str(row)] = mhs.semester
+        sheet["D" + str(row)] = map.status
+
+        sheet["E" + str(row)] = nilai.nilai_tugas
+        sheet["F" + str(row)] = nilai.nilai_praktek
+        sheet["G" + str(row)] = nilai.nilai_uts
+        sheet["H" + str(row)] = nilai.nilai_uas
+
+        na = (
+            (perTugas * float(nilai.nilai_tugas))
+            + (perPraktek * float(nilai.nilai_praktek))
+            + (perUts * float(nilai.nilai_uts))
+            + (perUas * float(nilai.nilai_uas))
+        )
+
+        sheet["I" + str(row)] = na
+        sheet["J" + str(row)] = get_nilai_huruf(na)[0]
+        sheet["K" + str(row)] = get_nilai_huruf(na)[1]
+
+        row += 1
+
+    now = datetime.now().strftime("%Y_%m_%d-%I_%M_%S")
+    path = "files/siap/SIAP_{}_{}_{}.xlsx".format(
+        (matkul.mata_kuliah).upper().replace(" ", "_"), pk.semester.lower(), now
+    )
+    wb.save(path)
+
+    return path

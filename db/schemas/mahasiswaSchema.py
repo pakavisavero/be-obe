@@ -17,6 +17,7 @@ class BaseMahasiswaSchema(BaseModel):
 
     full_name: Optional[str] = None
     nim: Optional[str] = None
+    semester: Optional[int] = None
     is_active: Optional[bool] = None
 
     created_at: Optional[datetime] = None

@@ -167,6 +167,8 @@ class Mahasiswa(Base):
 
     full_name = Column(String(length=255))
     nim = Column(String(length=100))
+    semester = Column(Integer)
+
     is_active = Column(Boolean, default=True)
 
     created_at = Column(DateTime, default=datetime.now())
@@ -350,6 +352,8 @@ class MappingMahasiswa(Base):
     id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
     perkuliahan_id = Column(BigInteger, ForeignKey(Perkuliahan.id))
     mahasiswa_id = Column(BigInteger, ForeignKey(Mahasiswa.id))
+    status = Column(String)
+    is_valid = Column(Boolean, default=True)
 
     is_active = Column(Boolean, default=True)
 
@@ -490,7 +494,7 @@ class CplMahasiswa(Base):
     modified_by = Column(String(length=120), nullable=True)
 
     mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
-    cpmk = relationship("CPL", foreign_keys=[cpl_id])
+    cpl = relationship("CPL", foreign_keys=[cpl_id])
 
 
 class NilaiPokok(Base):
@@ -687,6 +691,7 @@ class Evaluasi(Base):
     __tablename__ = "evaluasis"
 
     id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    perkuliahan_id = Column(BigInteger, ForeignKey(Perkuliahan.id))
     cpmk_id = Column(BigInteger, ForeignKey(CPMK.id))
 
     rerata = Column(String())
@@ -702,3 +707,4 @@ class Evaluasi(Base):
     modified_by = Column(String(length=120), nullable=True)
 
     cpmk = relationship("CPMK", foreign_keys=[cpmk_id])
+    perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])

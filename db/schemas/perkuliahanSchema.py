@@ -45,6 +45,8 @@ class PerkuliahanSchema(BasePerkuliahanSchema):
     docstatus: Optional[DocStatusPKSchema] = None
     cpmk = []
     presentase = {}
+    evaluasi = []
+    evaluasiMain = {}
 
     class Config:
         orm_mode = True

@@ -129,6 +129,25 @@ def helperRetrievePerkuliahan(db, data):
 
         setattr(dt, "cpmk", listOfCPMK)
 
+        # Evaluasi
+        listEvaluasi = []
+        for cp in listOfCPMK:
+            evaluasi = db.query(Evaluasi).filter_by(cpmk_id=cp["id"]).first()
+            if evaluasi:
+                setattr(evaluasi, "cpmk", evaluasi.cpmk)
+                listEvaluasi.append(evaluasi)
+
+        if len(listEvaluasi) > 0:
+            setattr(dt, "evaluasi", listEvaluasi)
+
+        evaluasiMain = db.query(EvaluasiMain).filter_by(perkuliahan_id=dt.id).first()
+        if evaluasiMain:
+            evalMainDict = {
+                c.key: getattr(evaluasiMain, c.key)
+                for c in inspect(evaluasiMain).mapper.column_attrs
+            }
+            setattr(dt, "evaluasiMain", evalMainDict)
+
 
 def errArray(idx):
     if idx < 2:
@@ -436,3 +455,139 @@ def insert_nilai(db: Session, token: str, pk: int, SHEET, Schema, param):
         idx += 1
 
     print("success insert nilai {} ...".format(param))
+
+
+def insertCPLAndCPMKMhs(db: Session, token: str, pk: int, SH_CPL_MHS, SH_CPMK_MHS):
+    user = decode_token(token)["fullName"]
+    start = 7
+    end = 250
+    length = 15
+
+    for row in range(start, end):
+        dis = length - len(SH_CPL_MHS[row])
+        if dis > 0:
+            for _ in range(0, dis):
+                SH_CPL_MHS[row].append("")
+
+        dis2 = length - len(SH_CPMK_MHS[row])
+        if dis2 > 0:
+            for _ in range(0, dis2):
+                SH_CPMK_MHS[row].append("")
+
+        nim = (SH_CPL_MHS[row][1]).strip()
+        if nim != "":
+            mhsExist = db.query(Mahasiswa).filter_by(nim=nim).first()
+            if mhsExist:
+                mapping = (
+                    db.query(MappingMahasiswa)
+                    .filter_by(perkuliahan_id=pk)
+                    .filter_by(mahasiswa_id=mhsExist.id)
+                    .first()
+                )
+                if mapping:
+                    for col in range(4, length):
+                        if SH_CPL_MHS[row][col] != "":
+                            cpl = (
+                                db.query(CPL)
+                                .filter_by(name=(SH_CPL_MHS[5][col]).strip())
+                                .first()
+                            )
+                            cplMhs = CplMahasiswa(
+                                **{
+                                    "mapping_mhs_id": mapping.id,
+                                    "cpl_id": cpl.id,
+                                    "value": SH_CPL_MHS[row][col],
+                                    "created_by": user,
+                                    "modified_by": user,
+                                }
+                            )
+                            db.add(cplMhs)
+                            db.commit()
+
+                        if SH_CPMK_MHS[row][col - 3] != "":
+                            cpmk = (
+                                db.query(CPMK)
+                                .filter_by(name=(SH_CPMK_MHS[6][col - 3]).strip())
+                                .first()
+                            )
+                            cpmkMhs = CpmkMahasiswa(
+                                **{
+                                    "mapping_mhs_id": mapping.id,
+                                    "cpmk_id": cpmk.id,
+                                    "value": SH_CPMK_MHS[row][col - 3],
+                                    "created_by": user,
+                                    "modified_by": user,
+                                }
+                            )
+
+                            db.add(cpmkMhs)
+                            db.commit()
+            else:
+                print("Mahasiswa row {} tidak terdaftar!".format(row))
+
+    print("success insert CPL & CPMK Mahasiswa ...")
+
+
+def insert_evaluasi(db: Session, token: str, pk: int, SH_EVALUASI):
+    user = decode_token(token)["fullName"]
+
+    startEvaluasi = 7
+    endEvaluasi = 20
+    rerataMain = SH_EVALUASI[5][2]
+    ambangMain = SH_EVALUASI[5][3]
+
+    evaluasiMain = EvaluasiMain(
+        **{
+            "perkuliahan_id": pk,
+            "rerata": rerataMain,
+            "ambang": ambangMain,
+        }
+    )
+    db.add(evaluasiMain)
+    db.commit()
+
+    for row in range(startEvaluasi, endEvaluasi):
+        dis = 7 - len(SH_EVALUASI[row])
+        if dis > 0:
+            for _ in range(0, dis):
+                SH_EVALUASI[row].append("")
+
+        cpmk = SH_EVALUASI[row][0]
+        if cpmk == "":
+            break
+
+        rerata = SH_EVALUASI[row][2]
+        ambang = SH_EVALUASI[row][3]
+        memenuhi = SH_EVALUASI[row][4]
+        analisis = SH_EVALUASI[row][5]
+        rencana = SH_EVALUASI[row][6]
+
+        cpmk = (
+            db.query(CPMK)
+            .filter_by(perkuliahan_id=pk)
+            .filter_by(name=cpmk.strip())
+            .first()
+        )
+
+        if memenuhi == "TIDAK":
+            memenuhi = False
+        else:
+            memenuhi = True
+
+        if cpmk:
+            evaluasi = Evaluasi(
+                **{
+                    "cpmk_id": cpmk.id,
+                    "rerata": rerata,
+                    "ambang": ambang,
+                    "memenuhi": memenuhi,
+                    "analsis": analisis,
+                    "rencana": rencana,
+                    "created_by": user,
+                    "modified_by": user,
+                }
+            )
+            db.add(evaluasi)
+            db.commit()
+
+    print("success insert Evaluasi ...")

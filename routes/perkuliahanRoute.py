@@ -479,22 +479,22 @@ def get_template(db, id: int):
         mhs = db.query(Mahasiswa).filter_by(id=map.mahasiswa_id).first()
         SH_TUGAS["A" + str(row)] = no
         SH_TUGAS["B" + str(row)] = mhs.nim
-        SH_TUGAS["C" + str(row)] = mhs.full_name
+        SH_TUGAS["C" + str(row)] = mhs.full_name.upper()
 
         SH_PRAKTEK["A" + str(row)] = no
         SH_PRAKTEK["B" + str(row)] = mhs.nim
-        SH_PRAKTEK["C" + str(row)] = mhs.full_name
+        SH_PRAKTEK["C" + str(row)] = mhs.full_name.upper()
 
         SH_UTS["A" + str(row)] = no
         SH_UTS["B" + str(row)] = mhs.nim
-        SH_UTS["C" + str(row)] = mhs.full_name
+        SH_UTS["C" + str(row)] = mhs.full_name.upper()
 
         SH_UAS["A" + str(row)] = no
         SH_UAS["B" + str(row)] = mhs.nim
-        SH_UAS["C" + str(row)] = mhs.full_name
+        SH_UAS["C" + str(row)] = mhs.full_name.upper()
 
         SH_SIAP["A" + str(row)] = mhs.nim
-        SH_SIAP["B" + str(row)] = mhs.full_name
+        SH_SIAP["B" + str(row)] = mhs.full_name.upper()
 
         no += 1
         row += 1
@@ -531,6 +531,10 @@ async def upload_cpmk(
         SH_PRAKTEK = data[2]
         SH_UTS = data[3]
         SH_UAS = data[4]
+        SH_SIAP = data[5]
+        SH_CPMK_MHS = data[6]
+        SH_CPL_MHS = data[7]
+        SH_EVALUASI = data[8]
 
         # CPMK
         c1 = SH_CPMK[0][2]
@@ -584,6 +588,8 @@ async def upload_cpmk(
         )
         perkuliahan.insert_nilai(db, token, checkPk.id, SH_UTS, NilaiUTS, "uts")
         perkuliahan.insert_nilai(db, token, checkPk.id, SH_UAS, NilaiUAS, "uas")
+        perkuliahan.insertCPLAndCPMKMhs(db, token, checkPk.id, SH_CPL_MHS, SH_CPMK_MHS)
+        perkuliahan.insert_evaluasi(db, token, checkPk.id, SH_EVALUASI)
 
         return {
             "code": status.HTTP_200_OK,

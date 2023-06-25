@@ -457,6 +457,42 @@ class CPMK(Base):
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
 
 
+class CpmkMahasiswa(Base):
+    __tablename__ = "cpmk_mahasiswas"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    mapping_mhs_id = Column(BigInteger, ForeignKey(MappingMahasiswa.id))
+    cpmk_id = Column(BigInteger, ForeignKey(CPMK.id))
+
+    value = Column(String(length=200))
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+    cpmk = relationship("CPMK", foreign_keys=[cpmk_id])
+
+
+class CplMahasiswa(Base):
+    __tablename__ = "cpl_mahasiswas"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    mapping_mhs_id = Column(BigInteger, ForeignKey(MappingMahasiswa.id))
+    cpl_id = Column(BigInteger, ForeignKey(CPL.id))
+
+    value = Column(String(length=200))
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+    cpmk = relationship("CPL", foreign_keys=[cpl_id])
+
+
 class NilaiPokok(Base):
     __tablename__ = "nilai_pokoks"
 
@@ -628,3 +664,41 @@ class CheckExportDPNA(Base):
     modified_by = Column(String(length=120), nullable=True)
 
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
+
+
+class EvaluasiMain(Base):
+    __tablename__ = "evaluasi_mains"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    perkuliahan_id = Column(BigInteger, ForeignKey(Perkuliahan.id))
+
+    rerata = Column(String())
+    ambang = Column(String())
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
+
+
+class Evaluasi(Base):
+    __tablename__ = "evaluasis"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    cpmk_id = Column(BigInteger, ForeignKey(CPMK.id))
+
+    rerata = Column(String())
+    ambang = Column(String())
+    memenuhi = Column(Boolean)
+
+    analsis = Column(Text())
+    rencana = Column(Text())
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    cpmk = relationship("CPMK", foreign_keys=[cpmk_id])

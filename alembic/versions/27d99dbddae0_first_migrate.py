@@ -1,8 +1,8 @@
 """First migrate
 
-Revision ID: 098a3794854c
+Revision ID: 27d99dbddae0
 Revises: 
-Create Date: 2023-06-22 19:26:48.535980
+Create Date: 2023-06-25 17:32:08.262203
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '098a3794854c'
+revision = '27d99dbddae0'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -380,6 +380,19 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_cpmks_id'), 'cpmks', ['id'], unique=False)
+    op.create_table('evaluasi_mains',
+    sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
+    sa.Column('perkuliahan_id', sa.BigInteger(), nullable=True),
+    sa.Column('rerata', sa.String(), nullable=True),
+    sa.Column('ambang', sa.String(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('created_by', sa.String(length=120), nullable=True),
+    sa.Column('modified_at', sa.DateTime(), nullable=True),
+    sa.Column('modified_by', sa.String(length=120), nullable=True),
+    sa.ForeignKeyConstraint(['perkuliahan_id'], ['perkuliahans.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_evaluasi_mains_id'), 'evaluasi_mains', ['id'], unique=False)
     op.create_table('mapping_mahasiswas',
     sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
     sa.Column('perkuliahan_id', sa.BigInteger(), nullable=True),
@@ -410,6 +423,50 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_persentase_pks_id'), 'persentase_pks', ['id'], unique=False)
+    op.create_table('cpl_mahasiswas',
+    sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
+    sa.Column('mapping_mhs_id', sa.BigInteger(), nullable=True),
+    sa.Column('cpl_id', sa.BigInteger(), nullable=True),
+    sa.Column('value', sa.String(length=200), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('created_by', sa.String(length=120), nullable=True),
+    sa.Column('modified_at', sa.DateTime(), nullable=True),
+    sa.Column('modified_by', sa.String(length=120), nullable=True),
+    sa.ForeignKeyConstraint(['cpl_id'], ['cpls.id'], ),
+    sa.ForeignKeyConstraint(['mapping_mhs_id'], ['mapping_mahasiswas.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_cpl_mahasiswas_id'), 'cpl_mahasiswas', ['id'], unique=False)
+    op.create_table('cpmk_mahasiswas',
+    sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
+    sa.Column('mapping_mhs_id', sa.BigInteger(), nullable=True),
+    sa.Column('cpmk_id', sa.BigInteger(), nullable=True),
+    sa.Column('value', sa.String(length=200), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('created_by', sa.String(length=120), nullable=True),
+    sa.Column('modified_at', sa.DateTime(), nullable=True),
+    sa.Column('modified_by', sa.String(length=120), nullable=True),
+    sa.ForeignKeyConstraint(['cpmk_id'], ['cpmks.id'], ),
+    sa.ForeignKeyConstraint(['mapping_mhs_id'], ['mapping_mahasiswas.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_cpmk_mahasiswas_id'), 'cpmk_mahasiswas', ['id'], unique=False)
+    op.create_table('evaluasis',
+    sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
+    sa.Column('cpmk_id', sa.BigInteger(), nullable=True),
+    sa.Column('rerata', sa.String(), nullable=True),
+    sa.Column('ambang', sa.String(), nullable=True),
+    sa.Column('memenuhi', sa.Boolean(), nullable=True),
+    sa.Column('analsis', sa.Text(), nullable=True),
+    sa.Column('rencana', sa.Text(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('created_by', sa.String(length=120), nullable=True),
+    sa.Column('modified_at', sa.DateTime(), nullable=True),
+    sa.Column('modified_by', sa.String(length=120), nullable=True),
+    sa.ForeignKeyConstraint(['cpmk_id'], ['cpmks.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_evaluasis_id'), 'evaluasis', ['id'], unique=False)
     op.create_table('mapping_cpmk_cpls',
     sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
     sa.Column('cpmk_id', sa.BigInteger(), nullable=True),
@@ -521,10 +578,18 @@ def downgrade():
     op.drop_table('nilai_pokoks')
     op.drop_index(op.f('ix_mapping_cpmk_cpls_id'), table_name='mapping_cpmk_cpls')
     op.drop_table('mapping_cpmk_cpls')
+    op.drop_index(op.f('ix_evaluasis_id'), table_name='evaluasis')
+    op.drop_table('evaluasis')
+    op.drop_index(op.f('ix_cpmk_mahasiswas_id'), table_name='cpmk_mahasiswas')
+    op.drop_table('cpmk_mahasiswas')
+    op.drop_index(op.f('ix_cpl_mahasiswas_id'), table_name='cpl_mahasiswas')
+    op.drop_table('cpl_mahasiswas')
     op.drop_index(op.f('ix_persentase_pks_id'), table_name='persentase_pks')
     op.drop_table('persentase_pks')
     op.drop_index(op.f('ix_mapping_mahasiswas_id'), table_name='mapping_mahasiswas')
     op.drop_table('mapping_mahasiswas')
+    op.drop_index(op.f('ix_evaluasi_mains_id'), table_name='evaluasi_mains')
+    op.drop_table('evaluasi_mains')
     op.drop_index(op.f('ix_cpmks_id'), table_name='cpmks')
     op.drop_table('cpmks')
     op.drop_index(op.f('ix_check_export_dpnas_id'), table_name='check_export_dpnas')

@@ -65,12 +65,7 @@ async def get_assessment_option(
     id = 1
     for ta in tahunAjaran:
         for sem in semester:
-            temp = {
-                "id": id,
-                "tahunAjaran": ta,
-                "semester": sem,
-                "perkuliahan": [],
-            }
+            temp = {"id": id, "tahunAjaran": ta, "semester": sem, "cpl": []}
 
             pk = (
                 db.query(Perkuliahan)
@@ -80,11 +75,16 @@ async def get_assessment_option(
                 .all()
             )
 
+            ids = []
             for p in pk:
-                setattr(p, "mataKuliah", p.mataKuliah)
-                setattr(p, "dosen1", p.dosen1)
-                setattr(p, "tahunAjaran", p.tahunAjaran)
-                temp["perkuliahan"].append(p)
+                cpmk = db.query(CPMK).filter_by(perkuliahan_id=p.id).all()
+                for cp in cpmk:
+                    mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
+                    for map in mapping:
+                        cpl = db.query(CPL).filter_by(id=map.cpl_id).first()
+                        if not cpl.id in ids:
+                            ids.append(cpl.id)
+                            temp["cpl"].append(cpl)
 
             data.append(temp)
             id += 1

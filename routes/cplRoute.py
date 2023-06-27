@@ -131,27 +131,57 @@ async def delete_cpl(
     }
 
 
-@app.get("/get-cpl-by-perkuliahan/{perkuliahan_id}")
+@app.post("/get-perkuliahan-by-cpl")
 # @check_access_module
 async def get_cpl_by_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    perkuliahan_id: int = None,
+    data: dict = None,
 ):
-    cpl = []
-    cpmk = db.query(CPMK).filter_by(perkuliahan_id=perkuliahan_id).all()
+    cpl_id = int(data["cpl_id"])
+    ta_id = int(data["tahun_ajaran_id"])
+    semester = data["semester"]
+
+    data = []
+    mapping = db.query(MappingCpmkCpl).filter_by(cpl_id=cpl_id).all()
 
     ids = []
-    for cp in cpmk:
-        mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
-        for map in mapping:
-            dt = db.query(CPLModel).filter_by(id=map.cpl_id).first()
-            if not dt.id in ids:
-                ids.append(dt.id)
-                cpl.append(dt)
+    for map in mapping:
+        cpmk = db.query(CPMK).filter_by(id=map.cpmk_id).first()
+        pk = db.query(Perkuliahan).filter_by(id=cpmk.perkuliahan_id).first()
+
+        if (
+            (pk.tahun_ajaran_id == ta_id)
+            and (pk.semester == semester)
+            and (pk.doc_status_id == 3)
+        ):
+            if not pk.id in ids:
+                jmlMhs = 0
+                total = 0.0
+                mappingMhs = (
+                    db.query(MappingMahasiswa).filter_by(perkuliahan_id=pk.id).all()
+                )
+                for mhs in mappingMhs:
+                    cplValue = (
+                        db.query(CplMahasiswa)
+                        .filter_by(cpl_id=cpl_id)
+                        .filter_by(mapping_mhs_id=mhs.id)
+                        .first()
+                    )
+                    if cplValue:
+                        val = cplValue.value
+                        jmlMhs += 1
+                        total += float(val)
+
+                ids.append(pk.id)
+                setattr(pk, "mataKuliah", pk.mataKuliah)
+                setattr(pk, "dosen1", pk.dosen1)
+                setattr(pk, "tahunAjaran", pk.tahunAjaran)
+                setattr(pk, "total", "{:.2f}".format(total / jmlMhs))
+                data.append(pk)
 
     return {
         "code": status.HTTP_200_OK,
         "message": "Success get cpl",
-        "data": cpl,
+        "data": data,
     }

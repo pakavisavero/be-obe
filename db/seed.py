@@ -15,7 +15,6 @@ json_files = [
     "matkul_konsentrasi.json",
     "module_group.json",
     "module.json",
-    # "child_module.json",
     "role_master.json",
     "user.json",
     "user_role.json",

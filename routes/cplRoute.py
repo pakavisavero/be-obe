@@ -5,6 +5,8 @@ from controller import cpl
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
+from db.models import *
+from db.models import CPL as CPLModel
 from db.session import db, getUsername
 from db.database import Session
 from db.schemas.cplSchema import (
@@ -126,4 +128,30 @@ async def delete_cpl(
     return {
         "code": status.HTTP_200_OK,
         "message": "Success delete cpl",
+    }
+
+
+@app.get("/get-cpl-by-perkuliahan/{perkuliahan_id}")
+# @check_access_module
+async def get_cpl_by_perkuliahan(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    perkuliahan_id: int = None,
+):
+    cpl = []
+    cpmk = db.query(CPMK).filter_by(perkuliahan_id=perkuliahan_id).all()
+
+    ids = []
+    for cp in cpmk:
+        mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
+        for map in mapping:
+            dt = db.query(CPLModel).filter_by(id=map.cpl_id).first()
+            if not dt.id in ids:
+                ids.append(dt.id)
+                cpl.append(dt)
+
+    return {
+        "code": status.HTTP_200_OK,
+        "message": "Success get cpl",
+        "data": cpl,
     }

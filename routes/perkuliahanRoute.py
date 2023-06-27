@@ -26,7 +26,7 @@ import os
 
 
 PERKULIAHAN = "/perkuliahan"
-MODULE_NAME = "Perkuliahan"
+MODULE_NAME = "KBM Aktif"
 
 
 def errArray(idx):
@@ -562,8 +562,8 @@ async def upload_cpmk(
             raise ValueError("Format cell C1 (Kode MK - Matkul) tidak valid!")
 
         kode_mk = str(c1.split("-")[0]).replace(":", "").strip()
-        tahun_ajaran = SH_CPMK[1][2]
-        semester = SH_CPMK[2][2]
+        tahun_ajaran = str(SH_CPMK[1][2]).replace(":", "").strip()
+        semester = str(SH_CPMK[2][2]).replace(":", "").strip()
         kelas = str(SH_CPMK[3][2]).replace(":", "").strip()
         sks = str(SH_CPMK[8][2]).replace(":", "").strip()
 
@@ -572,7 +572,7 @@ async def upload_cpmk(
         if not checkMatkul:
             raise ValueError("Mata Kuliah tidak tersedia!")
 
-        ta = db.query(TahunAjaran).filter_by(tahun_ajaran=tahun_ajaran).first()
+        ta = db.query(TahunAjaran).filter_by(name=tahun_ajaran).first()
         if not ta:
             raise ValueError("Tahun Ajaran tidak tersedia!")
 

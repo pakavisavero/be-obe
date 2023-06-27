@@ -5,7 +5,6 @@ from db.session import db
 app = FastAPI(dependencies=[Depends(db)])
 
 from routes import (
-    childModuleRoute,
     cplRoute,
     cpmkRoute,
     fakultasRoute,
@@ -37,4 +36,5 @@ from routes import (
     tahunAjaranRoute,
     loginRoute,
     optionLabelRoute,
+    assessmentRoute
 )

@@ -1,117 +1,101 @@
 {
-    "model": "models.Module",
-    "data": [
-        {
-            "module_group_id": 1,
-            "module_name": "Dashboard",
-            "path": "/dashboards/crm",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 2,
-            "module_name": "Mahasiswa",
-            "path": "/apps/master/mahasiswa/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 2,
-            "module_name": "Dosen",
-            "path": "/apps/master/dosen/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 2,
-            "module_name": "Program Studi",
-            "path": "/apps/master/prodi/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 2,
-            "module_name": "Mata Kuliah",
-            "path": "/apps/master/mata-kuliah/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 2,
-            "module_name": "Perkuliahan",
-            "path": "/apps/master/perkuliahan/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 2,
-            "module_name": "Tahun Ajaran",
-            "path": "/apps/master/tahun-ajaran/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 3,
-            "module_name": "Users",
-            "path": "/apps/setting/user/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 3,
-            "module_name": "Module",
-            "path": "/apps/setting/module/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 3,
-            "module_name": "Role Master",
-            "path": "/apps/setting/role-master/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 4,
-            "module_name": "CPMK",
-            "path": "/apps/transaction/cpmk/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 4,
-            "module_name": "CPL",
-            "path": "/apps/transaction/cpl/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 4,
-            "module_name": "Portofolio",
-            "path": "/apps/transaction/portofolio/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "module_group_id": 5,
-            "module_name": "KBM",
-            "path": "/apps/reporting/kbm/list",
-            "is_active": 1,
-            "created_by": "System",
-            "modified_by": "System"
-        }
-    ]
+  "model": "models.Module",
+  "data": [
+    {
+      "module_group_id": 1,
+      "module_name": "Dashboard",
+      "path": "/dashboards/crm",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 2,
+      "module_name": "Mahasiswa",
+      "path": "/apps/master/mahasiswa/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 2,
+      "module_name": "Dosen",
+      "path": "/apps/master/dosen/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 2,
+      "module_name": "Program Studi",
+      "path": "/apps/master/prodi/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 2,
+      "module_name": "Mata Kuliah",
+      "path": "/apps/master/mata-kuliah/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 2,
+      "module_name": "Tahun Ajaran",
+      "path": "/apps/master/tahun-ajaran/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 3,
+      "module_name": "Users",
+      "path": "/apps/setting/user/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 3,
+      "module_name": "Module",
+      "path": "/apps/setting/module/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 3,
+      "module_name": "Role Master",
+      "path": "/apps/setting/role-master/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 4,
+      "module_name": "KBM Aktif",
+      "path": "/apps/transaction/perkuliahan/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 4,
+      "module_name": "Assessment",
+      "path": "/apps/transaction/assessment/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 5,
+      "module_name": "KBM",
+      "path": "/apps/reporting/kbm/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    }
+  ]
 }

@@ -407,24 +407,6 @@ class RolePermission(Base):
     module = relationship("Module", foreign_keys=[module_id])
 
 
-class ChildModule(Base):
-    __tablename__ = "child_modules"
-
-    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
-    module_id = Column(BigInteger, ForeignKey(Module.id))
-
-    module_name = Column(String(length=200))
-    route = Column(String(length=150))
-    is_active = Column(Boolean, default=False)
-
-    created_at = Column(DateTime, default=datetime.now())
-    created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
-    modified_by = Column(String(length=120), nullable=True)
-
-    module = relationship("Module", foreign_keys=[module_id])
-
-
 class CPL(Base):
     __tablename__ = "cpls"
 
@@ -494,6 +476,42 @@ class CplMahasiswa(Base):
     modified_by = Column(String(length=120), nullable=True)
 
     mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+    cpl = relationship("CPL", foreign_keys=[cpl_id])
+
+
+class Assessment(Base):
+    __tablename__ = "assessments"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+
+    name = Column(String)
+    description = Column(Text())
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    children = relationship("AssessmentDetail")
+
+
+class AssessmentDetail(Base):
+    __tablename__ = "assessment_details"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+
+    parent_id = Column(BigInteger, ForeignKey(Assessment.id))
+    tahun_ajaran_id = Column(BigInteger, ForeignKey(TahunAjaran.id))
+    perkuliahan_id = Column(BigInteger, ForeignKey(Perkuliahan.id))
+    cpl_id = Column(BigInteger, ForeignKey(CPL.id))
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    tahunAjaran = relationship("TahunAjaran", foreign_keys=[tahun_ajaran_id])
+    perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
     cpl = relationship("CPL", foreign_keys=[cpl_id])
 
 

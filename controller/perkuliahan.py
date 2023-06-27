@@ -302,7 +302,7 @@ def insertCpl(db: Session, token: str, pk: int, SH_CPMK):
         statement = SH_CPMK[row][27]
 
         if statement == "":
-            break
+            continue
 
         checkCPL = db.query(CPL).filter_by(name=name).first()
         if not checkCPL:
@@ -335,11 +335,11 @@ def insertCpmk(db: Session, token: str, pk: int, SH_CPMK):
             for _ in range(0, dis):
                 SH_CPMK[row].append(None)
 
-        name = SH_CPMK[row][1].strip()
+        name = SH_CPMK[row][1]
         statement = SH_CPMK[row][2]
 
-        if statement == None:
-            break
+        if name == None or statement == None:
+            continue
 
         checkCPMK = (
             db.query(CPMK).filter_by(name=name).filter_by(perkuliahan_id=pk).first()
@@ -349,8 +349,8 @@ def insertCpmk(db: Session, token: str, pk: int, SH_CPMK):
             cpmk = CPMK(
                 **{
                     "perkuliahan_id": pk,
-                    "name": name,
-                    "statement": statement,
+                    "name": name.strip(),
+                    "statement": statement.strip(),
                     "is_active": True,
                     "created_by": user,
                     "modified_by": user,
@@ -428,7 +428,7 @@ def insertNilai(db: Session, token: str, pk: int, SHEET, Schema, param):
             checkMhs = db.query(Mahasiswa).filter_by(nim=nim).first()
             if not checkMhs:
                 print("Tidak ada Mahasiswa!")
-                break
+                continue
 
             checkMap = (
                 db.query(MappingMahasiswa)
@@ -439,7 +439,7 @@ def insertNilai(db: Session, token: str, pk: int, SHEET, Schema, param):
 
             if not checkMap:
                 print("Tidak ada Mapping!")
-                break
+                continue
 
             for x in range(4, rowLen):
                 pos = row[x]
@@ -505,7 +505,7 @@ def insertCPLMahasiswa(db: Session, token: str, pk: int, SH_CPL_MHS):
             for _ in range(0, dis):
                 SH_CPL_MHS[row].append("")
 
-        nim = SH_CPL_MHS[row][1]
+        nim = str(SH_CPL_MHS[row][1])
         if nim != "":
             mhsExist = db.query(Mahasiswa).filter_by(nim=nim.strip()).first()
             if mhsExist:
@@ -518,7 +518,7 @@ def insertCPLMahasiswa(db: Session, token: str, pk: int, SH_CPL_MHS):
                 if mapping:
                     for col in range(4, length):
                         if SH_CPL_MHS[row][col] != "":
-                            cplName = SH_CPL_MHS[5][col]
+                            cplName = str(SH_CPL_MHS[5][col])
                             if cplName != "":
                                 cpl = (
                                     db.query(CPL)
@@ -554,7 +554,7 @@ def insertCPMKMahasiswa(db: Session, token: str, pk: int, SH_CPMK_MHS):
             for _ in range(0, dis):
                 SH_CPMK_MHS[row].append("")
 
-        nim = SH_CPMK_MHS[row][0]
+        nim = str(SH_CPMK_MHS[row][0])
         if nim != "" and nim != None:
             mhsExist = db.query(Mahasiswa).filter_by(nim=nim.strip()).first()
             if mhsExist:
@@ -567,7 +567,7 @@ def insertCPMKMahasiswa(db: Session, token: str, pk: int, SH_CPMK_MHS):
                 if mapping:
                     for col in range(12, length, 2):
                         if SH_CPMK_MHS[row][col] != "":
-                            cpmkName = SH_CPMK_MHS[6][col]
+                            cpmkName = str(SH_CPMK_MHS[6][col])
                             if cpmkName != "":
                                 cpmk = (
                                     db.query(CPMK)
@@ -623,7 +623,7 @@ def insertEvaluasi(db: Session, token: str, pk: int, SH_EVALUASI):
 
         cpmk = SH_EVALUASI[row][0]
         if cpmk == "":
-            break
+            continue
 
         rerata = SH_EVALUASI[row][2]
         ambang = SH_EVALUASI[row][3]

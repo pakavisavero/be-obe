@@ -146,30 +146,6 @@
             "modified_by": "System"
         },
         {
-            "role_id": 1,
-            "module_id": 13,
-            "view": true,
-            "add": true,
-            "edit": true,
-            "printt": true,
-            "export": true,
-            "is_active": true,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
-            "role_id": 1,
-            "module_id": 14,
-            "view": true,
-            "add": true,
-            "edit": true,
-            "printt": true,
-            "export": true,
-            "is_active": true,
-            "created_by": "System",
-            "modified_by": "System"
-        },
-        {
             "role_id": 2,
             "module_id": 1,
             "view": true,

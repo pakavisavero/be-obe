@@ -1,19 +1,21 @@
 from fastapi import Request
 from fastapi import Depends, status, Header
 
-from controller import siklusProdi
+from controller import assessmentMatkul
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
 from db.session import db, getUsername
 from db.models import *
 from db.database import Session
-from db.schemas.siklusProdiSchema import (
-    SiklusProdiResponseSchema,
+from db.schemas.assessmentMatkulSchema import (
+    AssessmentMatkulResponseSchema,
 )
 
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
+from sqlalchemy import cast, String, Date, desc, or_
+
 
 ASSESSMENT_MATKUL = "/assessment-matkul"
 
@@ -25,7 +27,121 @@ def errArray(idx):
         return 1
 
 
-@app.get(ASSESSMENT_MATKUL + "s", response_model=SiklusProdiResponseSchema)
+def helperRetrieveAssessmentMatkul(db, data):
+    for dt in data:
+        listOfCPL = []
+
+        setattr(dt, 'mataKuliah', dt.mataKuliah)
+        setattr(dt, 'tahunAjaran', dt.tahunAjaran)
+        setattr(dt, 'prodi', dt.prodi)
+        setattr(dt, 'docstatus', dt.docstatus)
+
+        mapMhs = db.query(MappingMahasiswa).\
+            filter(MappingMahasiswa.perkuliahan_id == dt.id).\
+            all()
+        
+        cplVal = []
+        for map in mapMhs:
+            cplMhs = db.query(CplMahasiswa).\
+                filter(CplMahasiswa.mapping_mhs_id == map.id).\
+                all()
+            
+            for cpl in cplMhs:
+                cplVal.append(float(cpl.value))
+
+        sumCplVal = float(sum(cplVal))
+        sumCplDivision = len(cplVal)
+        if sumCplDivision == 0:
+            sumCplDivision = 1
+
+        rerataCpl = "{:.2f}".format(float(sumCplVal / sumCplDivision)) 
+        setattr(dt, 'rerataCpl', rerataCpl)
+
+        cpmk = db.query(CPMK).filter_by(perkuliahan_id=dt.id).all()
+        matkulInfo = []
+
+        for cp in cpmk:
+            sumSingleCpmk = []
+            for map in mapMhs:
+                cpmkVal = db.query(CpmkMahasiswa).\
+                    filter(CpmkMahasiswa.mapping_mhs_id == map.id).\
+                    filter(CpmkMahasiswa.cpmk_id == cp.id).\
+                    all()
+            
+                for cpmk in cpmkVal:
+                    sumSingleCpmk.append(float(cpmk.value))
+
+            sumCpmkVal = float(sum(sumSingleCpmk))
+            sumCpmkDivision = len(sumSingleCpmk)
+            if sumCpmkDivision == 0:
+                sumCpmkDivision = 1
+
+            dictCPMK = {
+                'id': cp.id,
+                'name': cp.name,
+                'statement': cp.statement,
+                'value': "{:.2f}".format(float(sumCpmkVal / sumCpmkDivision)),
+                'cpl': []
+            }
+
+            mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
+            ids = []
+            for map in mapping:
+                cpl = db.query(CPL).filter_by(id=map.cpl_id).first()
+                listOfCPL.append({'id': cpl.id, 'name': cpl.name})
+
+                cplVal = []
+                for mapM in mapMhs:
+                    cplSingleVal = db.query(CplMahasiswa).\
+                        filter(CplMahasiswa.mapping_mhs_id == mapM.id).\
+                        filter(CplMahasiswa.cpl_id == map.cpl_id).\
+                        all()
+                
+                    for single in cplSingleVal:
+                        cplVal.append(float(single.value))
+                
+                sumSingleCplVal = float(sum(cplVal))
+                sumSingleCplDivision = float(len(cplVal))
+                if sumSingleCplDivision == 0:
+                    sumSingleCplDivision = 1.0
+
+
+                rerataSingleCpl = "{:.2f}".format(sumSingleCplVal / sumSingleCplDivision) 
+
+                setattr(cpl, 'value', str(int(map.value) * 100) + '%')
+                setattr(cpl, 'rerataOneCpl', rerataSingleCpl)
+
+                if not cpl.id in ids:
+                    ids.append(cpl.id)
+                    dictCPMK['cpl'].append(cpl)
+
+            matkulInfo.append(dictCPMK)
+
+            #CPL in Header
+            headerCPL = []
+            for cpl in listOfCPL:
+                tempData = []
+                for map in mapMhs:
+                    cplMhs = db.query(CplMahasiswa).\
+                        filter(CplMahasiswa.mapping_mhs_id == map.id).\
+                        filter(CplMahasiswa.cpl_id == cpl['id']).\
+                        all()
+
+                    for cplMh in cplMhs:
+                        tempData.append(float(cplMh.value))
+
+                sumAllCPl = float(sum(tempData))
+                division = len(tempData)
+                if division == 0:
+                    division = 1
+
+                headerCPL.append({'name': cpl['name'], 'value': sumAllCPl/division})
+
+        setattr(dt, 'cpl', headerCPL)
+        setattr(dt, 'cpmk', matkulInfo)
+
+
+@app.get(ASSESSMENT_MATKUL + "s", response_model=AssessmentMatkulResponseSchema)
 # @check_access_module
 async def get_all_assessment_matkul(
     db: Session = Depends(db),
@@ -35,7 +151,7 @@ async def get_all_assessment_matkul(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = siklusProdi.getAllPagingFiltered(db, page, filtered_data, token)
+        query = assessmentMatkul.getAllPagingFiltered(db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,
@@ -44,7 +160,7 @@ async def get_all_assessment_matkul(
             "total": query["total"],
         }
     else:
-        query = siklusProdi.getAllPaging(db, page, token)
+        query = assessmentMatkul.getAllPaging(db, page, token)
         return {
             "code": status.HTTP_200_OK,
             "message": "Success retrieve all assessment matkul",
@@ -57,38 +173,20 @@ async def get_all_assessment_matkul(
 async def get_siklus_assessment_matkul(
     db: Session = Depends(db),
     token: str = Header(default=None),
+    request: Request = None,
 ):
     data = (
         db.query(Perkuliahan)
         .filter_by(doc_status_id=3)
-        .all()
     )
-    
-    for dt in data:
-        setattr(dt, 'mataKuliah', dt.mataKuliah)
-        setattr(dt, 'tahunAjaran', dt.tahunAjaran)
-        setattr(dt, 'prodi', dt.prodi)
-        setattr(dt, 'docstatus', dt.docstatus)
 
-        cpmk = db.query(CPMK).filter_by(perkuliahan_id=dt.id).all()
-        matkulInfo = []
-
-        for cp in cpmk:
-            dictCPMK = {
-                'name': cp.name,
-                'statement': cp.statement,
-                'cpl': []
-            }
-
-            mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
-            for map in mapping:
-                cpl = db.query(CPL).filter_by(id=map.cpl_id).first()
-                dictCPMK['cpl'].append(cpl)
-
-            matkulInfo.append(dictCPMK)
-
-        setattr(dt, 'cpmk', matkulInfo)
-
+    data_params = dict(request.query_params)
+    for key in data_params:
+        data = data.filter(cast(getattr(Perkuliahan, key), String).\
+                        ilike("%{}%".format(data_params[key])))
+       
+    data = data.all()
+    helperRetrieveAssessmentMatkul(db, data)
 
     return {
         "code": status.HTTP_200_OK,
@@ -97,14 +195,24 @@ async def get_siklus_assessment_matkul(
     }
 
 
-@app.get(ASSESSMENT_MATKUL + "/{id}", response_model=SiklusProdiResponseSchema)
+@app.get(ASSESSMENT_MATKUL + "/{id}", response_model=AssessmentMatkulResponseSchema)
 # @check_access_module
 async def get_assessment_matkul(
     db: Session = Depends(db),
     token: str = Header(default=None),
     id: int = None,
 ):
-    data = siklusProdi.getByID(db, id, token)
+    data = assessmentMatkul.getByID(db, id, token)
+
+    pks = []
+    legends = []
+    for pk in data.children:
+        row = db.query(Perkuliahan).filter_by(id=pk.perkuliahan_id).first()
+        pks.append(row)
+        legends.append(pk.perkuliahan.tahunAjaran.tahun_ajaran.replace('/', '-') + ' / ' + str(pk.perkuliahan.semester))
+
+    helperRetrieveAssessmentMatkul(db, pks)
+    setattr(data, 'legends', legends)
     return {
         "code": status.HTTP_200_OK,
         "message": "Success get assessment matkul",
@@ -112,7 +220,7 @@ async def get_assessment_matkul(
     }
 
 
-@app.post(ASSESSMENT_MATKUL, response_model=SiklusProdiResponseSchema)
+@app.post(ASSESSMENT_MATKUL, response_model=AssessmentMatkulResponseSchema)
 # @check_access_module
 async def submit_assessment_matkul(
     db: Session = Depends(db),
@@ -120,8 +228,7 @@ async def submit_assessment_matkul(
     data: dict = None,
 ):
     username = getUsername(token)
-
-    res = siklusProdi.create(db, username, data)
+    res = assessmentMatkul.create(db, username, data)
     if res:
         return {
             "code": status.HTTP_200_OK,
@@ -136,7 +243,7 @@ async def submit_assessment_matkul(
         }
 
 
-@app.put(ASSESSMENT_MATKUL, response_model=SiklusProdiResponseSchema)
+@app.put(ASSESSMENT_MATKUL, response_model=AssessmentMatkulResponseSchema)
 # @check_access_module
 async def update_assessment_matkul(
     db: Session = Depends(db),
@@ -144,7 +251,7 @@ async def update_assessment_matkul(
     data: dict = None,
 ):
     username = getUsername(token)
-    res = siklusProdi.update(db, username, data)
+    res = assessmentMatkul.update(db, username, data)
     if res:
         return {
             "code": status.HTTP_200_OK,

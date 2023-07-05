@@ -44,6 +44,7 @@ class PerkuliahanSchema(BasePerkuliahanSchema):
     mahasiswa: List[MahasiswaSchema] = []
     docstatus: Optional[DocStatusPKSchema] = None
     cpmk = []
+    cpl = []
     presentase = {}
     evaluasi = []
     evaluasiMain = {}

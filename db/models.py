@@ -537,18 +537,14 @@ class AssessmentMatkulDetail(Base):
     id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
 
     parent_id = Column(BigInteger, ForeignKey(AssessmentMatkul.id))
-    tahun_ajaran_id = Column(BigInteger, ForeignKey(TahunAjaran.id))
     perkuliahan_id = Column(BigInteger, ForeignKey(Perkuliahan.id))
-    cpl_id = Column(BigInteger, ForeignKey(CPL.id))
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
     modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
-    tahunAjaran = relationship("TahunAjaran", foreign_keys=[tahun_ajaran_id])
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
-    cpl = relationship("CPL", foreign_keys=[cpl_id])
 
 
 class NilaiPokok(Base):

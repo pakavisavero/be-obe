@@ -3,19 +3,16 @@ from typing import Union, List, Optional
 from datetime import datetime
 import pytz
 
-from db.schemas.tahunAjaranSchema import TahunAjaranSchema
-from db.schemas.perkuliahanSchema import PerkuliahanSchema
-from db.schemas.cplSchema import CPLSchema
+from db.schemas.assessmentMatkulDetailSchema import AssessmentMatkulDetailSchema
 
 tz = pytz.timezone("Asia/Jakarta")
 
 
-class BaseAssessmentMatkulSchema(BaseModel):
+class BaseAssessmentMatkulDetailSchema(BaseModel):
     id: Optional[int] = None
-    parent_id: int
-    tahun_ajaran_id: int
-    perkuliahan_id: int
-    cpl_id: int
+
+    name: Optional[str] = None
+    description: Optional[str] = None
 
     created_at: Optional[datetime] = None
     created_by: Optional[str] = None
@@ -23,26 +20,24 @@ class BaseAssessmentMatkulSchema(BaseModel):
     modified_by: Optional[str] = None
 
 
-class AssessmentMatkulSchema(BaseAssessmentMatkulSchema):
-    tahunAjaran: Optional[TahunAjaranSchema] = None
-    perkuliahan: Optional[PerkuliahanSchema] = None
-    cpl: Optional[CPLSchema] = None
+class AssessmentMatkulSchema(BaseAssessmentMatkulDetailSchema):
+    children: List[AssessmentMatkulDetailSchema] = None
+    legends = []
 
     class Config:
         orm_mode = True
 
 
-class AssessmentMatkulCreateSchema(BaseAssessmentMatkulSchema):
+class AssessmentMatkulCreateSchema(BaseAssessmentMatkulDetailSchema):
     pass
 
 
-class AssessmentMatkulUpdateSchema(BaseAssessmentMatkulSchema):
+class AssessmentMatkulUpdateSchema(BaseAssessmentMatkulDetailSchema):
     id: int
 
 
 class AssessmentMatkulDeleteSchema(BaseModel):
     id: int
-
 
 class AssessmentMatkulResponseSchema(BaseModel):
     code: int

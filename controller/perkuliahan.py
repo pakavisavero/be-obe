@@ -338,7 +338,10 @@ def insertCpmk(db: Session, token: str, pk: int, SH_CPMK):
         name = SH_CPMK[row][1]
         statement = SH_CPMK[row][2]
 
-        if name == None or statement == None:
+        if (
+            name == None or 
+            statement == None 
+        ):
             continue
 
         checkCPMK = (
@@ -572,6 +575,7 @@ def insertCPMKMahasiswa(db: Session, token: str, pk: int, SH_CPMK_MHS):
                                 cpmk = (
                                     db.query(CPMK)
                                     .filter_by(name=cpmkName.strip())
+                                    .filter_by(perkuliahan_id=pk)
                                     .first()
                                 )
                                 cpmkMhs = CpmkMahasiswa(

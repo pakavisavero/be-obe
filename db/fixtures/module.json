@@ -83,8 +83,24 @@
     },
     {
       "module_group_id": 4,
-      "module_name": "Assessment",
-      "path": "/apps/transaction/assessment/list",
+      "module_name": "Siklus Prodi",
+      "path": "/apps/transaction/siklus-prodi/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 4,
+      "module_name": "Assessment Mata Kuliah",
+      "path": "/apps/transaction/assessment-matkul/list",
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    },
+    {
+      "module_group_id": 4,
+      "module_name": "Assessment Prodi",
+      "path": "/apps/transaction/assessment-prodi/list",
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"

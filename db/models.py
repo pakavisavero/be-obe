@@ -479,8 +479,8 @@ class CplMahasiswa(Base):
     cpl = relationship("CPL", foreign_keys=[cpl_id])
 
 
-class Assessment(Base):
-    __tablename__ = "assessments"
+class SiklusProdi(Base):
+    __tablename__ = "siklus_prodis"
 
     id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
 
@@ -492,15 +492,51 @@ class Assessment(Base):
     modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
-    children = relationship("AssessmentDetail")
+    children = relationship("SiklusProdiDetail")
 
 
-class AssessmentDetail(Base):
-    __tablename__ = "assessment_details"
+class SiklusProdiDetail(Base):
+    __tablename__ = "siklus_prodi_details"
 
     id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
 
-    parent_id = Column(BigInteger, ForeignKey(Assessment.id))
+    parent_id = Column(BigInteger, ForeignKey(SiklusProdi.id))
+    tahun_ajaran_id = Column(BigInteger, ForeignKey(TahunAjaran.id))
+    perkuliahan_id = Column(BigInteger, ForeignKey(Perkuliahan.id))
+    cpl_id = Column(BigInteger, ForeignKey(CPL.id))
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    tahunAjaran = relationship("TahunAjaran", foreign_keys=[tahun_ajaran_id])
+    perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
+    cpl = relationship("CPL", foreign_keys=[cpl_id])
+
+
+class AssessmentMatkul(Base):
+    __tablename__ = "assessment_matkuls"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+
+    name = Column(String)
+    description = Column(Text())
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    children = relationship("AssessmentMatkulDetail")
+
+
+class AssessmentMatkulDetail(Base):
+    __tablename__ = "assessment_matkul_details"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+
+    parent_id = Column(BigInteger, ForeignKey(AssessmentMatkul.id))
     tahun_ajaran_id = Column(BigInteger, ForeignKey(TahunAjaran.id))
     perkuliahan_id = Column(BigInteger, ForeignKey(Perkuliahan.id))
     cpl_id = Column(BigInteger, ForeignKey(CPL.id))

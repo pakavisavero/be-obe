@@ -29,6 +29,7 @@ from routes import (
     prodiStrukturalRoute,
     roleMasterRoute,
     rolePermissionRoute,
+    siklusProdiRoute,
     statusMahasiswaRoute,
     userRoleRoute,
     userRoute,
@@ -36,5 +37,6 @@ from routes import (
     tahunAjaranRoute,
     loginRoute,
     optionLabelRoute,
-    assessmentRoute
+    assessmentMatkulRoute
+    
 )

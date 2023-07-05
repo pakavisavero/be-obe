@@ -144,6 +144,50 @@ async def delete_perkuliahan(
     }
 
 
+@app.get('/get-perkuliahan-by-matkul/{id}')
+async def get_perkuliahan_by_matkul(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    request: Request = None,
+    id: int = None,
+):
+    data = db.query(Perkuliahan).\
+        filter_by(mata_kuliah_id=id).\
+        filter_by(doc_status_id=3).\
+        all()
+    
+    for dt in data:
+        setattr(dt, 'mataKuliah', dt.mataKuliah)
+        setattr(dt, 'tahunAjaran', dt.tahunAjaran)
+        setattr(dt, 'prodi', dt.prodi)
+        setattr(dt, 'docstatus', dt.docstatus)
+
+        cpmk = db.query(CPMK).filter_by(perkuliahan_id=dt.id).all()
+        matkulInfo = []
+
+        for cp in cpmk:
+            dictCPMK = {
+                'name': cp.name,
+                'statement': cp.statement,
+                'cpl': []
+            }
+
+            mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
+            for map in mapping:
+                cpl = db.query(CPL).filter_by(id=map.cpl_id).first()
+                dictCPMK['cpl'].append(cpl)
+
+            matkulInfo.append(dictCPMK)
+
+        setattr(dt, 'cpmk', matkulInfo)
+
+    return {
+        'status': status.HTTP_200_OK,
+        'message': 'Success retrieve data!',
+        'data': data
+    }
+
+
 @app.post(PERKULIAHAN + "-upload")
 async def upload(
     db: Session = Depends(db),
@@ -158,11 +202,12 @@ async def upload(
 
         if semester == "" or thn_ajaran == "":
             raise ValueError(
-                "Tidak terdapat semester atau tahun ajaran pada row " + +str(idx)
+                "Tidak terdapat semester atau tahun ajaran pada row " + str(idx)
             )
 
         headerLen = 10
         idx = 0
+        
         for value in data:
             if idx >= 4 and len(value) > 0:
                 dis = headerLen - len(value)
@@ -173,7 +218,7 @@ async def upload(
                 matkul = str(value[0]).strip()
                 kode = str(value[1]).strip()
                 kelas = str(value[2]).strip()
-                sks = str((value[3].strip().lower())).replace("sks", "")
+                sks = str(value[3])
                 dosen1 = str(value[4]).strip()
                 nip_dosen1 = str(value[5]).strip()
                 dosen2 = value[6]
@@ -181,11 +226,24 @@ async def upload(
                 dosen3 = value[8]
                 nip_dosen3 = value[9]
 
-                if matkul == "" or kode == "" or nip_dosen1 == "":
-                    raise ValueError(
-                        "Tidak terdapat mata kuliah, kode atau NIP dosen utama pada row "
-                        + +str(idx)
-                    )
+                if (
+                    matkul == "" or
+                    kode == "" or
+                    nip_dosen1 == "" or
+                    sks == '' or
+                    matkul == 'None' or
+                    kode == 'None' or
+                    nip_dosen1 == 'None' or
+                    sks == 'None'
+                ):
+                    idx += 1
+                    break
+                    # raise ValueError(
+                    #     "Tidak terdapat mata kuliah, kode, SKS atau NIP dosen utama pada row "
+                    #     + str(idx)
+                    # )
+
+                sks = int(sks.strip().lower().replace("sks", ""))
 
                 isMatkulExist = db.query(MataKuliah).filter_by(kode_mk=kode).first()
                 if not isMatkulExist:
@@ -193,7 +251,7 @@ async def upload(
                         **{
                             "kode_mk": kode,
                             "mata_kuliah": matkul.lower().title(),
-                            "sks": int(sks),
+                            "sks": sks,
                             "kurikulum_id": 1,
                             "prodi_id": 8,
                         }
@@ -290,7 +348,7 @@ async def upload(
             "message": "Success Upload Perkuliahan",
         }
 
-    except Exception as e:
+    except Exception as e: 
         print(e)
         db.rollback()
         err = str(e.args[0]).split("\n")
@@ -312,138 +370,143 @@ async def upload_dpna(
     id = data["id"]
     header = data["data"]
 
-    try:
-        c1 = header[0][1]
-        if len(c1.split("-")) != 2:
-            raise ValueError("Format cell B1 (Kode MK - Matkul) tidak valid!")
+    # try:
+    c1 = header[0][1]
+    if len(c1.split("-")) != 2:
+        raise ValueError("Format cell B1 (Kode MK - Matkul) tidak valid!")
 
-        kode_mk = str(c1.split("-")[0]).replace(":", "").strip()
-        tahun_ajaran = str(header[1][1]).replace(":", "").strip()
-        semester = str(header[2][1]).replace(":", "").strip()
-        kelas = str(header[3][1]).replace(":", "").strip()
+    kode_mk = str(c1.split("-")[0]).replace(":", "").strip()
+    tahun_ajaran = str(header[1][1]).replace(":", "").strip()
+    semester = str(header[2][1]).replace(":", "").strip()
+    kelas = str(header[3][1]).replace(":", "").strip()
 
-        checkMatkul = db.query(MataKuliah).filter_by(kode_mk=kode_mk).first()
-        if not checkMatkul:
-            raise ValueError("Mata Kuliah tidak tersedia!")
+    checkMatkul = db.query(MataKuliah).filter_by(kode_mk=kode_mk).first()
+    if not checkMatkul:
+        raise ValueError("Mata Kuliah tidak tersedia!")
 
-        ta = db.query(TahunAjaran).filter_by(name=tahun_ajaran).first()
-        if not ta:
-            raise ValueError("Tahun Ajaran tidak tersedia!")
+    ta = db.query(TahunAjaran).filter_by(name=tahun_ajaran).first()
+    if not ta:
+        raise ValueError("Tahun Ajaran tidak tersedia!")
 
-        pkActive = db.query(Perkuliahan).filter_by(id=id).first()
-        if (
-            (pkActive.mata_kuliah_id != checkMatkul.id)
-            or (pkActive.tahun_ajaran_id != ta.id)
-            or (pkActive.semester != semester)
-            or (pkActive.kelas != kelas)
-        ):
-            raise ValueError("Data Perkuliahan tidak selaras!")
+    pkActive = db.query(Perkuliahan).filter_by(id=id).first()
+    if (
+        (pkActive.mata_kuliah_id != checkMatkul.id)
+        or (pkActive.tahun_ajaran_id != ta.id)
+        or (pkActive.semester != semester)
+        or (pkActive.kelas != kelas)
+    ):
+        raise ValueError("Data Perkuliahan tidak selaras!")
 
-        checkPk = (
-            db.query(Perkuliahan)
-            .filter_by(mata_kuliah_id=checkMatkul.id)
-            .filter_by(tahun_ajaran_id=ta.id)
-            .filter_by(semester=semester)
-            .filter_by(kelas=kelas)
-            .first()
-        )
+    checkPk = (
+        db.query(Perkuliahan)
+        .filter_by(mata_kuliah_id=checkMatkul.id)
+        .filter_by(tahun_ajaran_id=ta.id)
+        .filter_by(semester=semester)
+        .filter_by(kelas=kelas)
+        .first()
+    )
 
-        setattr(checkPk, "doc_status_id", int(DocStatus.MENUNGGU_UPLOAD_CPMK.value))
-        db.commit()
+    setattr(checkPk, "doc_status_id", int(DocStatus.MENUNGGU_UPLOAD_CPMK.value))
+    db.commit()
 
-        if not checkPk:
-            raise ValueError("Perkuliahan tidak tersedia!")
+    if not checkPk:
+        raise ValueError("Perkuliahan tidak tersedia!")
 
-        idx = 0
-        headerLen = 2
-        for value in data["data"]:
-            if idx >= 7:
-                dis = headerLen - len(value)
-                if dis > 0:
-                    for _ in range(0, dis):
-                        value.append("")
+    idx = 0
+    headerLen = 5
+    for value in data["data"]:
+        if idx >= 7:
+            dis = headerLen - len(value)
+            if dis > 0:
+                for _ in range(0, dis):
+                    value.append("")
 
-                nim = str(value[0])
-                full_name = str(value[1])
-                semMhs = int(value[2])
-                statusMhs = str(value[3])
+            nim = str(value[0])
+            full_name = str(value[1])
+           
+            if nim == '' and full_name == '':
+                idx += 1
+                break
 
-                is_valid = True
-                if "75" in full_name:
-                    is_valid = False
+            semMhs = int(value[2])
+            statusMhs = str(value[3])
 
-                char = ["(", "<", "%", ">", ")"]
-                for ch in char:
-                    full_name = full_name.replace(ch, "")
+            is_valid = True
+            if "75" in full_name:
+                is_valid = False
 
-                if nim and full_name:
-                    mhs = db.query(Mahasiswa).filter_by(nim=nim).first()
-                    if not mhs:
-                        mhs = Mahasiswa(
-                            **{
-                                "nim": nim,
-                                "full_name": full_name.rsplit(" ", 1)[0]
-                                .lower()
-                                .title()
-                                .strip(),
-                                "prodi_id": 8,
-                                "status_mhs_id": 1,
-                                "semester": semMhs,
-                                "created_by": user,
-                                "modified_by": user,
-                            }
-                        )
-                        db.add(mhs)
-                        db.commit()
-                        db.refresh(mhs)
+            char = ["(", "<", "%", ">", ")"]
+            for ch in char:
+                full_name = full_name.replace(ch, "")
 
-                    db.query(Mahasiswa).update({"semester": semMhs})
-                    mapping = MappingMahasiswa(
+            if nim and full_name:
+                mhs = db.query(Mahasiswa).filter_by(nim=nim).first()
+                if not mhs:
+                    mhs = Mahasiswa(
                         **{
-                            "perkuliahan_id": checkPk.id,
-                            "mahasiswa_id": mhs.id,
-                            "status": statusMhs,
-                            "is_valid": is_valid,
+                            "nim": nim,
+                            "full_name": full_name.rsplit(" ", 1)[0]
+                            .lower()
+                            .title()
+                            .strip(),
+                            "prodi_id": 8,
+                            "status_mhs_id": 1,
+                            "semester": semMhs,
                             "created_by": user,
                             "modified_by": user,
                         }
                     )
-                    db.add(mapping)
+                    db.add(mhs)
                     db.commit()
+                    db.refresh(mhs)
 
-            idx += 1
+                db.query(Mahasiswa).update({"semester": semMhs})
+                mapping = MappingMahasiswa(
+                    **{
+                        "perkuliahan_id": checkPk.id,
+                        "mahasiswa_id": mhs.id,
+                        "status": statusMhs,
+                        "is_valid": is_valid,
+                        "created_by": user,
+                        "modified_by": user,
+                    }
+                )
+                db.add(mapping)
+                db.commit()
 
-        print(header[6][4])
+        idx += 1
 
-        persenTugas = remove_char(header[6][4])
-        persenPraktek = remove_char(header[6][5])
-        persenUts = remove_char(header[6][6])
-        persenUas = remove_char(header[6][7])
+    print(header[6][4])
 
-        presentase = PresentasePK(
-            **{
-                "perkuliahan_id": id,
-                "nilai_tugas": persenTugas,
-                "nilai_uts": persenUts,
-                "nilai_uas": persenUas,
-                "nilai_praktek": persenPraktek,
-                "is_active": True,
-            }
-        )
-        db.add(presentase)
-        db.commit()
+    persenTugas = remove_char(header[6][4])
+    persenPraktek = remove_char(header[6][5])
+    persenUts = remove_char(header[6][6])
+    persenUas = remove_char(header[6][7])
 
-        return {
-            "code": status.HTTP_200_OK,
-            "message": "Success Upload DPNA",
+    presentase = PresentasePK(
+        **{
+            "perkuliahan_id": id,
+            "nilai_tugas": persenTugas,
+            "nilai_uts": persenUts,
+            "nilai_uas": persenUas,
+            "nilai_praktek": persenPraktek,
+            "is_active": True,
         }
+    )
+    db.add(presentase)
+    db.commit()
 
-    except Exception as e:
-        print(e)
-        db.rollback()
-        err = str(e.args[0]).split("\n")
-        data = {"message": err[errArray(len(err))]}
-        raise HandlerCustom(data=data)
+    return {
+        "code": status.HTTP_200_OK,
+        "message": "Success Upload DPNA",
+    }
+
+    # except Exception as e:
+    #     print(e)
+    #     db.rollback()
+    #     err = str(e.args[0]).split("\n")
+    #     data = {"message": err[errArray(len(err))]}
+    #     raise HandlerCustom(data=data)
 
 
 @app.get("/get-template/{id}", response_model=PerkuliahanResponseSchema)

@@ -427,7 +427,7 @@ def insertNilai(db: Session, token: str, pk: int, SHEET, Schema, param):
 
             checkMhs = db.query(Mahasiswa).filter_by(nim=nim).first()
             if not checkMhs:
-                print("Tidak ada Mahasiswa!")
+                # print("Tidak ada Mahasiswa!")
                 continue
 
             checkMap = (
@@ -438,7 +438,7 @@ def insertNilai(db: Session, token: str, pk: int, SHEET, Schema, param):
             )
 
             if not checkMap:
-                print("Tidak ada Mapping!")
+                # print("Tidak ada Mapping!")
                 continue
 
             for x in range(4, rowLen):

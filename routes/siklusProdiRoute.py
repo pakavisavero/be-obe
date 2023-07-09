@@ -15,6 +15,7 @@ from db.schemas.siklusProdiSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
+
 SIKLUS_PRODI = "/siklus-prodi"
 
 
@@ -86,6 +87,7 @@ async def get_siklus_prodi_option(
                             ids.append(cpl.id)
                             temp["cpl"].append(cpl)
 
+                # setattr(p, 'copyId', p.id)
             data.append(temp)
             id += 1
 

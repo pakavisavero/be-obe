@@ -71,6 +71,47 @@ def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
 def getByID(db: Session, id: int, token: str):
     data = db.query(Mahasiswa).filter_by(id=id).first()
 
+    mapping = db.query(MappingMahasiswa).filter_by(mahasiswa_id=id).all()
+
+    dataRaportCpl = []
+    raportCpl = []
+    labels = []
+    
+    listOfCpl = db.query(CPL).filter_by(prodi_id=8).all()
+
+    for x in listOfCpl:
+        labels.append(x.name)
+        raportCpl.append({
+            'name': x.name,
+            'value': [],
+            'rerata': [],
+        })
+
+    for map in mapping:
+        cpl = db.query(CplMahasiswa).filter_by(mapping_mhs_id=map.id).all()
+        for cp in cpl:
+            for raport in raportCpl:
+                if raport['name'] == cp.cpl.name:
+                    raport['value'].append(round(float(cp.value), 2))
+
+
+    cplAll = db.query(CplMahasiswa).all()
+    for cp in cplAll:
+        for raport in raportCpl:
+            if raport['name'] == cp.cpl.name:
+                raport['rerata'].append(round(float(cp.value), 2))
+
+
+    for r in raportCpl:
+        value = sum(r['value']) / (len(r['value']) if len(r['value']) else 1)
+        rerata = sum(r['rerata']) / (len(r['rerata']) if len(r['rerata']) else 1)
+        minVal = min(r['rerata']) 
+        maxVal = max(r['rerata']) 
+
+        dataRaportCpl.append([value, rerata, minVal, maxVal])
+
+    setattr(data, 'raportCpl', dataRaportCpl)
+    setattr(data, 'labels', labels)
     helperRetrieveMahasiswa(db, [data])
     return data
 

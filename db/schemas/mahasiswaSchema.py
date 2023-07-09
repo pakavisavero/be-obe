@@ -32,6 +32,8 @@ class MahasiswaSchema(BaseMahasiswaSchema):
     doswal: Optional[UserSchema] = None
     perkuliahan = []
     raport = {}
+    raportCpl = []
+    labels = []
 
     class Config:
         orm_mode = True

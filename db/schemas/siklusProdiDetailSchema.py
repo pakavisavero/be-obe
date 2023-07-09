@@ -13,7 +13,6 @@ tz = pytz.timezone("Asia/Jakarta")
 class BaseSiklusProdiDetailSchema(BaseModel):
     id: Optional[int] = None
     parent_id: int
-    tahun_ajaran_id: int
     perkuliahan_id: int
     cpl_id: int
 

@@ -16,11 +16,9 @@ from db.schemas.cplSchema import (
     CPLDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
+import random
 
 CPL = "/cpl"
-
 
 def errArray(idx):
     if idx < 2:
@@ -28,6 +26,60 @@ def errArray(idx):
     else:
         return 1
 
+
+def logicRetrieveSpecificCPL(
+    db: Session,
+    ta_id: int,
+    semester: str,
+    cpl_id: int
+):
+    data = []
+    mapping = db.query(MappingCpmkCpl).filter_by(cpl_id=cpl_id).all()
+
+    ids = []
+    for map in mapping:
+        cpmk = db.query(CPMK).filter_by(id=map.cpmk_id).first()
+        pk = db.query(Perkuliahan).filter_by(id=cpmk.perkuliahan_id).first()
+
+        if (
+            (pk.tahun_ajaran_id == ta_id)
+            and (pk.semester == semester)
+            and (pk.doc_status_id == 3)
+        ):
+            if not pk.id in ids:
+                jmlMhs = 0
+                total = 0.0
+                mappingMhs = (
+                    db.query(MappingMahasiswa).filter_by(perkuliahan_id=pk.id).all()
+                )
+                for mhs in mappingMhs:
+                    cplValue = (
+                        db.query(CplMahasiswa)
+                        .filter_by(cpl_id=cpl_id)
+                        .filter_by(mapping_mhs_id=mhs.id)
+                        .first()
+                    )
+                    if cplValue:
+                        val = cplValue.value
+                        jmlMhs += 1
+                        total += float(val)
+
+                if jmlMhs == 0:
+                    jmlMhs = 1
+
+                ids.append(pk.id)
+                setattr(pk, "mataKuliah", pk.mataKuliah)
+                setattr(pk, "dosen1", pk.dosen1)
+                setattr(pk, "tahunAjaran", pk.tahunAjaran)
+                setattr(pk, "total", "{:.2f}".format(total / jmlMhs))
+
+                uniqueId = random.randrange(100, 100 * 100)
+                setattr(pk, "copyId", uniqueId)
+                # setattr(pk, "id", uniqueId)
+
+                data.append(pk)
+
+    return data
 
 @app.get(CPL + "s", response_model=CPLResponseSchema)
 # @check_access_module
@@ -142,43 +194,12 @@ async def get_cpl_by_perkuliahan(
     ta_id = int(data["tahun_ajaran_id"])
     semester = data["semester"]
 
-    data = []
-    mapping = db.query(MappingCpmkCpl).filter_by(cpl_id=cpl_id).all()
-
-    ids = []
-    for map in mapping:
-        cpmk = db.query(CPMK).filter_by(id=map.cpmk_id).first()
-        pk = db.query(Perkuliahan).filter_by(id=cpmk.perkuliahan_id).first()
-
-        if (
-            (pk.tahun_ajaran_id == ta_id)
-            and (pk.semester == semester)
-            and (pk.doc_status_id == 3)
-        ):
-            if not pk.id in ids:
-                jmlMhs = 0
-                total = 0.0
-                mappingMhs = (
-                    db.query(MappingMahasiswa).filter_by(perkuliahan_id=pk.id).all()
-                )
-                for mhs in mappingMhs:
-                    cplValue = (
-                        db.query(CplMahasiswa)
-                        .filter_by(cpl_id=cpl_id)
-                        .filter_by(mapping_mhs_id=mhs.id)
-                        .first()
-                    )
-                    if cplValue:
-                        val = cplValue.value
-                        jmlMhs += 1
-                        total += float(val)
-
-                ids.append(pk.id)
-                setattr(pk, "mataKuliah", pk.mataKuliah)
-                setattr(pk, "dosen1", pk.dosen1)
-                setattr(pk, "tahunAjaran", pk.tahunAjaran)
-                setattr(pk, "total", "{:.2f}".format(total / jmlMhs))
-                data.append(pk)
+    data = logicRetrieveSpecificCPL(
+        db=db,
+        ta_id=ta_id,
+        semester=semester,
+        cpl_id=cpl_id
+    )
 
     return {
         "code": status.HTTP_200_OK,

@@ -45,6 +45,8 @@ class PerkuliahanSchema(BasePerkuliahanSchema):
     docstatus: Optional[DocStatusPKSchema] = None
     cpmk = []
     cpl = []
+    copyId = 0
+    infoCpl = ''
     presentase = {}
     evaluasi = []
     evaluasiMain = {}

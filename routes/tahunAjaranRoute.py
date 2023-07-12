@@ -29,7 +29,7 @@ def errArray(idx):
 
 
 @app.get(TAHUN_AJARAN + "s", response_model=TahunAjaranResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_all_tahun_ajaran(
     db: Session = Depends(db),
     token: str = Header(default=None),

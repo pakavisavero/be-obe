@@ -51,7 +51,11 @@ def create(db: Session, username: str, data: dict):
     children = data["children"]
     help_remove_data(data)
 
-    am = AssessmentMatkul(**data)
+    am = AssessmentMatkul(**{
+        'name': data['name'],
+        'description': data['description'],
+    })
+    
     db.add(am)
     db.commit()
     db.refresh(am)
@@ -59,7 +63,7 @@ def create(db: Session, username: str, data: dict):
     for id in children:
         child = AssessmentMatkulDetail(**{
             'parent_id': am.id,
-            'perkuliahan_id': id,
+            'perkuliahan_id': int(id),
         })
 
         db.add(child)
@@ -91,6 +95,7 @@ def help_remove_data(data):
     nameArray = [
         "assessment",
         "option",
+        "matkul"
     ]
 
     for a in nameArray:

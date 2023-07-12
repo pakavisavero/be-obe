@@ -78,6 +78,26 @@ async def get_mahasiswa(
     }
 
 
+@app.post(MAHASISWA + "/raport", response_model=MahasiswaResponseSchema)
+@check_access_module
+async def get_mahasiswa(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    request: Request = None,
+    module_access=MODULE_NAME,
+    data: dict = None
+):
+    pks = []
+    if 'pks' in data:
+        pks = data['pks']
+
+    mhs = mahasiswa.getByID(db, data['id'], token, pks)
+    return {
+        "code": status.HTTP_200_OK,
+        "message": "Success get mahasiswa",
+        "data": mhs,
+    }
+
 @app.post(MAHASISWA, response_model=MahasiswaResponseSchema)
 @check_access_module
 async def submit_mahasiswa(

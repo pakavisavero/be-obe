@@ -12,9 +12,10 @@ from db.schemas.siklusProdiSchema import (
     SiklusProdiResponseSchema,
 )
 
+from routes.cplRoute import logicRetrieveSpecificCPL
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
-
+import random
 
 SIKLUS_PRODI = "/siklus-prodi"
 
@@ -24,6 +25,38 @@ def errArray(idx):
         return 0
     else:
         return 1
+
+
+def logicRetrieveSpecificCPL(
+    db: Session,
+    pk,
+    cpl_id: str
+):
+    cpl = db.query(CPL).filter_by(id=cpl_id).first()
+
+    jmlMhs = 0
+    total = 0.0
+    mappingMhs = (
+        db.query(MappingMahasiswa).filter_by(perkuliahan_id=pk.id).all()
+    )
+    for mhs in mappingMhs:
+        cplValue = (
+            db.query(CplMahasiswa)
+            .filter_by(cpl_id=cpl.id)
+            .filter_by(mapping_mhs_id=mhs.id)
+            .first()
+        )
+        if cplValue:
+            val = cplValue.value
+            jmlMhs += 1
+            total += float(val)
+
+    if jmlMhs == 0:
+        jmlMhs = 1
+
+    uniqueId = random.randrange(100, 100 * 100)
+
+    setattr(pk, "total", round(total / jmlMhs, 2))
 
 
 @app.get(SIKLUS_PRODI + "s", response_model=SiklusProdiResponseSchema)
@@ -37,6 +70,14 @@ async def get_all_siklus_prodi(
     filtered_data = help_filter(request)
     if filtered_data:
         query = siklusProdi.getAllPagingFiltered(db, page, filtered_data, token)
+        
+        for q in query['data']:
+            for child in q.children:
+                logicRetrieveSpecificCPL(
+                    db=db,
+                    pk=child.perkuliahan,
+                    cpl_id=child.cpl_id
+                )
 
         return {
             "code": status.HTTP_200_OK,
@@ -46,6 +87,14 @@ async def get_all_siklus_prodi(
         }
     else:
         query = siklusProdi.getAllPaging(db, page, token)
+        for q in query['data']:
+            for child in q.children:
+                logicRetrieveSpecificCPL(
+                    db=db,
+                    pk=child.perkuliahan,
+                    cpl_id=child.cpl_id
+                )
+
         return {
             "code": status.HTTP_200_OK,
             "message": "Success retrieve all siklus prodi",
@@ -79,6 +128,7 @@ async def get_siklus_prodi_option(
             ids = []
             for p in pk:
                 cpmk = db.query(CPMK).filter_by(perkuliahan_id=p.id).all()
+
                 for cp in cpmk:
                     mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
                     for map in mapping:

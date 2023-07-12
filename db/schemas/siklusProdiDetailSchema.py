@@ -23,7 +23,6 @@ class BaseSiklusProdiDetailSchema(BaseModel):
 
 
 class SiklusProdiDetailSchema(BaseSiklusProdiDetailSchema):
-    tahunAjaran: Optional[TahunAjaranSchema] = None
     perkuliahan: Optional[PerkuliahanSchema] = None
     cpl: Optional[CPLSchema] = None
 

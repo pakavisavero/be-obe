@@ -81,7 +81,8 @@ def getByID(db: Session, id: int, token: str):
 
                 setattr(pk, 'copyId', uniqueId)
                 setattr(pk, 'infoCpl', 'CPL' + str(child.cpl_id))
-                setattr(pk, "total", "{:.2f}".format(total / jmlMhs))
+                setattr(pk, 'infoCplStatement', child.cpl.statement)
+                setattr(pk, "total", round(total / jmlMhs, 2))
 
     return data
 

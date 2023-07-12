@@ -1,6 +1,21 @@
 {
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.python"
+  "python.formatting.provider": "none",
+  "editor.formatOnSave": true,
+  "python.linting.lintOnSave": true,
+  "emmet.includeLanguages": {
+    "jinja2": "html",
+    "jinja-html": "html",
+    "django-html": "html"
   },
-  "python.formatting.provider": "none"
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true
+  },
+  "[jinja-html]": {
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  }
 }

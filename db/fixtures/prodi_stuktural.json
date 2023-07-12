@@ -1,0 +1,14 @@
+{
+  "model": "models.ProdiStruktural",
+  "data": [
+    {
+      "prodi_id": 8,
+      "gpm_id": 31,
+      "kaprodi_id": 29,
+      "kadept_id": 17,
+      "is_active": 1,
+      "created_by": "System",
+      "modified_by": "System"
+    }
+  ]
+}

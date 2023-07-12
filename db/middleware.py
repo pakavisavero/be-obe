@@ -40,7 +40,8 @@ class ValidatePermission(BaseHTTPMiddleware):
             "/favicon.ico",
             "/get-template",
             "/get-form-siap",
-            "/get-form-siap",
+            "/get-portofolio",
+            "/test-jinja",
         ]
 
         if path in pathExclude:

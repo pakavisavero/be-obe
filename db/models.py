@@ -545,6 +545,38 @@ class AssessmentMatkulDetail(Base):
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
 
 
+class AssessmentProdi(Base):
+    __tablename__ = "assessment_prodis"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+
+    name = Column(String)
+    description = Column(Text())
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    children = relationship("AssessmentProdiDetail")
+
+
+class AssessmentProdiDetail(Base):
+    __tablename__ = "assessment_prodi_details"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+
+    parent_id = Column(BigInteger, ForeignKey(AssessmentProdi.id))
+    siklus_id = Column(BigInteger, ForeignKey(SiklusProdi.id))
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    siklus = relationship("SiklusProdi", foreign_keys=[siklus_id])
+
+
 class NilaiPokok(Base):
     __tablename__ = "nilai_pokoks"
 
@@ -670,6 +702,7 @@ class ProdiStruktural(Base):
     prodi_id = Column(BigInteger, ForeignKey(Prodi.id))
     gpm_id = Column(BigInteger, ForeignKey(User.id))
     kaprodi_id = Column(BigInteger, ForeignKey(User.id))
+    kadept_id = Column(BigInteger, ForeignKey(User.id))
 
     is_active = Column(Boolean, default=False)
 
@@ -681,6 +714,25 @@ class ProdiStruktural(Base):
     prodi = relationship("Prodi", foreign_keys=[prodi_id])
     gpm = relationship("User", foreign_keys=[gpm_id])
     kaprodi = relationship("User", foreign_keys=[kaprodi_id])
+    kadept = relationship("User", foreign_keys=[kadept_id])
+
+
+class FakultasStruktural(Base):
+    __tablename__ = "fakultas_strukturals"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    fakultas_id = Column(BigInteger, ForeignKey(Fakultas.id))
+    dekan_id = Column(BigInteger, ForeignKey(User.id))
+
+    is_active = Column(Boolean, default=False)
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    fakultas = relationship("Fakultas", foreign_keys=[fakultas_id])
+    dekan = relationship("User", foreign_keys=[dekan_id])
 
 
 class PresentasePK(Base):

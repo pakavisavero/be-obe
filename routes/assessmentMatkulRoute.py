@@ -67,6 +67,9 @@ def helperRetrieveAssessmentMatkul(db, data, isEdit = False):
                     filter(CpmkMahasiswa.mapping_mhs_id == map.id).\
                     filter(CpmkMahasiswa.cpmk_id == cp.id).\
                     all()
+                
+                print(map.id)
+                print(cp.id)
             
                 for cpmk in cpmkVal:
                     sumSingleCpmk.append(float(cpmk.value))
@@ -80,7 +83,7 @@ def helperRetrieveAssessmentMatkul(db, data, isEdit = False):
                 'id': cp.id,
                 'name': cp.name,
                 'statement': cp.statement,
-                'value': "{:.2f}".format(float(sumCpmkVal / sumCpmkDivision)),
+                'value': round(float(sumCpmkVal / sumCpmkDivision), 2),
                 'cpl': []
             }
 
@@ -138,8 +141,7 @@ def helperRetrieveAssessmentMatkul(db, data, isEdit = False):
 
                     headerCPL.append({'name': cpl['name'], 'value': sumAllCPl/division})
 
-        if isEdit:
-            setattr(dt, 'cpl', headerCPL)
+                setattr(dt, 'cpl', headerCPL)
             
         setattr(dt, 'cpmk', matkulInfo)
 

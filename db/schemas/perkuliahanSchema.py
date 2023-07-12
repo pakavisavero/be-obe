@@ -46,6 +46,8 @@ class PerkuliahanSchema(BasePerkuliahanSchema):
     cpmk = []
     cpl = []
     copyId = 0
+    total = 0
+    infoCplStatement = ''
     infoCpl = ''
     presentase = {}
     evaluasi = []

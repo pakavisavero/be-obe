@@ -1,4 +1,4 @@
-from fastapi import Request, BackgroundTasks
+from fastapi import Form, Request, BackgroundTasks, File, UploadFile
 from fastapi import Depends, status, Header
 
 from controller import perkuliahan, mataKuliah, tahunAjaran
@@ -22,7 +22,11 @@ from fastapi.responses import FileResponse
 from starlette.background import BackgroundTasks
 from datetime import datetime
 from controller.utils import DocStatus
+from openpyxl.utils import get_column_letter
+
 import os
+import shutil
+import subprocess
 
 
 PERKULIAHAN = "/perkuliahan"
@@ -47,7 +51,8 @@ async def get_all_perkuliahan(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = perkuliahan.getAllPagingFiltered(db, page, filtered_data, token)
+        query = perkuliahan.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,
@@ -155,7 +160,7 @@ async def get_perkuliahan_by_matkul(
         filter_by(mata_kuliah_id=id).\
         filter_by(doc_status_id=3).\
         all()
-    
+
     for dt in data:
         setattr(dt, 'mataKuliah', dt.mataKuliah)
         setattr(dt, 'tahunAjaran', dt.tahunAjaran)
@@ -202,12 +207,13 @@ async def upload(
 
         if semester == "" or thn_ajaran == "":
             raise ValueError(
-                "Tidak terdapat semester atau tahun ajaran pada row " + str(idx)
+                "Tidak terdapat semester atau tahun ajaran pada row " +
+                str(idx)
             )
 
         headerLen = 10
         idx = 0
-        
+
         for value in data:
             if idx >= 4 and len(value) > 0:
                 dis = headerLen - len(value)
@@ -245,7 +251,8 @@ async def upload(
 
                 sks = int(sks.strip().lower().replace("sks", ""))
 
-                isMatkulExist = db.query(MataKuliah).filter_by(kode_mk=kode).first()
+                isMatkulExist = db.query(
+                    MataKuliah).filter_by(kode_mk=kode).first()
                 if not isMatkulExist:
                     crMatkul = MataKuliah(
                         **{
@@ -264,10 +271,12 @@ async def upload(
                         isMatkulExist = crMatkul
                     else:
                         raise ValueError(
-                            "Tidak terdapat mata kuliah yang pada row " + str(idx)
+                            "Tidak terdapat mata kuliah yang pada row " +
+                            str(idx)
                         )
 
-                ta = db.query(TahunAjaran).filter_by(tahun_ajaran=thn_ajaran).first()
+                ta = db.query(TahunAjaran).filter_by(
+                    tahun_ajaran=thn_ajaran).first()
                 if not ta:
                     head, _, _ = thn_ajaran.partition("/")
                     ta = TahunAjaran(
@@ -314,15 +323,18 @@ async def upload(
 
                 data["dosen_id"] = existDosen1.id
                 data["pj_dosen_id"] = existDosen1.id
-                data["doc_status_id"] = int(DocStatus.MENUNGGU_UPLOAD_DPNA.value)
+                data["doc_status_id"] = int(
+                    DocStatus.MENUNGGU_UPLOAD_DPNA.value)
 
                 if nip_dosen2:
-                    existDosen2 = db.query(User).filter_by(nip=nip_dosen2).first()
+                    existDosen2 = db.query(User).filter_by(
+                        nip=nip_dosen2).first()
                     if existDosen2:
                         data["dosen2_id"] = existDosen2.id
 
                 if nip_dosen3:
-                    existDosen3 = db.query(User).filter_by(nip=nip_dosen3).first()
+                    existDosen3 = db.query(User).filter_by(
+                        nip=nip_dosen3).first()
                     if existDosen3:
                         data["dosen3_id"] = existDosen3.id
 
@@ -348,7 +360,7 @@ async def upload(
             "message": "Success Upload Perkuliahan",
         }
 
-    except Exception as e: 
+    except Exception as e:
         print(e)
         db.rollback()
         err = str(e.args[0]).split("\n")
@@ -406,7 +418,8 @@ async def upload_dpna(
         .first()
     )
 
-    setattr(checkPk, "doc_status_id", int(DocStatus.MENUNGGU_UPLOAD_CPMK.value))
+    setattr(checkPk, "doc_status_id", int(
+        DocStatus.MENUNGGU_UPLOAD_CPMK.value))
     db.commit()
 
     if not checkPk:
@@ -423,7 +436,7 @@ async def upload_dpna(
 
             nim = str(value[0])
             full_name = str(value[1])
-           
+
             if nim == '' and full_name == '':
                 idx += 1
                 break
@@ -515,15 +528,172 @@ async def bg_task_template(
     background_tasks=BackgroundTasks,
     token: str = Header(default=None),
     id: int = None,
-    # data: dict = None,
 ):
-    # id = int(data["id"])
-    checkExpDPNA = db.query(CheckExportDPNA).filter_by(perkuliahan_id=id).first()
+    checkExpDPNA = db.query(CheckExportDPNA).filter_by(
+        perkuliahan_id=id).first()
     if not checkExpDPNA:
         background_tasks.add_task(get_template(db, id))
     else:
         dir = checkExpDPNA.template_name
         return FileResponse(path=dir, filename=dir.replace("files/", ""))
+
+
+@app.post('/save-template')
+async def save_template(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    file: UploadFile = File(...),
+    id: int = Form()
+):
+    try:
+        contents = file.file.read()
+        with open(file.filename, 'wb') as f:
+            f.write(contents)
+
+        path = "files/cpmk/{}".format(file.filename)
+        shutil.move(file.filename, path)
+
+        wb = load_workbook(path, data_only=True)
+        sheets = [
+            'Do',
+            'RPS-old',
+            'PETUNJUK',
+            'CPMK-CPL',
+            'NILAI TUGAS',
+            'NILAI PRAKTEK',
+            'NILAI UTS',
+            'NILAI UAS',
+            'FORM NILAI SIAP',
+            'CPL',
+            'CPMK',
+            'Evaluasi',
+        ]
+
+        for sheet in sheets:
+            try:
+                del wb[sheet]
+            except:
+                pass
+
+        RPS = wb["RPS"]
+        KONTRAK = wb["KONTRAK"]
+
+        pk = db.query(Perkuliahan).filter_by(id=id).first()
+        dosen1 = ''
+        dosen2 = ''
+        dosen3 = ''
+        tableCpmk = []
+
+        cell = 29
+        for row in range(cell, 42):
+            tableCpmk.append([
+                KONTRAK['D' + str(row)].value,
+                KONTRAK['E' + str(row)].value,
+                KONTRAK['F' + str(row)].value,
+                KONTRAK['G' + str(row)].value,
+            ])
+
+        if pk.dosen1:
+            dosen1 = pk.dosen1.full_name
+        if pk.dosen2:
+            dosen2 = pk.dosen2.full_name
+        if pk.dosen3:
+            dosen3 = pk.dosen3.full_name
+
+        cplValue = ''
+        cpmkValue = ''
+        idsCpl = []
+
+        cpmks = db.query(CPMK).filter_by(perkuliahan_id=id).all()
+        for cpmk in cpmks:
+            cpmkValue += cpmk.name + '   ' + cpmk.statement + '\n'
+            mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cpmk.id).all()
+            for map in mapping:
+                if map.cpl_id not in idsCpl:
+                    idsCpl.append(map.cpl_id)
+                    cplValue += '[ ' + map.cpl.name + ' ]' + \
+                        map.cpl.statement + '\n'
+
+        RPS["E5"] = pk.mataKuliah.kode_mk + ' - ' + pk.mataKuliah.mata_kuliah
+        RPS["L5"] = str(pk.mataKuliah.sks) + ' ' + 'SKS'
+        RPS["O5"] = pk.semester
+        RPS["E7"] = dosen1 + ' / ' + dosen2 + ' / ' + dosen3
+        RPS["E8"] = cplValue
+        RPS["E9"] = cpmkValue
+
+        KONTRAK["E4"] = pk.mataKuliah.kode_mk + \
+            ' - ' + pk.mataKuliah.mata_kuliah
+        KONTRAK["E5"] = pk.tahunAjaran.tahun_ajaran
+        KONTRAK["E6"] = dosen1 + ' / ' + dosen2 + ' / ' + dosen3
+        KONTRAK["H5"] = pk.semester
+        KONTRAK["A16"] = cplValue
+        KONTRAK["A18"] = cpmkValue
+
+        row = 29
+        for table in tableCpmk:
+            KONTRAK['D' + str(row)] = table[0]
+            KONTRAK['E' + str(row)] = table[1]
+            KONTRAK['F' + str(row)] = table[2]
+            KONTRAK['G' + str(row)] = table[3]
+            row += 1
+
+        for sheet in ['KONTRAK', 'RPS', 'COVER']:
+            for idx, col in enumerate(wb[sheet].columns, 1):
+                wb[sheet].column_dimensions[get_column_letter(
+                    idx)].auto_size = True
+
+        wb['COVER'].row_dimensions[8].height = 25
+        wb['COVER'].row_dimensions[9].height = 25
+        wb['RPS'].row_dimensions[9].height = 100
+        wb['KONTRAK'].row_dimensions[13].height = 70
+        wb['KONTRAK'].row_dimensions[20].height = 250
+
+        wb.save(path)
+
+        pdfName = file.filename.replace('xlsx', 'pdf')
+        subprocess.run(["libreoffice", "--headless",
+                       "macro:///Standard.Module1.FitToPage", "--convert-to", "pdf", path])
+        shutil.move(pdfName, 'files/cpmk/' + pdfName)
+        remove_file(path)
+
+    except Exception:
+        return {"message": "There was an error uploading the file"}
+
+    finally:
+        file.file.close()
+
+    return {"message": f"Successfully uploaded {file.filename}"}
+
+
+@app.get("/get-portofolio")
+async def get_portofolio(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    background_tasks: BackgroundTasks = None
+):
+    headers = {'Content-Disposition': 'inline; filename="out.pdf"'}
+    return FileResponse(
+        'files/cpmk/Portofolio CPMK MK ver6-Fismat 2022-1.pdf',
+        headers=headers,
+        media_type='application/pdf'
+    )
+
+
+@app.get("/test-jinja" + "/{id}")
+async def get_portofolio(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    request: Request = None,
+    id: int = None
+):  
+    path = perkuliahan.getJinjaPortofolio(db, request, id)
+    headers = {'Content-Disposition': 'inline; filename="out.pdf"'}
+
+    return FileResponse(
+        path,
+        headers=headers,
+        media_type='application/pdf'
+    )
 
 
 def get_template(db: Session, id: int):
@@ -584,7 +754,8 @@ def get_template(db: Session, id: int):
 
     now = datetime.now().strftime("%Y_%m_%d-%I_%M_%S")
     path = "files/{}_{}_{}.xlsx".format(
-        (matkul.mata_kuliah).lower().replace(" ", "_"), pk.semester.lower(), now
+        (matkul.mata_kuliah).lower().replace(
+            " ", "_"), pk.semester.lower(), now
     )
     wb.save(path)
 
@@ -665,7 +836,8 @@ async def upload_cpmk(
 
         perkuliahan.insertCpl(db, token, checkPk.id, SH_CPMK)
         perkuliahan.insertCpmk(db, token, checkPk.id, SH_CPMK)
-        perkuliahan.insertNilai(db, token, checkPk.id, SH_TUGAS, NilaiTugas, "tugas")
+        perkuliahan.insertNilai(db, token, checkPk.id,
+                                SH_TUGAS, NilaiTugas, "tugas")
         perkuliahan.insertNilai(
             db, token, checkPk.id, SH_PRAKTEK, NilaiPraktek, "praktek"
         )

@@ -22,6 +22,8 @@ json_files = [
     "status_mahasiswa.json",
     "tahun_ajaran.json",
     "docstatus.json",
+    "prodi_stuktural.json",
+    "fakultas_stuktural.json",
 ]
 
 

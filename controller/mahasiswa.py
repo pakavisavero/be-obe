@@ -25,6 +25,7 @@ def helperRetrieveMahasiswa(db, data):
             mata_kuliah = map.perkuliahan.mataKuliah
             perkuliahan.append(
                 {
+                    "id": map.perkuliahan.id,
                     "mata_kuliah": mata_kuliah.kode_mk
                     + " - "
                     + mata_kuliah.mata_kuliah,
@@ -68,9 +69,11 @@ def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
     return {"data": data, "total": total}
 
 
-def getByID(db: Session, id: int, token: str):
-    data = db.query(Mahasiswa).filter_by(id=id).first()
+def getByID(db: Session, id: int, token: str, pks = []):
+    if len(pks) > 0:
+        pks = [int(pk) for pk in pks.split(",")]
 
+    data = db.query(Mahasiswa).filter_by(id=id).first()
     mapping = db.query(MappingMahasiswa).filter_by(mahasiswa_id=id).all()
 
     dataRaportCpl = []
@@ -92,8 +95,12 @@ def getByID(db: Session, id: int, token: str):
         for cp in cpl:
             for raport in raportCpl:
                 if raport['name'] == cp.cpl.name:
-                    raport['value'].append(round(float(cp.value), 2))
-
+                    if len(pks) > 0:
+                        if map.perkuliahan_id in pks:
+                            raport['value'].append(round(float(cp.value), 2))
+                    else:
+                        raport['value'].append(round(float(cp.value), 2))
+                    
 
     cplAll = db.query(CplMahasiswa).all()
     for cp in cplAll:

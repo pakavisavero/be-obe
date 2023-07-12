@@ -37,6 +37,6 @@ from routes import (
     tahunAjaranRoute,
     loginRoute,
     optionLabelRoute,
-    assessmentMatkulRoute
-    
+    assessmentMatkulRoute,
+    assessmentProdiRoute
 )

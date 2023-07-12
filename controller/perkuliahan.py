@@ -1,4 +1,8 @@
 import decimal
+
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
+
 from db.models import Perkuliahan
 from db.database import Session
 from db.schemas.perkuliahanSchema import (
@@ -13,8 +17,16 @@ from .utils import helper_static_filter, identifyRole
 from sqlalchemy import or_
 from sqlalchemy import inspect
 from openpyxl import load_workbook
+from jinja2 import Template
+from pyvirtualdisplay import Display
+from jinja2 import Environment, FileSystemLoader
+from starlette.datastructures import URL
+from pypdf import PdfMerger
 
 import pytz
+import pdfkit
+import shutil
+import os
 
 tz = pytz.timezone("Asia/Jakarta")
 
@@ -27,25 +39,27 @@ def get_nilai_huruf(nilai, cpmk=[]):
             ketCPMK = "Remidi CPMK"
             init = True
 
-    if nilai >= 80:
-        return ["A", 4, ketCPMK]
-    elif nilai >= 70:
-        return ["B", 3, ketCPMK]
-    elif nilai >= 60:
-        return ["C", 2, ketCPMK]
-    elif nilai >= 51:
-        return ["D", 1, "Tidak Lulus"]
-    else:
-        return ["E", 0, "Tidak Lulus"]
+        if nilai >= 80:
+            return ["A", 4, ketCPMK]
+        elif nilai >= 70:
+            return ["B", 3, ketCPMK]
+        elif nilai >= 60:
+            return ["C", 2, ketCPMK]
+        elif nilai >= 51:
+            return ["D", 1, "Tidak Lulus"]
+        else:
+            return ["E", 0, "Tidak Lulus"]
 
 
 def helperRetrievePerkuliahan(db, data):
     mahasiswa = []
     try:
         for dt in data:
-            mapping = db.query(MappingMahasiswa).filter_by(perkuliahan_id=dt.id).all()
+            mapping = db.query(MappingMahasiswa).filter_by(
+                perkuliahan_id=dt.id).all()
             # Presentase
-            pres = db.query(PresentasePK).filter_by(perkuliahan_id=dt.id).first()
+            pres = db.query(PresentasePK).filter_by(
+                perkuliahan_id=dt.id).first()
             if pres:
                 presDict = {
                     c.key: getattr(pres, c.key)
@@ -55,14 +69,16 @@ def helperRetrievePerkuliahan(db, data):
 
             for map in mapping:
                 filter = {"mapping_mhs_id": map.id}
-                mhs = db.query(Mahasiswa).filter_by(id=map.mahasiswa_id).first()
+                mhs = db.query(Mahasiswa).filter_by(
+                    id=map.mahasiswa_id).first()
                 tugas = db.query(NilaiTugas).filter_by(**filter).all()
                 uts = db.query(NilaiUTS).filter_by(**filter).all()
                 uas = db.query(NilaiUAS).filter_by(**filter).all()
                 praktek = db.query(NilaiPraktek).filter_by(**filter).all()
                 nilaiPokok = db.query(NilaiPokok).filter_by(**filter).first()
 
-                cpmkMahasiswa = db.query(CpmkMahasiswa).filter_by(**filter).all()
+                cpmkMahasiswa = db.query(
+                    CpmkMahasiswa).filter_by(**filter).all()
                 cplMahasiswa = db.query(CplMahasiswa).filter_by(**filter).all()
 
                 for t in tugas:
@@ -82,17 +98,20 @@ def helperRetrievePerkuliahan(db, data):
                 if presDict:
                     try:
                         n_tugas = (
-                            (decimal.Decimal(presDict["nilai_tugas"].replace("%", "")))
+                            (decimal.Decimal(
+                                presDict["nilai_tugas"].replace("%", "")))
                             * nilaiPokok.nilai_tugas
                             / 100
                         )
                         n_uts = (
-                            (decimal.Decimal(presDict["nilai_uts"].replace("%", "")))
+                            (decimal.Decimal(
+                                presDict["nilai_uts"].replace("%", "")))
                             * nilaiPokok.nilai_uts
                             / 100
                         )
                         n_uas = (
-                            (decimal.Decimal(presDict["nilai_uas"].replace("%", "")))
+                            (decimal.Decimal(
+                                presDict["nilai_uas"].replace("%", "")))
                             * nilaiPokok.nilai_uas
                             / 100
                         )
@@ -107,11 +126,14 @@ def helperRetrievePerkuliahan(db, data):
                         )
 
                         nilai_akhir = n_tugas + n_uts + n_uas + n_praktek
-                        nilai_akhir_alp = get_nilai_huruf(nilai_akhir, cpmkMahasiswa)
+                        nilai_akhir_alp = get_nilai_huruf(
+                            nilai_akhir, cpmkMahasiswa)
 
                         setattr(nilaiPokok, "nilai_akhir", nilai_akhir)
-                        setattr(nilaiPokok, "nilai_akhir_huruf", nilai_akhir_alp[0])
-                        setattr(nilaiPokok, "nilai_akhir_bobot", nilai_akhir_alp[1])
+                        setattr(nilaiPokok, "nilai_akhir_huruf",
+                                nilai_akhir_alp[0])
+                        setattr(nilaiPokok, "nilai_akhir_bobot",
+                                nilai_akhir_alp[1])
                         setattr(nilaiPokok, "keterangan", nilai_akhir_alp[2])
                     except:
                         pass
@@ -136,7 +158,8 @@ def helperRetrievePerkuliahan(db, data):
             listOfCPMK = []
             cpmk = db.query(CPMK).filter_by(perkuliahan_id=dt.id).all()
             for cp in cpmk:
-                mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
+                mapping = db.query(MappingCpmkCpl).filter_by(
+                    cpmk_id=cp.id).all()
                 temp = {
                     "id": cp.id,
                     "name": cp.name,
@@ -162,7 +185,8 @@ def helperRetrievePerkuliahan(db, data):
             # Evaluasi
             listEvaluasi = []
             for cp in listOfCPMK:
-                evaluasi = db.query(Evaluasi).filter_by(cpmk_id=cp["id"]).first()
+                evaluasi = db.query(Evaluasi).filter_by(
+                    cpmk_id=cp["id"]).first()
                 if evaluasi:
                     setattr(evaluasi, "cpmk", evaluasi.cpmk)
                     listEvaluasi.append(evaluasi)
@@ -231,7 +255,8 @@ def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
             Perkuliahan.dosen3_id == role["user_id"],
         )
 
-    data, total = helper_static_filter(db, Perkuliahan, filtered, offset, xtra, xtraOr)
+    data, total = helper_static_filter(
+        db, Perkuliahan, filtered, offset, xtra, xtraOr)
 
     helperRetrievePerkuliahan(db, data)
     return {"data": data, "total": total}
@@ -268,7 +293,8 @@ def update(db: Session, username: str, data: dict):
         data["modified_by"] = username
 
         perkuliahan = (
-            db.query(Perkuliahan).filter(Perkuliahan.id == data["id"]).update(data)
+            db.query(Perkuliahan).filter(
+                Perkuliahan.id == data["id"]).update(data)
         )
 
         db.commit()
@@ -339,13 +365,14 @@ def insertCpmk(db: Session, token: str, pk: int, SH_CPMK):
         statement = SH_CPMK[row][2]
 
         if (
-            name == None or 
-            statement == None 
+            name == None or
+            statement == None
         ):
             continue
 
         checkCPMK = (
-            db.query(CPMK).filter_by(name=name).filter_by(perkuliahan_id=pk).first()
+            db.query(CPMK).filter_by(name=name).filter_by(
+                perkuliahan_id=pk).first()
         )
 
         if not checkCPMK:
@@ -486,7 +513,8 @@ def insertNilai(db: Session, token: str, pk: int, SHEET, Schema, param):
 
             else:
                 nilaiPokok = (
-                    db.query(NilaiPokok).filter_by(mapping_mhs_id=checkMap.id).first()
+                    db.query(NilaiPokok).filter_by(
+                        mapping_mhs_id=checkMap.id).first()
                 )
                 setattr(nilaiPokok, "nilai_" + param, row[3])
                 db.commit()
@@ -549,7 +577,7 @@ def insertCPMKMahasiswa(db: Session, token: str, pk: int, SH_CPMK_MHS):
     user = decode_token(token)["fullName"]
     start = 7
     end = 250
-    length = 23
+    length = 40
 
     for row in range(start, end):
         dis = length - len(SH_CPMK_MHS[row])
@@ -569,7 +597,7 @@ def insertCPMKMahasiswa(db: Session, token: str, pk: int, SH_CPMK_MHS):
                 )
                 if mapping:
                     for col in range(12, length, 2):
-                        if SH_CPMK_MHS[row][col] != "":
+                        if SH_CPMK_MHS[6][col] != "":
                             cpmkName = str(SH_CPMK_MHS[6][col])
                             if cpmkName != "":
                                 cpmk = (
@@ -596,7 +624,8 @@ def insertCPMKMahasiswa(db: Session, token: str, pk: int, SH_CPMK_MHS):
                                 break
 
             else:
-                print("Mahasiswa row {} tidak terdaftar!".format(row))
+                pass
+                # print("Mahasiswa row {} tidak terdaftar!".format(row))
 
     print("success insert CPMK Mahasiswa ...")
 
@@ -722,8 +751,51 @@ def getNilaiSiap(db: Session, id: int):
 
     now = datetime.now().strftime("%Y_%m_%d-%I_%M_%S")
     path = "files/siap/SIAP_{}_{}_{}.xlsx".format(
-        (matkul.mata_kuliah).upper().replace(" ", "_"), pk.semester.lower(), now
+        (matkul.mata_kuliah).upper().replace(
+            " ", "_"), pk.semester.lower(), now
     )
     wb.save(path)
 
     return path
+
+
+def getJinjaPortofolio(db: Session, request: Request, id: int):
+    uri = 'files/template/'
+    shutil.copyfile(uri + 'portofolio.html', uri + 'output.html')
+
+    data = []
+
+    pk = db.query(Perkuliahan).filter_by(id=id).first()
+    mapping = db.query(MappingMahasiswa).filter_by(perkuliahan_id=id).all()
+    for map in mapping:
+        data.append({
+            'nim': map.mahasiswa.nim,
+            'full_name': map.mahasiswa.full_name
+        })
+
+    environment = Environment(loader=FileSystemLoader("files/template/"))
+    template = environment.get_template("output.html")
+    page = template.render({
+        'data': data
+    })
+
+    f = open(uri + 'output.html', "w")
+    f.write(page)
+    f.close()
+
+    pdfkit.from_file(
+        uri + 'output.html',
+        uri + 'output.pdf',
+        options={"enable-local-file-access": ""},
+    )
+
+    os.unlink(uri + 'output.html')
+
+    pdfs = ['files/cpmk/Portofolio CPMK MK ver6-Fismat 2022-1.pdf',
+            'files/template/output.pdf']
+    merger = PdfMerger()
+    for pdf in pdfs:
+        merger.append(pdf)
+
+    merger.write(uri + "result.pdf")
+    return uri + 'result.pdf'

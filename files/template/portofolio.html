@@ -13,29 +13,120 @@
 
     <style type="text/css">
       @page {
-        size: A4;
+        size: C4;
+      }
+
+      @media print {
+        .new-page {
+          page-break-before: always;
+        }
+      }
+
+      * {
+        font-size: 10px !important;
+      }
+
+      .new-page {
+        margin-bottom: 50px;
+      }
+
+      .container {
+        padding: 15px;
+      }
+
+      .text-header {
+        text-transform: uppercase;
+      }
+
+      .text-not-header {
+        text-transform: none;
+        font-weight: normal !important;
+      }
+
+      .title {
+        font-size: 22px !important;
+        margin-top: 20px;
+        margin-bottom: 30px;
+      }
+
+      table thead tr th.color-first {
+        background-color: #ffffcc !important;
+      }
+
+      table thead tr th.color-second {
+        background-color: #ffc000 !important;
+      }
+
+      table tbody tr td.nilai {
+        background-color: #92d050 !important;
+        font-weight: bold;
+      }
+
+      table tbody tr td.three-rows {
+        background-color: #17365d !important;
+        border: 0 !important;
       }
     </style>
   </head>
 
   <body>
     <div class="container">
-      <table class="table">
+      {% for nilai in nilais %}
+      <h2 class="title">{{ nilai.0 }}</h2>
+      <table class="table table-bordered">
         <thead>
           <tr>
-            <th class="text-left" scope="col">NIM</th>
-            <th class="text-left" scope="col">Nama Mahasiswa</th>
+            <th class="text-center text-header" scope="col" rowspan="3">No</th>
+            <th class="text-left text-header" scope="col" rowspan="3">NIM</th>
+            <th class="text-left text-header" scope="col" rowspan="3">
+              Nama Mahasiswa
+            </th>
+            <th class="text-left text-header" scope="col" rowspan="3">
+              {{ nilai[0] }}
+            </th>
+            <th class="text-center text-header" scope="col">{{ nilai.0 }}</th>
+            {% for cpmk in bobotCpmkTugas %}
+            <th class="text-center text-header color-first" scope="col">
+              {{ nilai[4] }} {{ cpmk['id'] }}
+            </th>
+            {% endfor %}
+          </tr>
+          <tr>
+            <th class="text-center text-header" scope="col">CPMK</th>
+            {% for cpmk in bobotCpmkTugas %}
+            <th class="text-center text-header color-first" scope="col">
+              {{ cpmk['name'] }}
+            </th>
+            {% endfor %}
+          </tr>
+          <tr>
+            <th class="text-center text-header" scope="col">Bobot Nilai</th>
+            {% for cpmk in bobotCpmkTugas %}
+            <th class="text-center text-header color-second" scope="col">
+              {{ cpmk['bobot'] }}
+            </th>
+            {% endfor %}
           </tr>
         </thead>
+
         <tbody>
-          {% for x in data %}
+          {% for dt in data %}
           <tr>
-            <td>{{ x['nim'] }}</td>
-            <td>{{ x['full_name'] }}</td>
+            <td class="text-center">{{ dt['no'] }}</td>
+            <td>{{ dt['nim'] }}</td>
+            <td class="text-header">{{ dt['full_name'] }}</td>
+            <td class="text-center nilai">{{ dt[nilai.1] }}</td>
+            <td class="three-rows"></td>
+            {% for bobot in dt[nilai[3]] %}
+            <td class="text-center">{{ bobot }}</td>
+            {% endfor %}
           </tr>
           {% endfor %}
         </tbody>
       </table>
+
+      <p class="new-page"></p>
+      {% endfor %}
     </div>
   </body>
 </html>

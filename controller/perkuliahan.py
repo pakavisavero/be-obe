@@ -763,20 +763,131 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
     uri = 'files/template/'
     shutil.copyfile(uri + 'portofolio.html', uri + 'output.html')
 
-    data = []
+    nilais = [
+        [
+            "Nilai Tugas",
+            'nilai_tugas',
+            'bobotCpmkTugas',
+            'nilai_bobot_tugas',
+            'Tugas'
+        ],
+        [
+            "Nilai Praktek",
+            'nilai_praktek',
+            'bobotCpmkTugas',
+            'nilai_bobot_praktek',
+            'Prakt-'
+        ],
+        [
+            "Nilai UTS",
+            'nilai_uts',
+            'bobotCpmkUts',
+            'nilai_bobot_uts',
+            ''
+        ],
+        [
+            "Nilai UAS",
+            'nilai_uas',
+            'bobotCpmkUas',
+            'nilai_bobot_uas',
+            ''
+        ],
+    ]
 
-    pk = db.query(Perkuliahan).filter_by(id=id).first()
+    data = []
+    bobotCpmkTugas = []
+    bobotCpmkUts = []
+    bobotCpmkUas = []
+
     mapping = db.query(MappingMahasiswa).filter_by(perkuliahan_id=id).all()
-    for map in mapping:
+    qCpmks = db.query(CPMK).\
+        filter_by(perkuliahan_id=id).\
+        all()
+
+    for id, q in enumerate(qCpmks):
+        bobotTugas = 0
+        bobotUts = 0
+        bobotUas = 0
+
+        qBobotTugas = db.query(NilaiTugas).filter_by(cpmk_id=q.id).all()
+        if bobotTugas == 0:
+            for bobot in qBobotTugas:
+                if bobot.bobot_cpmk:
+                    bobotTugas = bobot.bobot_cpmk
+
+        qBobotUts = db.query(NilaiUTS).filter_by(cpmk_id=q.id).all()
+        if bobotUts == 0:
+            for bobot in qBobotUts:
+                if bobot.bobot_cpmk:
+                    bobotUts = bobot.bobot_cpmk
+
+        qBobotUas = db.query(NilaiUAS).filter_by(cpmk_id=q.id).all()
+        if bobotUas == 0:
+            for bobot in qBobotUas:
+                if bobot.bobot_cpmk:
+                    bobotUas = bobot.bobot_cpmk
+
+        bobotCpmkTugas.append({
+            'id': id + 1,
+            'name': q.name,
+            'bobot': str(bobotTugas * 100) + '%',
+        })
+        bobotCpmkUts.append({
+            'id': id + 1,
+            'name': q.name,
+            'bobot': str(bobotUts * 100) + '%',
+        })
+        bobotCpmkUas.append({
+            'id': id + 1,
+            'name': q.name,
+            'bobot': str(bobotUas * 100) + '%',
+        })
+
+    for id, map in enumerate(mapping):
+        pokok = db.query(NilaiPokok).filter_by(mapping_mhs_id=map.id).first()
+
+        nilai_bobot_tugas = []
+        nilai_bobot_praktek = []
+        nilai_bobot_uts = []
+        nilai_bobot_uas = []
+
+        for q in qCpmks:
+            qTugas = db.query(NilaiTugas).filter_by(
+                mapping_mhs_id=map.id, cpmk_id=q.id).first()
+            qPraktek = db.query(NilaiPraktek).filter_by(
+                mapping_mhs_id=map.id, cpmk_id=q.id).first()
+            qUts = db.query(NilaiUTS).filter_by(
+                mapping_mhs_id=map.id, cpmk_id=q.id).first()
+            qUas = db.query(NilaiUAS).filter_by(
+                mapping_mhs_id=map.id, cpmk_id=q.id).first()
+
+            nilai_bobot_tugas.append(qTugas.nilai_cpmk if qTugas else 0)
+            nilai_bobot_praktek.append(qPraktek.nilai_cpmk if qPraktek else 0)
+            nilai_bobot_uts.append(qUts.nilai_cpmk if qUts else 0)
+            nilai_bobot_uas.append(qUas.nilai_cpmk if qUas else 0)
+
         data.append({
+            'no': id + 1,
             'nim': map.mahasiswa.nim,
-            'full_name': map.mahasiswa.full_name
+            'full_name': map.mahasiswa.full_name,
+            'nilai_tugas': round(pokok.nilai_tugas, 2),
+            'nilai_praktek': round(pokok.nilai_praktek, 2),
+            'nilai_uts': round(pokok.nilai_uts, 2),
+            'nilai_uas': round(pokok.nilai_uas, 2),
+            'nilai_bobot_tugas': nilai_bobot_tugas,
+            'nilai_bobot_praktek': nilai_bobot_praktek,
+            'nilai_bobot_uts': nilai_bobot_uts,
+            'nilai_bobot_uas': nilai_bobot_uas,
         })
 
     environment = Environment(loader=FileSystemLoader("files/template/"))
     template = environment.get_template("output.html")
     page = template.render({
-        'data': data
+        'nilais': nilais,
+        'data': data,
+        'bobotCpmkTugas': bobotCpmkTugas,
+        'bobotCpmkUts': bobotCpmkUts,
+        'bobotCpmkUas': bobotCpmkUas,
     })
 
     f = open(uri + 'output.html', "w")
@@ -793,6 +904,7 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
 
     pdfs = ['files/cpmk/Portofolio CPMK MK ver6-Fismat 2022-1.pdf',
             'files/template/output.pdf']
+
     merger = PdfMerger()
     for pdf in pdfs:
         merger.append(pdf)

@@ -141,7 +141,7 @@
               {{ nilai[0] }}
             </th>
             <th class="text-center text-header" scope="col">{{ nilai.0 }}</th>
-            {% for cpmk in bobotCpmkTugas %}
+            {% for cpmk in bobot[nilai[2]] %}
             <th class="text-center text-header color-first" scope="col">
               {{ nilai[4] }} {{ cpmk['id'] }}
             </th>
@@ -149,7 +149,7 @@
           </tr>
           <tr>
             <th class="text-center text-header" scope="col">CPMK</th>
-            {% for cpmk in bobotCpmkTugas %}
+            {% for cpmk in bobot[nilai[2]] %}
             <th class="text-center text-header color-first" scope="col">
               {{ cpmk['name'] }}
             </th>
@@ -157,7 +157,7 @@
           </tr>
           <tr>
             <th class="text-center text-header" scope="col">Bobot Nilai</th>
-            {% for cpmk in bobotCpmkTugas %}
+            {% for cpmk in bobot[nilai[2]] %}
             <th class="text-center text-header color-second" scope="col">
               {{ cpmk['bobot'] }}
             </th>

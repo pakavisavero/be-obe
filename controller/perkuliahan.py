@@ -776,7 +776,7 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
         [
             "Nilai Praktek",
             'nilai_praktek',
-            'bobotCpmkTugas',
+            'bobotCpmkPraktek',
             'nilai_bobot_praktek',
             'Prakt-'
         ],
@@ -798,6 +798,7 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
 
     data = []
     bobotCpmkTugas = []
+    bobotCpmkPraktek = []
     bobotCpmkUts = []
     bobotCpmkUas = []
 
@@ -815,32 +816,38 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
 
     for id, q in enumerate(qCpmks):
         bobotTugas = 0
+        bobotPraktek = 0
         bobotUts = 0
         bobotUas = 0
 
-        qBobotTugas = db.query(NilaiTugas).filter_by(cpmk_id=q.id).all()
-        if bobotTugas == 0:
-            for bobot in qBobotTugas:
-                if bobot.bobot_cpmk:
-                    bobotTugas = bobot.bobot_cpmk
+        qBobotTugas = db.query(NilaiTugas).filter_by(cpmk_id=q.id).first()
+        if qBobotTugas:
+            bobotTugas = qBobotTugas.bobot_cpmk
 
-        qBobotUts = db.query(NilaiUTS).filter_by(cpmk_id=q.id).all()
-        if bobotUts == 0:
-            for bobot in qBobotUts:
-                if bobot.bobot_cpmk:
-                    bobotUts = bobot.bobot_cpmk
+        qBobotPraktek = db.query(NilaiPraktek).filter_by(cpmk_id=q.id).first()
+        if qBobotPraktek:
+            bobotPraktek = qBobotPraktek.bobot_cpmk
 
-        qBobotUas = db.query(NilaiUAS).filter_by(cpmk_id=q.id).all()
-        if bobotUas == 0:
-            for bobot in qBobotUas:
-                if bobot.bobot_cpmk:
-                    bobotUas = bobot.bobot_cpmk
+        qBobotUts = db.query(NilaiUTS).filter_by(cpmk_id=q.id).first()
+        if qBobotUts:
+            bobotUts = qBobotUts.bobot_cpmk
+
+        qBobotUas = db.query(NilaiUAS).filter_by(cpmk_id=q.id).first()
+        if qBobotUas:
+            bobotUas = qBobotUas.bobot_cpmk
 
         bobotCpmkTugas.append({
             'id': id + 1,
             'name': q.name,
             'bobot': str(bobotTugas * 100) + '%',
         })
+
+        bobotCpmkPraktek.append({
+            'id': id + 1,
+            'name': q.name,
+            'bobot': str(bobotPraktek * 100) + '%',
+        })
+
         bobotCpmkUts.append({
             'id': id + 1,
             'name': q.name,
@@ -851,6 +858,10 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
             'name': q.name,
             'bobot': str(bobotUas * 100) + '%',
         })
+
+        bobotTugas = 0
+        bobotUts = 0
+        bobotUas = 0
 
     for id, map in enumerate(mapping):
         pokok = db.query(NilaiPokok).filter_by(mapping_mhs_id=map.id).first()
@@ -911,9 +922,12 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
         'nilais': nilais,
         'data': data,
         'pk': pk,
-        'bobotCpmkTugas': bobotCpmkTugas,
-        'bobotCpmkUts': bobotCpmkUts,
-        'bobotCpmkUas': bobotCpmkUas,
+        'bobot': {
+            'bobotCpmkTugas': bobotCpmkTugas,
+            'bobotCpmkPraktek': bobotCpmkPraktek,
+            'bobotCpmkUts': bobotCpmkUts,
+            'bobotCpmkUas': bobotCpmkUas,
+        }
     })
 
     f = open(uri + 'output.html', "w")

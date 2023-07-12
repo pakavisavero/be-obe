@@ -12,7 +12,6 @@ from db.schemas.assessmentProdiSchema import (
     AssessmentProdiResponseSchema,
 )
 
-
 ASSESSMENT_PRODI = "/assessment-prodi"
 
 def errArray(idx):

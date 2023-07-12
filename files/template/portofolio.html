@@ -13,17 +13,22 @@
 
     <style type="text/css">
       @page {
-        size: C4;
+        size: 100mm 200mm landscape;
       }
 
       @media print {
         .new-page {
           page-break-before: always;
         }
+
+        body {
+          width: 21cm;
+          height: 29.7cm;
+        }
       }
 
       * {
-        font-size: 10px !important;
+        font-size: 11px !important;
       }
 
       .new-page {
@@ -60,10 +65,61 @@
       table tbody tr td.nilai {
         background-color: #92d050 !important;
         font-weight: bold;
+        border: 0 !important;
       }
 
       table tbody tr td.three-rows {
         background-color: #17365d !important;
+        border: 0 !important;
+      }
+
+      table#form-siap tbody tr td.list {
+        width: 100px;
+      }
+
+      table#form-siap tbody tr td.semicolon {
+        width: 40px;
+      }
+
+      table.list-mahasiswa {
+        margin-top: 40px;
+      }
+
+      table.list-mahasiswa thead tr th.blueBg {
+        background-color: #8db3e2 !important;
+        border: 0 !important;
+      }
+
+      table.list-mahasiswa thead tr th.orangeBg {
+        background-color: #ffc000 !important;
+        border: 0 !important;
+      }
+
+      table.list-mahasiswa tbody tr td.blueLightBg {
+        background-color: #c6d9f0 !important;
+        text-align: center;
+        border: 0 !important;
+      }
+
+      table.list-mahasiswa tbody tr td.greenBg,
+      table.list-mahasiswa tbody tr td.lulusBg {
+        background-color: #92d050 !important;
+        text-align: center;
+        color: white;
+        border: 0 !important;
+      }
+
+      table.list-mahasiswa tbody tr td.remidiBg {
+        background-color: #ffffcc !important;
+        text-align: center;
+        color: black;
+        border: 0 !important;
+      }
+
+      table.list-mahasiswa tbody tr td.tidakLulusBg {
+        background-color: #c9211e !important;
+        text-align: center;
+        color: white;
         border: 0 !important;
       }
     </style>
@@ -124,9 +180,110 @@
           {% endfor %}
         </tbody>
       </table>
-
       <p class="new-page"></p>
       {% endfor %}
+
+      <table id="form-siap">
+        <tbody>
+          <tr>
+            <td class="list">Mata Kuliah</td>
+            <td class="semicolon">:</td>
+            <td>
+              {{ pk.mataKuliah.kode_mk }} - {{ pk.mataKuliah.mata_kuliah }}
+            </td>
+          </tr>
+          <tr>
+            <td class="list">Tahun Ajaran</td>
+            <td class="semicolon">:</td>
+            <td>{{ pk.tahunAjaran.tahun_ajaran }}</td>
+          </tr>
+          <tr>
+            <td class="list">Semester</td>
+            <td class="semicolon">:</td>
+            <td>{{ pk.semester }}</td>
+          </tr>
+          <tr>
+            <td class="list">Kelas</td>
+            <td class="semicolon">:</td>
+            <td>{{ pk.kelas }}</td>
+          </tr>
+          <tr>
+            <td class="list">Program Studi</td>
+            <td class="semicolon">:</td>
+            <td>{{ pk.prodi.prodi }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered list-mahasiswa">
+        <thead>
+          <th class="text-left text-header blueBg" scope="col">NIM</th>
+          <th class="text-left text-header blueBg" scope="col">
+            Nama Mahasiswa
+          </th>
+          <th class="text-left text-header blueBg" scope="col">Semester</th>
+          <th class="text-left text-header blueBg" scope="col">Status</th>
+          <th class="text-left text-header blueBg" scope="col">
+            <span style="display: block !important">Nilai Tugas</span>
+            <span>Studi Kasus </span>
+            <span>(0-100)</span>
+          </th>
+          <th class="text-left text-header blueBg" scope="col">
+            <span style="display: block !important">Nilai Praktek</span>
+            <span>(0-100)</span>
+          </th>
+          <th class="text-left text-header blueBg" scope="col">
+            <span style="display: block !important">Nilai UTS</span>
+            <span>(0-100)</span>
+          </th>
+          <th class="text-left text-header blueBg" scope="col">
+            <span style="display: block !important">Nilai UAS</span>
+            <span>(0-100)</span>
+          </th>
+          <th class="text-left text-header blueBg" scope="col">
+            <span style="display: block !important">Nilai Akhir</span>
+            <span style="display: block !important">Angka</span>
+            <span>(0-100)</span>
+          </th>
+          <th class="text-left text-header blueBg" scope="col">
+            <span style="display: block !important">Nilai Akhir</span>
+            <span style="display: block !important">Huruf</span>
+            <span>(A / B / C / D)</span>
+          </th>
+          <th class="text-left text-header blueBg" scope="col">
+            <span style="display: block !important">Nilai</span>
+            <span style="display: block !important">Bobot</span>
+            <span>(0 - 4)</span>
+          </th>
+          <th class="text-left text-header orangeBg" scope="col">
+            <span style="display: block !important">Outcome</span>
+          </th>
+        </thead>
+        <tbody>
+          {% for dt in data %}
+          <tr>
+            <td>{{ dt['nim'] }}</td>
+            <td>{{ dt['full_name'] }}</td>
+            <td>{{ dt['semester'] }}</td>
+            <td>{{ dt['status'] }}</td>
+            <td class="blueLightBg">{{ dt['nilai_tugas'] }}</td>
+            <td class="blueLightBg">{{ dt['nilai_praktek'] }}</td>
+            <td class="blueLightBg">{{ dt['nilai_uts'] }}</td>
+            <td class="blueLightBg">{{ dt['nilai_uas'] }}</td>
+            <td class="blueLightBg">{{ dt['nilai_akhir'] }}</td>
+            <td class="blueLightBg">{{ dt['nilai_akhir_huruf'] }}</td>
+            <td class="blueLightBg">{{ dt['nilai_bobot'] }}</td>
+            {% if dt['color'] == '#92d050' %}
+            <td class="lulusBg">{{ dt['keterangan'] }}</td>
+            {% elif dt['color'] == '#ffffcc' %}
+            <td class="remidiBg">{{ dt['keterangan'] }}</td>
+            {% else %}
+            <td class="tidakLulusBg">{{ dt['keterangan'] }}</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </body>
 </html>

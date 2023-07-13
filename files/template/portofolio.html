@@ -85,17 +85,23 @@
         margin-top: 40px;
       }
 
-      table.list-mahasiswa thead tr th.blueBg {
+      table.list-mahasiswa thead tr th.blueBg,
+      table#evaluasi thead tr th.blueBg,
+      table#table-cpl thead tr th.blueBg {
         background-color: #8db3e2 !important;
         border: 0 !important;
       }
 
-      table.list-mahasiswa thead tr th.orangeBg {
+      table.list-mahasiswa thead tr th.orangeBg,
+      table#evaluasi thead tr th.blueBg,
+      table#table-cpl thead tr th.orangeBg {
         background-color: #ffc000 !important;
         border: 0 !important;
       }
 
-      table.list-mahasiswa tbody tr td.blueLightBg {
+      table.list-mahasiswa tbody tr td.blueLightBg,
+      table#evaluasi thead tr th.blueBg,
+      table#table-cpl thead tr th.blueLightBg {
         background-color: #c6d9f0 !important;
         text-align: center;
         border: 0 !important;
@@ -107,6 +113,10 @@
         text-align: center;
         color: white;
         border: 0 !important;
+      }
+
+      table#cpmk-cpl-header tbody tr td.orangeBg {
+        background-color: #ffff99 !important;
       }
 
       table.list-mahasiswa tbody tr td.remidiBg {
@@ -122,11 +132,164 @@
         color: white;
         border: 0 !important;
       }
+
+      table#list-cpmk thead tr th.blueBg,
+      table#list-cpmk tbody tr td.blueBg {
+        background-color: #8db3e2 !important;
+      }
+
+      table#evaluasi thead tr th.orangeBg,
+      table#list-cpmk tbody tr td.orangeBg {
+        background-color: #ffff99 !important;
+      }
+
+      table#evaluasi thead tr th.yellowBg,
+      table#evaluasi tbody tr td.yellowBg,
+      table#table-cpl thead tr th.yellowBg {
+        background-color: #ffff00 !important;
+      }
+
+      table#evaluasi tbody tr td.orangeBg,
+      table#evaluasi thead tr th.orangeBg,
+      table#table-cpl tbody tr td.orangeBg {
+        background-color: #ffdbb6 !important;
+      }
+
+      table#table-cpmk thead tr th.yellowBg {
+        background-color: #ffff00 !important;
+      }
+
+      table#evaluasi tbody tr td.redBg {
+        background-color: #ffd7d7 !important;
+        color: brown;
+      }
+
+      table#cpmk-cpl-header tbody tr td {
+        padding: 5px;
+      }
+
+      table#list-cpl tbody tr td,
+      table#list-cpmk tbody tr td {
+        padding: 8px;
+      }
+
+      table#form-siap tbody tr td {
+        padding: 5px;
+      }
+
+      h2#title-cpl {
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-top: 50px;
+      }
+
+      table#list-cpl {
+        margin-bottom: 40px;
+      }
+
+      .fontWeight {
+        font-weight: bold;
+      }
     </style>
   </head>
 
   <body>
     <div class="container">
+      <h2 class="title">CPMK-CPL</h2>
+      <table id="cpmk-cpl-header">
+        <tbody>
+          <tr>
+            <td class="list fontWeight">Mata Kuliah</td>
+            <td class="semicolon">:</td>
+            <td class="orangeBg">
+              {{ pk.mataKuliah.kode_mk }} - {{ pk.mataKuliah.mata_kuliah }}
+            </td>
+          </tr>
+          <tr>
+            <td class="list fontWeight">Tahun Ajaran</td>
+            <td class="semicolon">:</td>
+            <td class="orangeBg">{{ pk.tahunAjaran.tahun_ajaran }}</td>
+          </tr>
+          <tr>
+            <td class="list fontWeight">Semester</td>
+            <td class="semicolon">:</td>
+            <td class="orangeBg">{{ pk.semester }}</td>
+          </tr>
+          <tr>
+            <td class="list fontWeight">Kelas</td>
+            <td class="semicolon">:</td>
+            <td class="orangeBg">{{ pk.kelas }}</td>
+          </tr>
+          <tr>
+            <td class="list fontWeight">Program Studi</td>
+            <td class="semicolon">:</td>
+            <td class="orangeBg">{{ pk.prodi.prodi }}</td>
+          </tr>
+          <tr>
+            <td class="list fontWeight">Pengampu</td>
+            <td class="semicolon">:</td>
+            <td class="orangeBg">{{ pengampu }}</td>
+          </tr>
+          <tr>
+            <td class="list fontWeight">Koord. Pengampu</td>
+            <td class="semicolon">:</td>
+            <td class="orangeBg">{{ pk.dosen1.full_name }}</td>
+          </tr>
+          <tr>
+            <td class="list fontWeight">NIP Koord.</td>
+            <td class="semicolon">:</td>
+            <td class="orangeBg">{{ pk.dosen1.nip }}</td>
+          </tr>
+          <tr>
+            <td class="list fontWeight">SKS</td>
+            <td class="semicolon">:</td>
+            <td class="orangeBg">{{ pk.mataKuliah.sks }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="title-cpl" class="title">Capaian Pembelajaran Lulusan</h2>
+      <table id="list-cpl" class="table-bordered">
+        <tbody>
+          {% for cpl in cpl_prodis %}
+          <tr>
+            <td>[{{ cpl.name }}]</td>
+            <td>{{ cpl.statement }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <table id="list-cpmk" class="table-bordered">
+        <thead>
+          <tr>
+            <th class="blueBg" scope="col" colspan="2" rowspan="2">
+              Daftar Capaian Pembelajaran Mata Kuliah (CPMK)
+            </th>
+            <th class="blueBg" scope="col" colspan="{{jm_cpl}}">
+              Korelasi Capaian Pembelajaran Lulusan (CPL) (%)
+            </th>
+          </tr>
+          <tr>
+            {% for cpl in cpl_prodis %}
+            <th class="blueBg" scope="col">{{ cpl.name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for cpmk in cpmk_matkul %}
+          <tr>
+            <td class="blueBg">{{ cpmk.name }}</td>
+            <td class="orangeBg">{{ cpmk.statement }}</td>
+            {% for cpl in cpl_prodis %}
+            <td class="orangeBg">{{ mapping[cpmk.name][cpl.name] }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p class="new-page"></p>
+
       {% for nilai in nilais %}
       <h2 class="title">{{ nilai.0 }}</h2>
       <table class="table table-bordered">
@@ -183,6 +346,7 @@
       <p class="new-page"></p>
       {% endfor %}
 
+      <h2 class="title">Form Nilai SIAP</h2>
       <table id="form-siap">
         <tbody>
           <tr>
@@ -280,6 +444,126 @@
             {% else %}
             <td class="tidakLulusBg">{{ dt['keterangan'] }}</td>
             {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <p class="new-page"></p>
+      <h2 class="title">CPMK</h2>
+      <table id="table-cpmk" class="table table-bordered">
+        <thead>
+          <th class="text-center text-header yellowBg" scope="col">No</th>
+          <th class="text-left text-header yellowBg" scope="col">NIM</th>
+          <th class="text-left text-header yellowBg" scope="col">
+            Nama Mahasiswa
+          </th>
+          {% for cpmk in cpmk_matkul %}
+          <th class="text-left text-header yellowBg" scope="col">
+            {{ cpmk.name }}
+          </th>
+          <th class="text-left text-header yellowBg" scope="col"></th>
+          {% endfor %}
+        </thead>
+        <tbody>
+          {% for dt in data %}
+          <tr>
+            <td>{{ dt['no'] }}</td>
+            <td>{{ dt['nim'] }}</td>
+            <td>{{ dt['full_name'] }}</td>
+            {% for cpmk in cpmk_matkul %}
+            <td class="text-center">
+              {{ dt['nilai_single_cpmk'][cpmk.name]['nilai'] }}
+            </td>
+            <td class="text-center">
+              {{ dt['nilai_single_cpmk'][cpmk.name]['bobot'] }}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <p class="new-page"></p>
+      <h2 class="title">CPL</h2>
+      <table id="table-cpl" class="table table-bordered">
+        <thead>
+          <th class="text-center text-header orangeBg" scope="col">No</th>
+          <th class="text-left text-header orangeBg" scope="col">NIM</th>
+          <th class="text-left text-header orangeBg" scope="col">
+            Nama Mahasiswa
+          </th>
+          <th class="text-center text-header orangeBg" scope="col">
+            Nilai Akhir
+          </th>
+          {% for cpl_prodi in cpl_prodis %}
+          <th class="text-left text-header blueBg" scope="col">
+            {{ cpl_prodi.name }}
+          </th>
+          {% endfor %}
+        </thead>
+        <tbody>
+          {% for dt in data %}
+          <tr>
+            <td class="text-center">{{ dt['no'] }}</td>
+            <td>{{ dt['nim'] }}</td>
+            <td>{{ dt['full_name'] }}</td>
+            <td class="text-center">{{ dt['nilai_akhir_cpl'] }}</td>
+            {% for cpl_prodi in cpl_prodis %}
+            <td class="text-center">
+              {{ dt['nilai_single_cpl'][cpl_prodi.name] }}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <p class="new-page"></p>
+      <h2 class="title">Evaluasi</h2>
+      <table id="evaluasi" class="table table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center text-header" scope="col">Target Minimal</th>
+            <th class="text-center text-header blueBg" scope="col">
+              {{ evaluasiMain.rerata }}
+            </th>
+            <th class="text-center text-header yellowBg" scope="col">
+              {{ evaluasiMain.ambang }}
+            </th>
+            <th class="text-center text-header" scope="col" rowspan="2">
+              Memenuhi?
+            </th>
+            <th class="text-left text-header" scope="col" rowspan="2">
+              Analisis Pelaksanaan Pembelajaran
+            </th>
+            <th class="text-left text-header" scope="col" rowspan="2">
+              Rencana Perbaikan Semester Depan
+            </th>
+          </tr>
+          <tr>
+            <th class="text-center text-header orangeBg" scope="col">CPMK</th>
+            <th class="text-center text-header" scope="col">Rerata</th>
+            <th class="text-center text-header" scope="col">Ambang</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cpmk in cpmk_matkul %}
+          <tr>
+            <td class="text-center orangeBg">{{ cpmk['name'] }}</td>
+            <td class="text-center">{{ evaluasi[cpmk.name]['rerata'] }}</td>
+            <td class="text-center">{{ evaluasi[cpmk.name]['ambang'] }}</td>
+            {% if evaluasi[cpmk.name]['memenuhi'] == 'IYA' %}
+            <td class="text-center yellowBg">
+              {{ evaluasi[cpmk.name]['memenuhi'] }}
+            </td>
+            {% else %}
+            <td class="text-center redBg">
+              {{ evaluasi[cpmk.name]['memenuhi'] }}
+            </td>
+            {% endif %}
+            <td class="text-left">{{ evaluasi[cpmk.name]['analsis'] }}</td>
+            <td class="text-left">{{ evaluasi[cpmk.name]['rencana'] }}</td>
           </tr>
           {% endfor %}
         </tbody>

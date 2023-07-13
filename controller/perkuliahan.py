@@ -54,6 +54,63 @@ def get_nilai_huruf(nilai, cpmk=[]):
             return ["E", 0, "Tidak Lulus", '#c9211e']
 
 
+def get_nilai_huruf_no_remidi(nilai):
+    if nilai >= 80:
+        return "A"
+    elif nilai >= 70:
+        return "B"
+    elif nilai >= 60:
+        return "C"
+    elif nilai >= 51:
+        return "D"
+    else:
+        return "E"
+
+
+def get_single_cpl(cpls):
+    temp = {}
+    bobot = 0
+    for cpl in cpls:
+        val = round(float(cpl.value), 2)
+        if val >= 80:
+            bobot = 4
+        elif val >= 70:
+            bobot = 3
+        elif val >= 60:
+            bobot = 2
+        elif val >= 51:
+            bobot = 1
+
+        temp[cpl.cpl.name] = bobot
+        bobot = 0
+
+    return temp
+
+
+def get_single_cpmk(cpmk):
+    temp = {}
+    bobot = 0
+    for cp in cpmk:
+        val = round(float(cp.value), 2)
+        if val >= 80:
+            bobot = 4
+        elif val >= 70:
+            bobot = 3
+        elif val >= 60:
+            bobot = 2
+        elif val >= 51:
+            bobot = 1
+
+        temp[cp.cpmk.name] = {
+            'nilai': val,
+            'bobot': bobot,
+        }
+
+        bobot = 0
+
+    return temp
+
+
 def helperRetrievePerkuliahan(db, data):
     mahasiswa = []
     try:
@@ -801,6 +858,7 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
     bobotCpmkPraktek = []
     bobotCpmkUts = []
     bobotCpmkUas = []
+    cpls = []
 
     pk = db.query(Perkuliahan).filter_by(id=id).first()
     mapping = db.query(MappingMahasiswa).filter_by(perkuliahan_id=id).all()
@@ -810,8 +868,13 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
         filter_by(perkuliahan_id=id).\
         all()
 
+    existCpl = []
     for qc in qCpmks:
         qmap = db.query(MappingCpmkCpl).filter_by(cpmk_id=qc.id).first()
+        if qmap.cpl_id not in existCpl:
+            existCpl.append(qmap.cpl_id)
+            cpls.append(qmap.cpl)
+
         mappingCpmk.append(qmap)
 
     for id, q in enumerate(qCpmks):
@@ -871,7 +934,12 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
         nilai_bobot_uts = []
         nilai_bobot_uas = []
 
+        nilaiAkhirCpmk = []
         for q in qCpmks:
+            cpmkMhs = db.query(CpmkMahasiswa).filter_by(
+                mapping_mhs_id=map.id, cpmk_id=q.id).first()
+            nilaiAkhirCpmk.append(cpmkMhs)
+
             filter = {'mapping_mhs_id': map.id, 'cpmk_id': q.id}
             qTugas = db.query(NilaiTugas).filter_by(**filter).first()
             qPraktek = db.query(NilaiPraktek).filter_by(**filter).first()
@@ -895,6 +963,20 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
             round(float(pr_uas.replace('%', '')) / 100
                   * float(pokok.nilai_uas), 2)
 
+        nilaiAkhirCpl = []
+        singleCplMahasiswa = []
+
+        for cpl in cpls:
+            cplMhs = db.query(CplMahasiswa).filter_by(
+                mapping_mhs_id=map.id, cpl_id=cpl.id).first()
+            val = round(float(cplMhs.value), 2)
+            nilaiAkhirCpl.append(val)
+            singleCplMahasiswa.append(cplMhs)
+
+        division = len(nilaiAkhirCpl)
+        if division == 0:
+            division = 1
+
         data.append({
             'no': id + 1,
             'nim': map.mahasiswa.nim,
@@ -914,14 +996,58 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
             'nilai_bobot_praktek': nilai_bobot_praktek,
             'nilai_bobot_uts': nilai_bobot_uts,
             'nilai_bobot_uas': nilai_bobot_uas,
+            'nilai_akhir_cpl': get_nilai_huruf_no_remidi(sum(nilaiAkhirCpl) / division),
+            'nilai_single_cpl': get_single_cpl(singleCplMahasiswa),
+            'nilai_single_cpmk': get_single_cpmk(nilaiAkhirCpmk)
         })
 
+    pengampu = ""
+    if pk.dosen1:
+        pengampu += pk.dosen1.full_name + ' / '
+    if pk.dosen2:
+        pengampu += pk.dosen2.full_name + ' / '
+    if pk.dosen3:
+        pengampu += pk.dosen3.full_name
+
+    mapping = {}
+    for cpmk in qCpmks:
+        mapping[cpmk.name] = {}
+        map = db.query(MappingCpmkCpl).filter_by(cpmk_id=cpmk.id).all()
+        for m in map:
+            mapping[cpmk.name][m.cpl.name] = str(
+                int(m.value) * 100) + '%'
+
+    evaluasi = {}
+    qEval = db.query(Evaluasi).filter_by(perkuliahan_id=pk.id).all()
+    for eval in qEval:
+        evaluasi[eval.cpmk.name] = {
+            'rerata': round(float(eval.rerata), 2),
+            'ambang': str(round(float(eval.ambang) * 100, 2)) + '%',
+            'memenuhi': 'TIDAK' if not eval.memenuhi else "IYA",
+            'analsis': eval.analsis,
+            'rencana': eval.rencana,
+        }
+
+    evaluasiMain = db.query(EvaluasiMain).filter_by(
+        perkuliahan_id=pk.id).first()
+
+    setattr(evaluasiMain, 'ambang', str(
+        round(float(evaluasiMain.ambang) * 100, 2)) + '%')
+
+    cplProdi = db.query(CPL).filter_by(prodi_id=8).all()
     environment = Environment(loader=FileSystemLoader("files/template/"))
     template = environment.get_template("output.html")
     page = template.render({
         'nilais': nilais,
         'data': data,
         'pk': pk,
+        'pengampu': pengampu,
+        'cpl_prodis': cplProdi,
+        'jm_cpl': len(cplProdi),
+        'cpmk_matkul': qCpmks,
+        'mapping': mapping,
+        'evaluasi': evaluasi,
+        'evaluasiMain': evaluasiMain,
         'bobot': {
             'bobotCpmkTugas': bobotCpmkTugas,
             'bobotCpmkPraktek': bobotCpmkPraktek,
@@ -950,4 +1076,6 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
         merger.append(pdf)
 
     merger.write(uri + "result.pdf")
+    os.unlink(uri + 'output.pdf')
+
     return uri + 'result.pdf'

@@ -14,13 +14,15 @@ tz = pytz.timezone("Asia/Jakarta")
 
 def helperRetrieveMahasiswa(db, data):
     for dt in data:
-        doswal = db.query(MahasiswaDoswal).filter_by(mahasiswa_id=dt.id).first()
+        doswal = db.query(MahasiswaDoswal).filter_by(
+            mahasiswa_id=dt.id).first()
         if doswal:
             dosen = db.query(User).filter_by(id=doswal.dosen_id).first()
             setattr(dt, "doswal", dosen)
 
         perkuliahan = []
-        mapping = db.query(MappingMahasiswa).filter_by(mahasiswa_id=dt.id).all()
+        mapping = db.query(MappingMahasiswa).filter_by(
+            mahasiswa_id=dt.id).all()
         for map in mapping:
             mata_kuliah = map.perkuliahan.mataKuliah
             perkuliahan.append(
@@ -69,7 +71,7 @@ def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
     return {"data": data, "total": total}
 
 
-def getByID(db: Session, id: int, token: str, pks = []):
+def getByID(db: Session, id: int, token: str, pks=[]):
     if len(pks) > 0:
         pks = [int(pk) for pk in pks.split(",")]
 
@@ -79,7 +81,7 @@ def getByID(db: Session, id: int, token: str, pks = []):
     dataRaportCpl = []
     raportCpl = []
     labels = []
-    
+
     listOfCpl = db.query(CPL).filter_by(prodi_id=8).all()
 
     for x in listOfCpl:
@@ -100,7 +102,6 @@ def getByID(db: Session, id: int, token: str, pks = []):
                             raport['value'].append(round(float(cp.value), 2))
                     else:
                         raport['value'].append(round(float(cp.value), 2))
-                    
 
     cplAll = db.query(CplMahasiswa).all()
     for cp in cplAll:
@@ -108,12 +109,12 @@ def getByID(db: Session, id: int, token: str, pks = []):
             if raport['name'] == cp.cpl.name:
                 raport['rerata'].append(round(float(cp.value), 2))
 
-
     for r in raportCpl:
         value = sum(r['value']) / (len(r['value']) if len(r['value']) else 1)
-        rerata = sum(r['rerata']) / (len(r['rerata']) if len(r['rerata']) else 1)
-        minVal = min(r['rerata']) 
-        maxVal = max(r['rerata']) 
+        rerata = sum(r['rerata']) / (len(r['rerata'])
+                                     if len(r['rerata']) else 1)
+        minVal = min(r['rerata']) if len(r['rerata']) > 0 else 0
+        maxVal = max(r['rerata']) if len(r['rerata']) > 0 else 0
 
         dataRaportCpl.append([value, rerata, minVal, maxVal])
 
@@ -147,7 +148,8 @@ def update(db: Session, username: str, data: MahasiswaUpdateSchema):
         data.modified_by = username
 
         mahasiswa = (
-            db.query(Mahasiswa).filter(Mahasiswa.id == data.id).update(dict(data))
+            db.query(Mahasiswa).filter(
+                Mahasiswa.id == data.id).update(dict(data))
         )
 
         db.commit()

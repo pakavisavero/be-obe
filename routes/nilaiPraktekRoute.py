@@ -14,8 +14,6 @@ from db.schemas.nilaiPraktekSchema import (
     NilaiPraktekDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
 
 NILAI_PRAKTEK = "/nilai-praktek"
 
@@ -37,7 +35,8 @@ async def get_all_nilai_praktek(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = nilaiPraktek.getAllPagingFiltered(db, page, filtered_data, token)
+        query = nilaiPraktek.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,

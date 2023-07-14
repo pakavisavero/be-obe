@@ -3,7 +3,7 @@ from fastapi import Depends, status, Header
 
 from controller import fakultas
 from routes.route import app
-from controller.utils import help_filter, check_access_module
+from controller.utils import help_filter
 
 from db.session import db, getUsername
 from db.database import Session
@@ -14,8 +14,6 @@ from db.schemas.fakultasSchema import (
     FakultasDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
 
 FAKULTAS = "/fakultas"
 

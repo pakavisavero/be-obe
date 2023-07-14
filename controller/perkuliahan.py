@@ -1,19 +1,4 @@
-import decimal
-
-from fastapi.templating import Jinja2Templates
 from fastapi import Request
-
-from db.models import Perkuliahan
-from db.database import Session
-from db.schemas.perkuliahanSchema import (
-    PerkuliahanCreateSchema,
-)
-
-from db.models import *
-from controller.utils import decode_token
-
-from datetime import datetime
-from .utils import helper_static_filter, identifyRole
 from sqlalchemy import or_
 from sqlalchemy import inspect
 from openpyxl import load_workbook
@@ -23,10 +8,23 @@ from jinja2 import Environment, FileSystemLoader
 from starlette.datastructures import URL
 from pypdf import PdfMerger
 
+from db.models import *
+from db.database import Session
+from db.schemas.perkuliahanSchema import (
+    PerkuliahanCreateSchema,
+)
+
+from controller.utils import decode_token
+from datetime import datetime
+from .utils import helper_static_filter, identifyRole
+
+
 import pytz
 import pdfkit
 import shutil
 import os
+import decimal
+
 
 tz = pytz.timezone("Asia/Jakarta")
 
@@ -52,6 +50,19 @@ def get_nilai_huruf(nilai, cpmk=[]):
             return ["D", 1, "Tidak Lulus", '#c9211e']
         else:
             return ["E", 0, "Tidak Lulus", '#c9211e']
+
+
+def get_nilai_huruf_no_cpmk(nilai):
+    if nilai >= 80:
+        return ["A", 4]
+    elif nilai >= 70:
+        return ["B", 3]
+    elif nilai >= 60:
+        return ["C", 2]
+    elif nilai >= 51:
+        return ["D", 1]
+    else:
+        return ["E", 0]
 
 
 def get_nilai_huruf_no_remidi(nilai):
@@ -91,7 +102,13 @@ def get_single_cpmk(cpmk):
     temp = {}
     bobot = 0
     for cp in cpmk:
-        val = round(float(cp.value), 2)
+        value = 0
+        if cp.value and cp.value != '':
+            value = cp.value
+        else:
+            value = 0
+
+        val = round(float(value), 2)
         if val >= 80:
             bobot = 4
         elif val >= 70:
@@ -804,8 +821,8 @@ def getNilaiSiap(db: Session, id: int):
         )
 
         sheet["I" + str(row)] = na
-        sheet["J" + str(row)] = get_nilai_huruf(na)[0]
-        sheet["K" + str(row)] = get_nilai_huruf(na)[1]
+        sheet["J" + str(row)] = get_nilai_huruf_no_cpmk(na)[0]
+        sheet["K" + str(row)] = get_nilai_huruf_no_cpmk(na)[1]
 
         row += 1
 
@@ -819,7 +836,7 @@ def getNilaiSiap(db: Session, id: int):
     return path
 
 
-def getJinjaPortofolio(db: Session, request: Request, id: int):
+def getJinjaPortofolio(db: Session, request: Request, id: int, template_name: str):
     uri = 'files/template/'
     shutil.copyfile(uri + 'portofolio.html', uri + 'output.html')
     nilais = [
@@ -871,7 +888,7 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
     existCpl = []
     for qc in qCpmks:
         qmap = db.query(MappingCpmkCpl).filter_by(cpmk_id=qc.id).first()
-        if qmap.cpl_id not in existCpl:
+        if qmap and qmap.cpl_id not in existCpl:
             existCpl.append(qmap.cpl_id)
             cpls.append(qmap.cpl)
 
@@ -946,10 +963,12 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
             qUts = db.query(NilaiUTS).filter_by(**filter).first()
             qUas = db.query(NilaiUAS).filter_by(**filter).first()
 
-            nilai_bobot_tugas.append(qTugas.nilai_cpmk if qTugas else 0)
-            nilai_bobot_praktek.append(qPraktek.nilai_cpmk if qPraktek else 0)
-            nilai_bobot_uts.append(qUts.nilai_cpmk if qUts else 0)
-            nilai_bobot_uas.append(qUas.nilai_cpmk if qUas else 0)
+            nilai_bobot_tugas.append(
+                round(qTugas.nilai_cpmk, 2) if qTugas else 0)
+            nilai_bobot_praktek.append(
+                round(qPraktek.nilai_cpmk, 2) if qPraktek else 0)
+            nilai_bobot_uts.append(round(qUts.nilai_cpmk, 2) if qUts else 0)
+            nilai_bobot_uas.append(round(qUas.nilai_cpmk, 2) if qUas else 0)
 
         pr = db.query(PresentasePK).filter_by(perkuliahan_id=pk.id).first()
         pr_tugas = pr.nilai_tugas
@@ -1021,8 +1040,8 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
     qEval = db.query(Evaluasi).filter_by(perkuliahan_id=pk.id).all()
     for eval in qEval:
         evaluasi[eval.cpmk.name] = {
-            'rerata': round(float(eval.rerata), 2),
-            'ambang': str(round(float(eval.ambang) * 100, 2)) + '%',
+            'rerata': round(float(eval.rerata if eval.rerata else 0), 2),
+            'ambang': str(round(float(eval.ambang if eval.ambang else 0) * 100, 2)) + '%',
             'memenuhi': 'TIDAK' if not eval.memenuhi else "IYA",
             'analsis': eval.analsis,
             'rencana': eval.rencana,
@@ -1068,7 +1087,7 @@ def getJinjaPortofolio(db: Session, request: Request, id: int):
 
     os.unlink(uri + 'output.html')
 
-    pdfs = ['files/cpmk/Portofolio CPMK MK ver6-Fismat 2022-1.pdf',
+    pdfs = ['files/cpmk/' + template_name,
             'files/template/output.pdf']
 
     merger = PdfMerger()

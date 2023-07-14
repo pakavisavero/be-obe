@@ -14,9 +14,6 @@ from db.schemas.moduleSchema import (
     ModuleDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
-
 MODULE = "/module"
 MODULE_NAME = "Module"
 

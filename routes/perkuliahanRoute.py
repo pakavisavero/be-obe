@@ -576,7 +576,14 @@ async def save_template(
                 pass
 
         RPS = wb["RPS"]
-        KONTRAK = wb["KONTRAK"]
+        statKontrak = ''
+        KONTRAK = ''
+        try:
+            statKontrak = "KONTRAK"
+            KONTRAK = wb["KONTRAK"]
+        except Exception:
+            statKontrak = "Kontrak"
+            KONTRAK = wb["Kontrak"]
 
         pk = db.query(Perkuliahan).filter_by(id=id).first()
         dosen1 = ''
@@ -637,7 +644,7 @@ async def save_template(
             KONTRAK['G' + str(row)] = table[3]
             row += 1
 
-        for sheet in ['KONTRAK', 'RPS', 'COVER']:
+        for sheet in [statKontrak, 'RPS', 'COVER']:
             for idx, col in enumerate(wb[sheet].columns, 1):
                 wb[sheet].column_dimensions[get_column_letter(
                     idx)].auto_size = True
@@ -645,15 +652,25 @@ async def save_template(
         wb['COVER'].row_dimensions[8].height = 25
         wb['COVER'].row_dimensions[9].height = 25
         wb['RPS'].row_dimensions[9].height = 100
-        wb['KONTRAK'].row_dimensions[13].height = 70
-        wb['KONTRAK'].row_dimensions[20].height = 250
+        KONTRAK.row_dimensions[13].height = 70
+        KONTRAK.row_dimensions[20].height = 250
 
         wb.save(path)
 
         pdfName = file.filename.replace('xlsx', 'pdf')
         subprocess.run(["libreoffice", "--headless",
-                       "macro:///Standard.Module1.FitToPage", "--convert-to", "pdf", path])
+                        "macro:///Standard.Module1.FitToPage", "--convert-to", "pdf", path])
         shutil.move(pdfName, 'files/cpmk/' + pdfName)
+
+        exp = CheckExportPortofolio(
+            **{
+                "perkuliahan_id": id,
+                "template_name": pdfName,
+            }
+        )
+        db.add(exp)
+        db.commit()
+
         remove_file(path)
 
     except Exception:
@@ -665,28 +682,18 @@ async def save_template(
     return {"message": f"Successfully uploaded {file.filename}"}
 
 
-@app.get("/get-portofolio")
-async def get_portofolio(
-    db: Session = Depends(db),
-    token: str = Header(default=None),
-    background_tasks: BackgroundTasks = None
-):
-    headers = {'Content-Disposition': 'inline; filename="out.pdf"'}
-    return FileResponse(
-        'files/cpmk/Portofolio CPMK MK ver6-Fismat 2022-1.pdf',
-        headers=headers,
-        media_type='application/pdf'
-    )
-
-
-@app.get("/test-jinja" + "/{id}")
+@app.get("/get-portofolio" + "/{id}")
 async def get_portofolio(
     db: Session = Depends(db),
     token: str = Header(default=None),
     request: Request = None,
     id: int = None
-):  
-    path = perkuliahan.getJinjaPortofolio(db, request, id)
+):
+    portName = db.query(CheckExportPortofolio).filter_by(
+        perkuliahan_id=id).first()
+
+    path = perkuliahan.getJinjaPortofolio(
+        db, request, id, portName.template_name)
     headers = {'Content-Disposition': 'inline; filename="out.pdf"'}
 
     return FileResponse(

@@ -35,7 +35,8 @@ class ModuleGroup(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
 
@@ -51,7 +52,8 @@ class Module(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     moduleGroup = relationship("ModuleGroup", foreign_keys=[module_group_id])
@@ -67,7 +69,8 @@ class Fakultas(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
 
@@ -82,7 +85,8 @@ class Prodi(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     fakultas = relationship("Fakultas", foreign_keys=[fakultas_id])
@@ -105,7 +109,8 @@ class User(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     prodi = relationship("Prodi", foreign_keys=[prodi_id])
@@ -121,7 +126,8 @@ class RoleMaster(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
 
@@ -137,7 +143,8 @@ class UserRole(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     user = relationship("User", foreign_keys=[user_id])
@@ -154,7 +161,8 @@ class StatusMahasiswa(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
 
@@ -173,7 +181,8 @@ class Mahasiswa(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     prodi = relationship("Prodi", foreign_keys=[prodi_id])
@@ -192,7 +201,8 @@ class MahasiswaDoswal(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     mahasiswa = relationship("Mahasiswa", foreign_keys=[mahasiswa_id])
@@ -210,7 +220,8 @@ class Kurikulum(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
 
@@ -229,7 +240,8 @@ class MataKuliah(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     kurikulum = relationship("Kurikulum", foreign_keys=[kurikulum_id])
@@ -247,7 +259,8 @@ class TahunAjaran(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
 
@@ -260,7 +273,8 @@ class DocStatusPK(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
 
@@ -283,7 +297,8 @@ class Perkuliahan(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     dosen1 = relationship("User", foreign_keys=[dosen_id])
@@ -306,7 +321,8 @@ class Konsentrasi(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
 
@@ -321,7 +337,8 @@ class MatkulKonsentrasi(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     matkul = relationship("MataKuliah", foreign_keys=[matkul_id])
@@ -339,7 +356,8 @@ class MahasiswaKonsentrasi(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     mahasiswa = relationship("Mahasiswa", foreign_keys=[mahasiswa_id])
@@ -359,7 +377,8 @@ class MappingMahasiswa(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
@@ -377,7 +396,8 @@ class KonsentrasiProdi(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     konsentrasi = relationship("Konsentrasi", foreign_keys=[konsentrasi_id])
@@ -400,7 +420,8 @@ class RolePermission(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     role = relationship("RoleMaster", foreign_keys=[role_id])
@@ -419,7 +440,8 @@ class CPL(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     prodi = relationship("Prodi", foreign_keys=[prodi_id])
@@ -437,7 +459,8 @@ class CPMK(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
@@ -454,10 +477,12 @@ class CpmkMahasiswa(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
-    mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+    mappingMhs = relationship(
+        "MappingMahasiswa", foreign_keys=[mapping_mhs_id])
     cpmk = relationship("CPMK", foreign_keys=[cpmk_id])
 
 
@@ -472,10 +497,12 @@ class CplMahasiswa(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
-    mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+    mappingMhs = relationship(
+        "MappingMahasiswa", foreign_keys=[mapping_mhs_id])
     cpl = relationship("CPL", foreign_keys=[cpl_id])
 
 
@@ -489,7 +516,8 @@ class SiklusProdi(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     children = relationship("SiklusProdiDetail")
@@ -506,7 +534,8 @@ class SiklusProdiDetail(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
@@ -523,7 +552,8 @@ class AssessmentMatkul(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     children = relationship("AssessmentMatkulDetail")
@@ -539,7 +569,8 @@ class AssessmentMatkulDetail(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
@@ -555,7 +586,8 @@ class AssessmentProdi(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     children = relationship("AssessmentProdiDetail")
@@ -571,7 +603,8 @@ class AssessmentProdiDetail(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     siklus = relationship("SiklusProdi", foreign_keys=[siklus_id])
@@ -590,10 +623,12 @@ class NilaiPokok(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
-    mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+    mappingMhs = relationship(
+        "MappingMahasiswa", foreign_keys=[mapping_mhs_id])
 
 
 class NilaiTugas(Base):
@@ -609,10 +644,12 @@ class NilaiTugas(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
-    mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+    mappingMhs = relationship(
+        "MappingMahasiswa", foreign_keys=[mapping_mhs_id])
     cpmk = relationship("CPMK", foreign_keys=[cpmk_id])
 
 
@@ -629,10 +666,12 @@ class NilaiUAS(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
-    mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+    mappingMhs = relationship(
+        "MappingMahasiswa", foreign_keys=[mapping_mhs_id])
     cpmk = relationship("CPMK", foreign_keys=[cpmk_id])
 
 
@@ -649,10 +688,12 @@ class NilaiUTS(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
-    mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+    mappingMhs = relationship(
+        "MappingMahasiswa", foreign_keys=[mapping_mhs_id])
     cpmk = relationship("CPMK", foreign_keys=[cpmk_id])
 
 
@@ -669,10 +710,12 @@ class NilaiPraktek(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
-    mappingMhs = relationship("MappingMahasiswa", foreign_keys=[mapping_mhs_id])
+    mappingMhs = relationship(
+        "MappingMahasiswa", foreign_keys=[mapping_mhs_id])
     cpmk = relationship("CPMK", foreign_keys=[cpmk_id])
 
 
@@ -688,7 +731,8 @@ class MappingCpmkCpl(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     cpmk = relationship("CPMK", foreign_keys=[cpmk_id])
@@ -708,7 +752,8 @@ class ProdiStruktural(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     prodi = relationship("Prodi", foreign_keys=[prodi_id])
@@ -728,7 +773,8 @@ class FakultasStruktural(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     fakultas = relationship("Fakultas", foreign_keys=[fakultas_id])
@@ -749,7 +795,8 @@ class PresentasePK(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
@@ -764,7 +811,24 @@ class CheckExportDPNA(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
+
+
+class CheckExportPortofolio(Base):
+    __tablename__ = "check_export_portofolios"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    perkuliahan_id = Column(BigInteger, ForeignKey(Perkuliahan.id))
+    template_name = Column(Text())
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
@@ -781,7 +845,8 @@ class EvaluasiMain(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
@@ -803,7 +868,8 @@ class Evaluasi(Base):
 
     created_at = Column(DateTime, default=datetime.now())
     created_by = Column(String(length=120), nullable=True)
-    modified_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
     modified_by = Column(String(length=120), nullable=True)
 
     cpmk = relationship("CPMK", foreign_keys=[cpmk_id])

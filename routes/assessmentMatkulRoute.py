@@ -3,7 +3,7 @@ from fastapi import Depends, status, Header
 
 from controller import assessmentMatkul
 from routes.route import app
-from controller.utils import help_filter, check_access_module
+from controller.utils import help_filter
 
 from db.session import db, getUsername
 from db.models import *
@@ -12,9 +12,7 @@ from db.schemas.assessmentMatkulSchema import (
     AssessmentMatkulResponseSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
-from sqlalchemy import cast, String, Date, desc, or_
+from sqlalchemy import cast, String
 
 
 ASSESSMENT_MATKUL = "/assessment-matkul"

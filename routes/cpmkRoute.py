@@ -3,7 +3,7 @@ from fastapi import Depends, status, Header
 
 from controller import cpmk
 from routes.route import app
-from controller.utils import help_filter, check_access_module
+from controller.utils import help_filter
 
 from db.session import db, getUsername
 from db.database import Session

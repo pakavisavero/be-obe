@@ -1,8 +1,8 @@
 from fastapi import Request
 from fastapi import Depends, status, Header
 
-from controller import nilaiUas
 from routes.route import app
+from controller import nilaiUas
 from controller.utils import help_filter, check_access_module
 
 from db.session import db, getUsername
@@ -14,8 +14,6 @@ from db.schemas.nilaiUasSchema import (
     NilaiUasDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
 
 NILAI_UAS = "/nilai-uas"
 

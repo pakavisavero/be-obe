@@ -14,9 +14,6 @@ from db.schemas.konsentrasiSchema import (
     KonsentrasiDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
-
 KONSENTRASI = "/konsentrasi"
 
 

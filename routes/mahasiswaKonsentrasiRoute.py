@@ -14,8 +14,6 @@ from db.schemas.mahasiswaKonsentrasiSchema import (
     MahasiswaKonsentrasiDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
 
 MAHASISWA_KONSENTRASI = "/mahasiswa-konsentrasi"
 

@@ -14,8 +14,6 @@ from db.schemas.mataKuliahSchema import (
     MataKuliahDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
 
 MATA_KULIAH = "/mata-kuliah"
 MODULE_NAME = "Mata Kuliah"

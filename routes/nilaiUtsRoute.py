@@ -14,8 +14,6 @@ from db.schemas.nilaiUtsSchema import (
     NilaiUtsDeleteSchema,
 )
 
-from HandlerCustom import HandlerCustom
-from db.helper import decode_token
 
 NILAI_UTS = "/nilai-uts"
 

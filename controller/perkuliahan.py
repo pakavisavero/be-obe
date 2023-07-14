@@ -852,7 +852,7 @@ def getJinjaPortofolio(db: Session, request: Request, id: int, template_name: st
             'nilai_praktek',
             'bobotCpmkPraktek',
             'nilai_bobot_praktek',
-            'Prakt-'
+            'Prak-'
         ],
         [
             "Nilai UTS",

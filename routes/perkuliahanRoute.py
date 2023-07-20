@@ -29,7 +29,7 @@ import shutil
 import subprocess
 
 
-PERKULIAHAN = "/perkuliahan"
+PERKULIAHAN = "/api/perkuliahan"
 MODULE_NAME = "KBM Aktif"
 
 
@@ -149,7 +149,7 @@ async def delete_perkuliahan(
     }
 
 
-@app.get('/get-perkuliahan-by-matkul/{id}')
+@app.get('/api/get-perkuliahan-by-matkul/{id}')
 async def get_perkuliahan_by_matkul(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -371,7 +371,7 @@ async def upload(
         }
 
 
-@app.post("/dpna" + "-upload")
+@app.post("/api/dpna" + "-upload")
 async def upload_dpna(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -522,7 +522,7 @@ async def upload_dpna(
     #     raise HandlerCustom(data=data)
 
 
-@app.get("/get-template/{id}", response_model=PerkuliahanResponseSchema)
+@app.get("/api/get-template/{id}", response_model=PerkuliahanResponseSchema)
 async def bg_task_template(
     db: Session = Depends(db),
     background_tasks=BackgroundTasks,
@@ -538,7 +538,7 @@ async def bg_task_template(
         return FileResponse(path=dir, filename=dir.replace("files/", ""))
 
 
-@app.post('/save-template')
+@app.post('/api/save-template')
 async def save_template(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -682,7 +682,7 @@ async def save_template(
     return {"message": f"Successfully uploaded {file.filename}"}
 
 
-@app.get("/get-portofolio" + "/{id}")
+@app.get("/api/get-portofolio" + "/{id}")
 async def get_portofolio(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -776,7 +776,7 @@ def get_template(db: Session, id: int):
     db.commit()
 
 
-@app.post("/cpmk" + "-upload")
+@app.post("/api/cpmk" + "-upload")
 async def upload_cpmk(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -872,7 +872,7 @@ def remove_file(path: str) -> None:
     os.unlink(path)
 
 
-@app.get("/get-form-siap/{id}")
+@app.get("/api/get-form-siap/{id}")
 async def upload_form_siap(
     db: Session = Depends(db),
     token: str = Header(default=None),

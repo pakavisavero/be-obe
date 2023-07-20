@@ -9,7 +9,7 @@ from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 from db.models import Mahasiswa, MataKuliah, Prodi
 
-DASHBOARD = "/dashboard"
+DASHBOARD = "/api/dashboard"
 
 
 @app.get(DASHBOARD + "s")

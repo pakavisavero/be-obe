@@ -17,7 +17,7 @@ from db.schemas.cpmkSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-CPMK = "/cpmk"
+CPMK = "/api/cpmk"
 
 
 def errArray(idx):

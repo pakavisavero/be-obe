@@ -30,7 +30,7 @@ from controller import (
 )
 
 
-@app.get("/option/user", response_model=UserResponseSchema)
+@app.get("/api/option/user", response_model=UserResponseSchema)
 async def get_option_user(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -57,7 +57,7 @@ async def get_option_user(
         }
 
 
-@app.get("/option/fakultas", response_model=FakultasResponseSchema)
+@app.get("/api/option/fakultas", response_model=FakultasResponseSchema)
 async def get_option_fakultas(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -85,7 +85,7 @@ async def get_option_fakultas(
         }
 
 
-@app.get("/option/kurikulum", response_model=KurikulumResponseSchema)
+@app.get("/api/option/kurikulum", response_model=KurikulumResponseSchema)
 async def get_option_kurikulum(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -112,7 +112,7 @@ async def get_option_kurikulum(
         }
 
 
-@app.get("/option/mata-kuliah", response_model=MataKuliahResponseSchema)
+@app.get("/api/option/mata-kuliah", response_model=MataKuliahResponseSchema)
 async def get_option_mata_kuliah(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -139,7 +139,7 @@ async def get_option_mata_kuliah(
         }
 
 
-@app.get("/option/prodi", response_model=ProdiResponseSchema)
+@app.get("/api/option/prodi", response_model=ProdiResponseSchema)
 async def get_option_prodi(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -166,7 +166,7 @@ async def get_option_prodi(
         }
 
 
-@app.get("/option/status-mahasiswa", response_model=StatusMahasiswaResponseSchema)
+@app.get("/api/option/status-mahasiswa", response_model=StatusMahasiswaResponseSchema)
 async def get_option_status_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -175,7 +175,8 @@ async def get_option_status_mahasiswa(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = statusMahasiswa.getAllPagingFiltered(db, page, filtered_data, token)
+        query = statusMahasiswa.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,
@@ -193,7 +194,7 @@ async def get_option_status_mahasiswa(
         }
 
 
-@app.get("/option/tahun-ajaran", response_model=TahunAjaranResponseSchema)
+@app.get("/api/option/tahun-ajaran", response_model=TahunAjaranResponseSchema)
 async def get_option_tahun_ajaran(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -202,7 +203,8 @@ async def get_option_tahun_ajaran(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = tahunAjaran.getAllPagingFiltered(db, page, filtered_data, token)
+        query = tahunAjaran.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,
@@ -220,7 +222,7 @@ async def get_option_tahun_ajaran(
         }
 
 
-@app.get("/option/doc-status-pk", response_model=DocStatusPKResponseSchema)
+@app.get("/api/option/doc-status-pk", response_model=DocStatusPKResponseSchema)
 async def get_option_doc_status_pk(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -229,7 +231,8 @@ async def get_option_doc_status_pk(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = docStatusPk.getAllPagingFiltered(db, page, filtered_data, token)
+        query = docStatusPk.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,

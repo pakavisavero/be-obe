@@ -17,7 +17,7 @@ from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 import random
 
-SIKLUS_PRODI = "/siklus-prodi"
+SIKLUS_PRODI = "/api/siklus-prodi"
 
 
 def errArray(idx):
@@ -69,8 +69,9 @@ async def get_all_siklus_prodi(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = siklusProdi.getAllPagingFiltered(db, page, filtered_data, token)
-        
+        query = siklusProdi.getAllPagingFiltered(
+            db, page, filtered_data, token)
+
         for q in query['data']:
             for child in q.children:
                 logicRetrieveSpecificCPL(
@@ -130,7 +131,8 @@ async def get_siklus_prodi_option(
                 cpmk = db.query(CPMK).filter_by(perkuliahan_id=p.id).all()
 
                 for cp in cpmk:
-                    mapping = db.query(MappingCpmkCpl).filter_by(cpmk_id=cp.id).all()
+                    mapping = db.query(MappingCpmkCpl).filter_by(
+                        cpmk_id=cp.id).all()
                     for map in mapping:
                         cpl = db.query(CPL).filter_by(id=map.cpl_id).first()
                         if not cpl.id in ids:

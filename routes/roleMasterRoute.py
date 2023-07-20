@@ -17,7 +17,7 @@ from db.schemas.roleMasterSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-ROLE_MASTER = "/role-master"
+ROLE_MASTER = "/api/role-master"
 MODULE_NAME = "Role Master"
 
 

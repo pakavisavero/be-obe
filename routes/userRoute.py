@@ -14,7 +14,7 @@ from db.schemas.userSchema import (
     UserDeleteSchema,
 )
 
-USER = "/user"
+USER = "/api/user"
 MODULE_NAME = "Users"
 
 

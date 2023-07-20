@@ -17,7 +17,7 @@ from db.schemas.cplSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-PRESENTASE_PK = "/presentase-pk"
+PRESENTASE_PK = "/api/presentase-pk"
 
 
 def errArray(idx):
@@ -37,7 +37,8 @@ async def get_all_presentase_pk(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = presentasePk.getAllPagingFiltered(db, page, filtered_data, token)
+        query = presentasePk.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,

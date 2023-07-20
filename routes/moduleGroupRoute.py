@@ -14,7 +14,7 @@ from db.schemas.moduleGroupSchema import (
     ModuleGroupDeleteSchema,
 )
 
-MODULE_GROUP = "/module-group"
+MODULE_GROUP = "/api/module-group"
 
 
 def errArray(idx):

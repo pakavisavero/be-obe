@@ -17,7 +17,7 @@ from db.schemas.rolePermissionSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-ROLE_PERMISSION = "/role-permission"
+ROLE_PERMISSION = "/api/role-permission"
 
 
 def errArray(idx):
@@ -37,7 +37,8 @@ async def get_all_role_permission(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = rolePermission.getAllPagingFiltered(db, page, filtered_data, token)
+        query = rolePermission.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,

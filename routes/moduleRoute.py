@@ -14,7 +14,7 @@ from db.schemas.moduleSchema import (
     ModuleDeleteSchema,
 )
 
-MODULE = "/module"
+MODULE = "/api/module"
 MODULE_NAME = "Module"
 
 

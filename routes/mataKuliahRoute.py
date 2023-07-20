@@ -15,7 +15,7 @@ from db.schemas.mataKuliahSchema import (
 )
 
 
-MATA_KULIAH = "/mata-kuliah"
+MATA_KULIAH = "/api/mata-kuliah"
 MODULE_NAME = "Mata Kuliah"
 
 

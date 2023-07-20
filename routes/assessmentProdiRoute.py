@@ -12,7 +12,8 @@ from db.schemas.assessmentProdiSchema import (
     AssessmentProdiResponseSchema,
 )
 
-ASSESSMENT_PRODI = "/assessment-prodi"
+ASSESSMENT_PRODI = "/api/assessment-prodi"
+
 
 def errArray(idx):
     if idx < 2:
@@ -31,7 +32,8 @@ async def get_all_assessment_prodi(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = assessmentProdi.getAllPagingFiltered(db, page, filtered_data, token)
+        query = assessmentProdi.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,

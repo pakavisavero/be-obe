@@ -17,7 +17,7 @@ from db.schemas.statusMahasiswaSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-STATUS_MHS = "/status-mahasiswa"
+STATUS_MHS = "/api/status-mahasiswa"
 
 
 def errArray(idx):
@@ -37,7 +37,8 @@ async def get_all_status_mahasiswa(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = statusMahasiswa.getAllPagingFiltered(db, page, filtered_data, token)
+        query = statusMahasiswa.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,

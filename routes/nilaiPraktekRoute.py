@@ -15,7 +15,7 @@ from db.schemas.nilaiPraktekSchema import (
 )
 
 
-NILAI_PRAKTEK = "/nilai-praktek"
+NILAI_PRAKTEK = "/api/nilai-praktek"
 
 
 def errArray(idx):

@@ -15,7 +15,7 @@ from db.schemas.mahasiswaDoswalSchema import (
 )
 
 
-MAHASISWA_DOSWAL = "/mahasiswa-doswal"
+MAHASISWA_DOSWAL = "/api/mahasiswa-doswal"
 
 
 def errArray(idx):
@@ -35,7 +35,8 @@ async def get_all_mahasiswa_doswal(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = mahasiswaDoswal.getAllPagingFiltered(db, page, filtered_data, token)
+        query = mahasiswaDoswal.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,

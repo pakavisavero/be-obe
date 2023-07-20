@@ -2,10 +2,7 @@ from fastapi import Request
 from sqlalchemy import or_
 from sqlalchemy import inspect
 from openpyxl import load_workbook
-from jinja2 import Template
-from pyvirtualdisplay import Display
 from jinja2 import Environment, FileSystemLoader
-from starlette.datastructures import URL
 from pypdf import PdfMerger
 
 from db.models import *

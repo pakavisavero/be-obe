@@ -14,7 +14,7 @@ from db.schemas.nilaiTugasSchema import (
     NilaiTugasDeleteSchema,
 )
 
-NILAI_TUGAS = "/nilai-tugas"
+NILAI_TUGAS = "/api/nilai-tugas"
 
 
 def errArray(idx):

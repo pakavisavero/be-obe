@@ -15,7 +15,7 @@ from db.schemas.nilaiUasSchema import (
 )
 
 
-NILAI_UAS = "/nilai-uas"
+NILAI_UAS = "/api/nilai-uas"
 
 
 def errArray(idx):

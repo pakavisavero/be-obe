@@ -15,7 +15,7 @@ from db.schemas.mahasiswaKonsentrasiSchema import (
 )
 
 
-MAHASISWA_KONSENTRASI = "/mahasiswa-konsentrasi"
+MAHASISWA_KONSENTRASI = "/api/mahasiswa-konsentrasi"
 
 
 def errArray(idx):

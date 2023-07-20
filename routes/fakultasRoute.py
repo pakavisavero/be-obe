@@ -15,7 +15,7 @@ from db.schemas.fakultasSchema import (
 )
 
 
-FAKULTAS = "/fakultas"
+FAKULTAS = "/api/fakultas"
 
 
 def errArray(idx):

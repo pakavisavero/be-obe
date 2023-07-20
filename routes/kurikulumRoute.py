@@ -14,7 +14,7 @@ from db.schemas.kurikulumSchema import (
     KurikulumDeleteSchema,
 )
 
-KURIKULUM = "/kurikulum"
+KURIKULUM = "/api/kurikulum"
 
 
 def errArray(idx):

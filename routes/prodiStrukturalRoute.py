@@ -17,7 +17,7 @@ from db.schemas.prodiStrukturalSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-PRODI_STRUKTURAL = "/prodi-struktural"
+PRODI_STRUKTURAL = "/api/prodi-struktural"
 
 
 def errArray(idx):
@@ -37,7 +37,8 @@ async def get_all_prodi_struktural(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = prodiStruktural.getAllPagingFiltered(db, page, filtered_data, token)
+        query = prodiStruktural.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,

@@ -14,7 +14,7 @@ from db.schemas.mappingCpmkCplSchema import (
     MappingCpmkCplDeleteSchema,
 )
 
-MAPPING_CPMK_CPL = "/mapping-cpmk-cpl"
+MAPPING_CPMK_CPL = "/api/mapping-cpmk-cpl"
 
 
 def errArray(idx):

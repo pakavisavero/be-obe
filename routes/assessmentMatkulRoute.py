@@ -15,7 +15,7 @@ from db.schemas.assessmentMatkulSchema import (
 from sqlalchemy import cast, String
 
 
-ASSESSMENT_MATKUL = "/assessment-matkul"
+ASSESSMENT_MATKUL = "/api/assessment-matkul"
 
 
 def errArray(idx):
@@ -25,7 +25,7 @@ def errArray(idx):
         return 1
 
 
-def helperRetrieveAssessmentMatkul(db, data, isEdit = False):
+def helperRetrieveAssessmentMatkul(db, data, isEdit=False):
     for dt in data:
         listOfCPL = []
 
@@ -37,13 +37,13 @@ def helperRetrieveAssessmentMatkul(db, data, isEdit = False):
         mapMhs = db.query(MappingMahasiswa).\
             filter(MappingMahasiswa.perkuliahan_id == dt.id).\
             all()
-        
+
         cplVal = []
         for map in mapMhs:
             cplMhs = db.query(CplMahasiswa).\
                 filter(CplMahasiswa.mapping_mhs_id == map.id).\
                 all()
-            
+
             for cpl in cplMhs:
                 cplVal.append(float(cpl.value))
 
@@ -52,7 +52,7 @@ def helperRetrieveAssessmentMatkul(db, data, isEdit = False):
         if sumCplDivision == 0:
             sumCplDivision = 1
 
-        rerataCpl = "{:.2f}".format(float(sumCplVal / sumCplDivision)) 
+        rerataCpl = "{:.2f}".format(float(sumCplVal / sumCplDivision))
         setattr(dt, 'rerataCpl', rerataCpl)
 
         cpmk = db.query(CPMK).filter_by(perkuliahan_id=dt.id).all()
@@ -65,12 +65,10 @@ def helperRetrieveAssessmentMatkul(db, data, isEdit = False):
                     filter(CpmkMahasiswa.mapping_mhs_id == map.id).\
                     filter(CpmkMahasiswa.cpmk_id == cp.id).\
                     all()
-                
-                print(map.id)
-                print(cp.id)
-            
+
                 for cpmk in cpmkVal:
-                    sumSingleCpmk.append(float(cpmk.value))
+                    sumSingleCpmk.append(
+                        float(cpmk.value) if cpmk.value else 0)
 
             sumCpmkVal = float(sum(sumSingleCpmk))
             sumCpmkDivision = len(sumSingleCpmk)
@@ -97,17 +95,17 @@ def helperRetrieveAssessmentMatkul(db, data, isEdit = False):
                         filter(CplMahasiswa.mapping_mhs_id == mapM.id).\
                         filter(CplMahasiswa.cpl_id == map.cpl_id).\
                         all()
-                
+
                     for single in cplSingleVal:
                         cplVal.append(float(single.value))
-                
+
                 sumSingleCplVal = float(sum(cplVal))
                 sumSingleCplDivision = float(len(cplVal))
                 if sumSingleCplDivision == 0:
                     sumSingleCplDivision = 1.0
 
-
-                rerataSingleCpl = "{:.2f}".format(sumSingleCplVal / sumSingleCplDivision) 
+                rerataSingleCpl = "{:.2f}".format(
+                    sumSingleCplVal / sumSingleCplDivision)
 
                 setattr(cpl, 'value', str(int(map.value) * 100) + '%')
                 setattr(cpl, 'rerataOneCpl', rerataSingleCpl)
@@ -118,7 +116,7 @@ def helperRetrieveAssessmentMatkul(db, data, isEdit = False):
 
             matkulInfo.append(dictCPMK)
 
-            #CPL in Header
+            # CPL in Header
             if isEdit:
                 headerCPL = []
                 for cpl in listOfCPL:
@@ -137,10 +135,11 @@ def helperRetrieveAssessmentMatkul(db, data, isEdit = False):
                     if division == 0:
                         division = 1
 
-                    headerCPL.append({'name': cpl['name'], 'value': sumAllCPl/division})
+                    headerCPL.append(
+                        {'name': cpl['name'], 'value': sumAllCPl/division})
 
                 setattr(dt, 'cpl', headerCPL)
-            
+
         setattr(dt, 'cpmk', matkulInfo)
 
 
@@ -154,7 +153,8 @@ async def get_all_assessment_matkul(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = assessmentMatkul.getAllPagingFiltered(db, page, filtered_data, token)
+        query = assessmentMatkul.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,
@@ -186,9 +186,9 @@ async def get_siklus_assessment_matkul(
     data_params = dict(request.query_params)
     if bool(data_params):
         for key in data_params:
-            data = data.filter(cast(getattr(Perkuliahan, key), String).\
-                            ilike("%{}%".format(data_params[key])))
-       
+            data = data.filter(cast(getattr(Perkuliahan, key), String).
+                               ilike("%{}%".format(data_params[key])))
+
     data = data.all()
     helperRetrieveAssessmentMatkul(db, data)
 
@@ -213,7 +213,8 @@ async def get_assessment_matkul(
     for pk in data.children:
         row = db.query(Perkuliahan).filter_by(id=pk.perkuliahan_id).first()
         pks.append(row)
-        legends.append(pk.perkuliahan.tahunAjaran.tahun_ajaran.replace('/', '-') + ' / ' + str(pk.perkuliahan.semester))
+        legends.append(pk.perkuliahan.tahunAjaran.tahun_ajaran.replace(
+            '/', '-') + ' / ' + str(pk.perkuliahan.semester))
 
     helperRetrieveAssessmentMatkul(db, pks, True)
     setattr(data, 'legends', legends)

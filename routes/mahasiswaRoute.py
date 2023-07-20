@@ -14,7 +14,7 @@ from db.schemas.mahasiswaSchema import (
     MahasiswaDeleteSchema,
 )
 
-MAHASISWA = "/mahasiswa"
+MAHASISWA = "/api/mahasiswa"
 MODULE_NAME = "Mahasiswa"
 
 
@@ -37,7 +37,8 @@ async def get_all_mahasiswa(
     try:
         filtered_data = help_filter(request)
         if filtered_data:
-            query = mahasiswa.getAllPagingFiltered(db, page, filtered_data, token)
+            query = mahasiswa.getAllPagingFiltered(
+                db, page, filtered_data, token)
 
             return {
                 "code": status.HTTP_200_OK,
@@ -97,6 +98,7 @@ async def get_mahasiswa(
         "message": "Success get mahasiswa",
         "data": mhs,
     }
+
 
 @app.post(MAHASISWA, response_model=MahasiswaResponseSchema)
 @check_access_module

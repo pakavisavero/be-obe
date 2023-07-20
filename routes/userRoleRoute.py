@@ -14,7 +14,7 @@ from db.schemas.userRoleSchema import (
     UserRoleDeleteSchema,
 )
 
-USER_ROLE = "/user-role"
+USER_ROLE = "/api/user-role"
 
 
 def errArray(idx):

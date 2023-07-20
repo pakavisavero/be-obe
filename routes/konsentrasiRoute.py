@@ -14,7 +14,7 @@ from db.schemas.konsentrasiSchema import (
     KonsentrasiDeleteSchema,
 )
 
-KONSENTRASI = "/konsentrasi"
+KONSENTRASI = "/api/konsentrasi"
 
 
 def errArray(idx):
@@ -34,7 +34,8 @@ async def get_all_konsentrasi(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = konsentrasi.getAllPagingFiltered(db, page, filtered_data, token)
+        query = konsentrasi.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,

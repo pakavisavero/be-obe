@@ -54,6 +54,7 @@ class ValidatePermission(BaseHTTPMiddleware):
             elif "static" in path:
                 return response
 
+
         token = request.headers.get("token")
         if token is None:
             return JSONResponse(
@@ -73,6 +74,7 @@ class ValidatePermission(BaseHTTPMiddleware):
             )
         else:
             return response
+
 
 
 def authLogin(db: Session, email: str, password: str):

@@ -7,7 +7,8 @@ from fastapi.staticfiles import StaticFiles
 
 origins = [
     "http://localhost:3000",
-]   
+    "*",
+]
 
 app.add_middleware(ValidatePermission)
 app.add_middleware(

@@ -13,7 +13,7 @@ from db.middleware import (
     decode_group,
 )
 
-LOGIN = "/login"
+LOGIN = "/api/login"
 
 
 @app.post(LOGIN)
@@ -25,7 +25,7 @@ async def login(
     return JSONResponse(authLogin(db, email, password))
 
 
-@app.post("/logout")
+@app.post("/api/logout")
 async def Logout(
     token: str = Header(default=None),
     db: Session = Depends(db),
@@ -33,7 +33,7 @@ async def Logout(
     return JSONResponse(authLogout(token, db))
 
 
-@app.get("/me")
+@app.get("/api/me")
 async def get_me(
     token: str = Header(default=None),
     access: str = Header(default=None),

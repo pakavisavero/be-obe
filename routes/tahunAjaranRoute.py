@@ -17,7 +17,7 @@ from db.schemas.tahunAjaranSchema import (
 from HandlerCustom import HandlerCustom
 from db.helper import decode_token
 
-TAHUN_AJARAN = "/tahun-ajaran"
+TAHUN_AJARAN = "/api/tahun-ajaran"
 MODULE_NAME = "Tahun Ajaran"
 
 
@@ -38,7 +38,8 @@ async def get_all_tahun_ajaran(
 ):
     filtered_data = help_filter(request)
     if filtered_data:
-        query = tahunAjaran.getAllPagingFiltered(db, page, filtered_data, token)
+        query = tahunAjaran.getAllPagingFiltered(
+            db, page, filtered_data, token)
 
         return {
             "code": status.HTTP_200_OK,

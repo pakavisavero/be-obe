@@ -14,7 +14,7 @@ from db.schemas.prodiSchema import (
     ProdiDeleteSchema,
 )
 
-PRODI = "/prodi"
+PRODI = "/api/prodi"
 MODULE_NAME = "Program Studi"
 
 

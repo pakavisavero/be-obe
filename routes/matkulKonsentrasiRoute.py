@@ -14,7 +14,7 @@ from db.schemas.matkulKonsentrasiSchema import (
     MatkulKonsentrasiDeleteSchema,
 )
 
-MATKUL_KONSENTRASI = "/matkul-konsentrasi"
+MATKUL_KONSENTRASI = "/api/matkul-konsentrasi"
 
 
 def errArray(idx):

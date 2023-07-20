@@ -18,7 +18,8 @@ from db.schemas.cplSchema import (
 
 import random
 
-CPL = "/cpl"
+CPL = "/api/cpl"
+
 
 def errArray(idx):
     if idx < 2:
@@ -50,7 +51,8 @@ def logicRetrieveSpecificCPL(
                 jmlMhs = 0
                 total = 0.0
                 mappingMhs = (
-                    db.query(MappingMahasiswa).filter_by(perkuliahan_id=pk.id).all()
+                    db.query(MappingMahasiswa).filter_by(
+                        perkuliahan_id=pk.id).all()
                 )
                 for mhs in mappingMhs:
                     cplValue = (
@@ -80,6 +82,7 @@ def logicRetrieveSpecificCPL(
                 data.append(pk)
 
     return data
+
 
 @app.get(CPL + "s", response_model=CPLResponseSchema)
 # @check_access_module
@@ -183,7 +186,7 @@ async def delete_cpl(
     }
 
 
-@app.post("/get-perkuliahan-by-cpl")
+@app.post("/api/get-perkuliahan-by-cpl")
 # @check_access_module
 async def get_cpl_by_perkuliahan(
     db: Session = Depends(db),

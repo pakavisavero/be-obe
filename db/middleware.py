@@ -30,8 +30,18 @@ class RedisType:
 class ValidatePermission(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         response = await call_next(request)
+        load_dotenv('.env')
+        production = int(os.environ.get("PRODUCTION"))
+
+        is_production = False
+        if production == 0:
+            is_production = False
+        else:
+            is_production = True
 
         path = request.url.path
+        root = "be-obe"
+
         pathExclude = [
             "/login",
             "/docs",
@@ -44,8 +54,17 @@ class ValidatePermission(BaseHTTPMiddleware):
             "/test-jinja",
         ]
 
-        if path in pathExclude:
-            return response
+        if is_production:
+            pathExclude = [
+                "/{}/login".format(root),
+                "/{}/docs".format(root),
+                "/{}/redoc".format(root),
+                "/{}/openapi.json".format(root),
+                "/{}/get-template".format(root),
+                "/{}/get-form-siap".format(root),
+                "/{}/get-portofolio".format(root),
+                "/{}/test-jinja".format(root),
+            ]
 
         for pe in pathExclude:
             if path.find(pe) > -1:
@@ -53,7 +72,6 @@ class ValidatePermission(BaseHTTPMiddleware):
 
             elif "static" in path:
                 return response
-
 
         token = request.headers.get("token")
         if token is None:
@@ -74,7 +92,6 @@ class ValidatePermission(BaseHTTPMiddleware):
             )
         else:
             return response
-
 
 
 def authLogin(db: Session, email: str, password: str):

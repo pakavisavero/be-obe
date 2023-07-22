@@ -52,6 +52,7 @@ class ValidatePermission(BaseHTTPMiddleware):
             "/get-form-siap",
             "/get-portofolio",
             "/test-jinja",
+            "/export"
         ]
 
         if is_production:

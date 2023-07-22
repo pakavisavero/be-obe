@@ -54,7 +54,7 @@ async def get_all_user(
         }
 
 
-@app.get("/dosens", response_model=UserResponseSchema)
+@app.get("/api/dosens", response_model=UserResponseSchema)
 @check_access_module
 async def get_all_dosen(
     db: Session = Depends(db),

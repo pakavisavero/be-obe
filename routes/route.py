@@ -38,5 +38,6 @@ from routes import (
     loginRoute,
     optionLabelRoute,
     assessmentMatkulRoute,
-    assessmentProdiRoute
+    assessmentProdiRoute,
+    exportRoute
 )

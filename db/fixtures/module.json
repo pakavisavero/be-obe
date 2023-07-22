@@ -104,14 +104,6 @@
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
-    },
-    {
-      "module_group_id": 5,
-      "module_name": "KBM",
-      "path": "/apps/reporting/kbm/list",
-      "is_active": 1,
-      "created_by": "System",
-      "modified_by": "System"
     }
   ]
 }

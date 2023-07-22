@@ -56,7 +56,8 @@ async def get_all_konsentrasi(
 
 
 @app.get(
-    MAHASISWA_KONSENTRASI + "/{id}", response_model=MahasiswaKonsentrasiResponseSchema
+    MAHASISWA_KONSENTRASI + "/{id}",
+    response_model=MahasiswaKonsentrasiResponseSchema
 )
 # @check_access_module
 async def get_konsentrasi(

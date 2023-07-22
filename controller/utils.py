@@ -12,6 +12,9 @@ from db.models import *
 
 from math import ceil
 from openpyxl.utils import get_column_letter
+import pandas as pd
+from datetime import datetime, timedelta
+import time
 
 
 class DocStatus(Enum):
@@ -118,7 +121,8 @@ def helper_static_filter(db, Schema, filtered, offset, xtra={}, xtraOr={}):
                     list_dates.append(dict_string[key])
                 else:
                     base_query = base_query.filter(
-                        getattr(Schema, key).ilike("%{}%".format(dict_string[key]))
+                        getattr(Schema, key).ilike(
+                            "%{}%".format(dict_string[key]))
                     )
 
     if key_dates and len(list_dates) == 2:
@@ -145,13 +149,15 @@ def helper_static_filter(db, Schema, filtered, offset, xtra={}, xtraOr={}):
     if dict_bool:
         for key in dict_bool:
             if dict_bool[key] == True or dict_bool[key] == False:
-                base_query = base_query.filter(getattr(Schema, key) == dict_bool[key])
+                base_query = base_query.filter(
+                    getattr(Schema, key) == dict_bool[key])
 
     if dict_not_null:
         for key in dict_not_null:
             if dict_not_null[key]:
                 print(dict_not_null[key])
-                base_query = base_query.filter(getattr(Schema, key).isnot(None))
+                base_query = base_query.filter(
+                    getattr(Schema, key).isnot(None))
                 # base_query = base_query.filter(
                 #     getattr(Schema, key) == dict_number[key]
                 # )
@@ -165,7 +171,8 @@ def helper_static_filter(db, Schema, filtered, offset, xtra={}, xtraOr={}):
 
     if is_paging == False:
         data = (
-            base_query.filter_by(**xtra).limit(50).order_by(desc("modified_at")).all()
+            base_query.filter_by(
+                **xtra).limit(50).order_by(desc("modified_at")).all()
         )
         total = base_query.count()
         return data, total
@@ -177,7 +184,8 @@ def helper_static_filter(db, Schema, filtered, offset, xtra={}, xtraOr={}):
         else:
             offsetAfter = offset * page_size
             if page_size == 0:
-                data = base_query.filter_by(**xtra).order_by(desc("modified_at")).all()
+                data = base_query.filter_by(
+                    **xtra).order_by(desc("modified_at")).all()
             else:
                 data = (
                     base_query.filter_by(**xtra)
@@ -265,7 +273,8 @@ def helper_create_parent_multi_child(Schema, db, data, childs):
                 for detail in child["data"]:
                     if "id" in detail:
                         del detail["id"]
-                    getattr(ns, child["name"]).append(child["schema"](**detail))
+                    getattr(ns, child["name"]).append(
+                        child["schema"](**detail))
 
         db.commit()
 
@@ -347,5 +356,38 @@ def check_access_module(func):
     return wrapper
 
 
+def to_dict(is_parent=True, row=[], modified=[], xtraIgnore=[]):
+    ignores = ['id', 'is_active', 'created_at',
+               'created_by', 'modified_at', 'modified_by']
+    ignores.extend(xtraIgnore)
+
+    if row is None:
+        return None
+
+    rtn_dict = dict()
+    keys = row.__table__.columns.keys()
+
+    for key in keys:
+        if not key in ignores:
+            rtn_dict[key] = getattr(row, key)
+            if is_parent:
+                for mod in modified:
+                    rtn_dict[mod['name']] = to_dict(
+                        is_parent=False,
+                        row=getattr(row, mod['relation']))[mod['opt']]
+
+    return rtn_dict
 
 
+def export_file(element, filename):
+    df = pd.DataFrame(element)
+    date_time = str(time.mktime(
+                    datetime.now().timetuple()))
+    file_response = "export_files/{}".format(filename) + \
+        "_" + date_time + ".xlsx"
+
+    writer = pd.ExcelWriter(file_response)
+    df.to_excel(writer)
+    writer.save()
+
+    return file_response

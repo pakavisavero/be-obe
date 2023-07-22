@@ -75,21 +75,50 @@ def create(db: Session, username: str, data: RoleMasterCreateSchema):
 
 
 def update(db: Session, username: str, data: RoleMasterUpdateSchema):
-    try:
-        data.modified_at = datetime.now()
-        data.modified_by = username
+    data["created_at"] = datetime.now()
+    data["modified_at"] = datetime.now()
+    data["created_by"] = username
+    data["modified_by"] = username
 
-        roleMaster = (
-            db.query(RoleMaster).filter(RoleMaster.id == data.id).update(dict(data))
-        )
+    children = data["children"]
+    help_remove_data(data)
 
-        db.commit()
+    for child in children:
+        filter = {
+            'role_id': data['id'],
+            'module_id': child['module_id']
+        }
 
-        return roleMaster
+        exist = db.query(RolePermission).filter_by(**filter).first()
+        if exist:
+            db.query(RolePermission).filter_by(id=child['id']).\
+                update({
+                    'view': child['view'],
+                    'add': child['add'],
+                    'edit': child['edit'],
+                    'printt': child['printt'],
+                    'export': child['export'],
+                })
+                
+            db.commit()
+        else:
+            rp = RolePermission(**data)
+            db.add(rp)
+            db.commit()
 
-    except:
-        return False
+    return data
 
 
 def delete(db: Session, id: int):
     return db.query(RoleMaster).filter_by(id=id).delete()
+
+
+def help_remove_data(data):
+    nameArray = [
+        "permissions",
+        "children",
+    ]
+
+    for a in nameArray:
+        if a in data:
+            del data[a]

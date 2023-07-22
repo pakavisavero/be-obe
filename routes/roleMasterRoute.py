@@ -105,7 +105,7 @@ async def submit_role_master(
 async def update_role_master(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    data: RoleMasterUpdateSchema = None,
+    data: dict = None,
     request: Request = None,
     module_access=MODULE_NAME,
 ):

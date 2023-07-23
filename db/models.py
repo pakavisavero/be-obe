@@ -100,7 +100,7 @@ class User(Base):
 
     email = Column(String(length=255), unique=True)
     nip = Column(String(length=100), unique=True)
-    username = Column(String(length=255), nullable=True)
+    username = Column(String(length=255), nullable=True, unique=True)
     password = Column(LargeBinary)
     full_name = Column(String(length=255))
     email_verified_at = Column(DateTime, nullable=True)

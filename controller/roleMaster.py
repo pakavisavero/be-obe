@@ -83,6 +83,12 @@ def update(db: Session, username: str, data: RoleMasterUpdateSchema):
     children = data["children"]
     help_remove_data(data)
 
+    db.query(RoleMaster).filter_by(id=data['id']).update({
+        'role_name': data['role_name'],
+        'is_active': data['is_active'],
+    })
+    db.commit()
+
     for child in children:
         filter = {
             'role_id': data['id'],
@@ -99,7 +105,7 @@ def update(db: Session, username: str, data: RoleMasterUpdateSchema):
                     'printt': child['printt'],
                     'export': child['export'],
                 })
-                
+
             db.commit()
         else:
             rp = RolePermission(**data)

@@ -379,7 +379,7 @@ def to_dict(is_parent=True, row=[], modified=[], xtraIgnore=[]):
     return rtn_dict
 
 
-def export_file(element, filename):
+def export_file(columns, element, filename):
     df = pd.DataFrame(element)
     date_time = str(time.mktime(
                     datetime.now().timetuple()))
@@ -387,6 +387,9 @@ def export_file(element, filename):
         "_" + date_time + ".xlsx"
 
     writer = pd.ExcelWriter(file_response)
+    
+    df.columns = columns
+    df.index = df.index + 1
     df.to_excel(writer)
     writer.save()
 

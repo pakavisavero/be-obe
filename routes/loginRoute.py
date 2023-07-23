@@ -20,9 +20,10 @@ LOGIN = "/api/login"
 async def login(
     email: str = Form(),
     password: str = Form(),
+    role_id: int = Form(),
     db: Session = Depends(db),
 ):
-    return JSONResponse(authLogin(db, email, password))
+    return JSONResponse(authLogin(db, email, password, role_id))
 
 
 @app.post("/api/logout")

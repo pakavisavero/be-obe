@@ -7,8 +7,10 @@ from db.schemas.userSchema import (
 
 from .utils import helper_static_filter
 from datetime import datetime
-import pytz
 from sqlalchemy import or_
+
+import pytz
+import bcrypt
 
 tz = pytz.timezone("Asia/Jakarta")
 
@@ -112,18 +114,48 @@ def create(db: Session, username: str, data: UserCreateSchema):
         return False
 
 
-def update(db: Session, username: str, data: UserUpdateSchema):
+def update(db: Session, username: str, data: dict):
     try:
-        data.modified_at = datetime.now()
-        data.modified_by = username
+        id = data['id']
+        data['modified_at'] = datetime.now()
+        data['modified_by'] = username
 
-        user = db.query(User).filter(User.id == data.id).update(dict(data))
-
+        del data['id']
+        user = db.query(User).filter(User.id == id).update(dict(data))
         db.commit()
 
         return user
 
-    except:
+    except Exception as e:
+        return False
+
+
+def updatePassword(db: Session, username: str, data: dict):
+    try:
+        id = data['id']
+        data['modified_at'] = datetime.now()
+        data['modified_by'] = username
+
+        del data['id']
+        user = db.query(User).filter(User.id == id).first()
+
+        userBytes = data['old_password'].encode('utf-8')
+        result = bcrypt.checkpw(userBytes, user.password)
+
+        if result:
+            salt = bcrypt.gensalt()
+            bytes = data['new_password'].encode("utf-8")
+            password = bcrypt.hashpw(bytes, salt)
+
+            user = db.query(User).filter(User.id == id).update(
+                {'password': password})
+            db.commit()
+
+            return user
+
+        raise Exception("Wrong password!")
+
+    except Exception as e:
         return False
 
 

@@ -136,7 +136,7 @@ async def submit_user(
 async def update_user(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    data: UserUpdateSchema = None,
+    data: dict = None,
     request: Request = None,
     module_access=MODULE_NAME,
 ):
@@ -152,6 +152,30 @@ async def update_user(
         return {
             "code": status.HTTP_400_BAD_REQUEST,
             "message": "error update user",
+        }
+
+
+@app.put("/api/update-password", response_model=UserResponseSchema)
+@check_access_module
+async def update_password(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    data: dict = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
+):
+    username = getUsername(token)
+    res = user.updatePassword(db, username, data)
+    if res:
+        return {
+            "code": status.HTTP_200_OK,
+            "message": "Success update user password",
+            "data": data,
+        }
+    else:
+        return {
+            "code": status.HTTP_400_BAD_REQUEST,
+            "message": res,
         }
 
 

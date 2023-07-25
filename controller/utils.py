@@ -24,13 +24,13 @@ class DocStatus(Enum):
 
 
 def error_handling(e):
-    error = str(e)
+    error_msg = str(e)
     if 'message' in e.args[0]:
-        error = e.args[0]['message']
+        error_msg = e.args[0]['message']
 
     return {
         'status': False,
-        'message': error
+        'message': error_msg
     }
 
 

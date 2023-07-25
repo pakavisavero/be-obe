@@ -113,7 +113,6 @@ def create(db: Session, username: str, data: dict):
 
         if 'password' in data:
             password = data['password']
-
         if 'roles' in data:
             roles = data['roles']
 
@@ -135,19 +134,21 @@ def create(db: Session, username: str, data: dict):
         bytes = password.encode("utf-8")
         password = bcrypt.hashpw(bytes, salt)
 
+        help_remove_data(data)
+
         data['password'] = password
         data['created_at'] = datetime.now()
         data['modified_at'] = datetime.now()
         data['created_by'] = username
         data['modified_by'] = username
 
-        help_remove_data(data)
-
-        user = User(**data.dict())
+        user = User(**data)
         db.add(user)
         db.commit()
+        db.refresh(user)
 
         if roles:
+            is_dosen = False
             for role in roles:
                 r = UserRole(**{
                     'user_id': user.id,
@@ -155,6 +156,13 @@ def create(db: Session, username: str, data: dict):
                 })
                 db.add(r)
                 db.commit()
+                db.refresh(r)
+
+                if role['id'] == 3:
+                    is_dosen = True
+
+            db.query(User).filter_by(id=user.id).\
+                update({'is_dosen': is_dosen})
 
         return {
             'status': True,
@@ -220,7 +228,9 @@ def update(db: Session, username: str, data: dict):
             db.commit()
 
             if roles:
+                is_dosen = False
                 db.query(UserRole).filter_by(user_id=id).delete()
+
                 for role in roles:
                     r = UserRole(**{
                         'user_id': id,
@@ -228,6 +238,13 @@ def update(db: Session, username: str, data: dict):
                     })
                     db.add(r)
                     db.commit()
+                    db.refresh(r)
+
+                    if role['id'] == 3:
+                        is_dosen = True
+
+                db.query(User).filter_by(id=id).update(
+                    {'is_dosen': is_dosen})
 
             return {
                 'status': True,

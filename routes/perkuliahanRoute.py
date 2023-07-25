@@ -53,7 +53,7 @@ async def get_all_perkuliahan(
     filtered_data = help_filter(request)
     if filtered_data:
         query = perkuliahan.getAllPagingFiltered(
-            db, page, filtered_data, token)
+            db, page, filtered_data, token, xtra={'is_active': True})
 
         return {
             "code": status.HTTP_200_OK,
@@ -62,7 +62,8 @@ async def get_all_perkuliahan(
             "total": query["total"],
         }
     else:
-        query = perkuliahan.getAllPaging(db, page, token)
+        query = perkuliahan.getAllPaging(
+            db, page, token, xtra={'is_active': True})
         return {
             "code": status.HTTP_200_OK,
             "message": "Success retrieve all perkuliahan",
@@ -93,7 +94,8 @@ async def get_all_history_kbm(
             "total": query["total"],
         }
     else:
-        query = perkuliahan.getAllPaging(db, page, token)
+        query = perkuliahan.getAllPaging(
+            db, page, token, xtra={'is_active': False})
         return {
             "code": status.HTTP_200_OK,
             "message": "Success retrieve all history kbm",
@@ -142,6 +144,63 @@ async def submit_perkuliahan(
         return {
             "code": status.HTTP_400_BAD_REQUEST,
             "message": "error submit perkuliahan",
+        }
+
+
+@app.post('/api/deactivate-partial')
+# @check_access_module
+async def deactivate_perkuliahan_partial(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    data: dict = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
+):
+    username = getUsername(token)
+    db.query(Perkuliahan).filter_by(
+        doc_status_id=3).update({'is_active': False})
+    db.commit()
+
+    return {
+        "code": status.HTTP_200_OK,
+        "message": "Success deactivate sebagian perkuliahan!",
+    }
+
+
+@app.post('/api/deactivate-all')
+# @check_access_module
+async def deactivate_perkuliahan_all(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    data: dict = None,
+    request: Request = None,
+    module_access=MODULE_NAME,
+):
+    username = getUsername(token)
+
+    pkActive = db.query(Perkuliahan).filter_by(is_active=True).all()
+    partial = False
+    is_done = True
+
+    for pk in pkActive:
+        if pk.doc_status_id != 3:
+            is_done = False
+        else:
+            partial = True
+
+    if not is_done:
+        return {
+            "code": status.HTTP_400_BAD_REQUEST,
+            "partial": partial,
+            "message": "Terdapat perkuliahan yang masih dalam proses!",
+        }
+
+    else:
+        db.query(Perkuliahan).update({'is_active': False})
+        db.commit()
+        return {
+            "code": status.HTTP_200_OK,
+            "message": "Success deactivate perkuliahan!",
         }
 
 

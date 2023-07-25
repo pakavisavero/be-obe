@@ -5,7 +5,8 @@ from db.schemas.tahunAjaranSchema import (
     TahunAjaranUpdateSchema,
 )
 
-from .utils import helper_static_filter
+from .utils import helper_static_filter, error_handling
+
 from datetime import datetime
 import pytz
 
@@ -46,37 +47,52 @@ def getByID(db: Session, id: int, token: str):
     return data
 
 
-def create(db: Session, username: str, data: TahunAjaranCreateSchema):
+def create(db: Session, username: str, data: dict):
     try:
-        data.created_at = datetime.now()
-        data.modified_at = datetime.now()
-        data.created_by = username
-        data.modified_by = username
+        data['created_at'] = datetime.now()
+        data['modified_at'] = datetime.now()
+        data['created_by'] = username
+        data['modified_by'] = username
 
-        ta = TahunAjaran(**data.dict())
+        isActive = db.query(TahunAjaran).filter_by(is_active=True).first()
+        data['is_active'] = False if isActive else True
+
+        ta = TahunAjaran(**data)
         db.add(ta)
         db.commit()
 
-        return ta
+        return {
+            'status': True,
+            'data': ta
+        }
 
     except Exception as e:
-        print(e)
-        return False
+        return error_handling(e)
 
 
-def update(db: Session, username: str, data: TahunAjaranUpdateSchema):
+def update(db: Session, username: str, data: dict):
     try:
-        data.modified_at = datetime.now()
-        data.modified_by = username
+        if data['is_active']:
+            isActive = db.query(TahunAjaran).filter_by(is_active=True).first()
+            if isActive:
+                raise Exception(
+                    {'message': 'Hanya boleh terdapat 1 tahun ajaran aktif!'})
 
-        ta = db.query(TahunAjaran).filter(TahunAjaran.id == data.id).update(dict(data))
+        data['modified_at'] = datetime.now()
+        data['modified_by'] = username
+
+        ta = db.query(TahunAjaran).filter(
+            TahunAjaran.id == data['id']).update(dict(data))
 
         db.commit()
 
-        return ta
+        return {
+            'status': True,
+            'data': ta
+        }
 
-    except:
-        return False
+    except Exception as e:
+        return error_handling(e)
 
 
 def delete(db: Session, id: int):

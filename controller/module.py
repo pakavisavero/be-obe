@@ -64,15 +64,16 @@ def create(db: Session, username: str, data: ModuleCreateSchema):
         return False
 
 
-def update(db: Session, username: str, data: ModuleUpdateSchema):
+def update(db: Session, username: str, data: dict):
     try:
-        data.modified_at = datetime.now()
-        data.modified_by = username
+        data['modified_at'] = datetime.now()
+        data['modified_by'] = username
+
+        help_remove_data(data)
 
         module = (
-            db.query(Module).filter(Module.id == data.id).update(dict(data))
+            db.query(Module).filter(Module.id == data['id']).update(dict(data))
         )
-
         db.commit()
 
         return module
@@ -83,3 +84,15 @@ def update(db: Session, username: str, data: ModuleUpdateSchema):
 
 def delete(db: Session, id: int):
     return db.query(Module).filter_by(id=id).delete()
+
+
+def help_remove_data(data):
+    nameArray = [
+        "moduleGroup",
+        "route",
+        "module_group_id_name",
+    ]
+
+    for a in nameArray:
+        if a in data:
+            del data[a]

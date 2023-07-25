@@ -218,6 +218,7 @@ def get_list_groups(db, user_id, role_id):
     groups = []
     for u in access:
         if u.view:
+            id = u.module.moduleGroup.id
             groupName = u.module.moduleGroup.module_name
             if len(groups) > 0:
                 isExist = False

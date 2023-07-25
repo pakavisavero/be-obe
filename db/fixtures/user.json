@@ -8,6 +8,7 @@
       "email": "superadmin@gmail.com",
       "username": "superadmin",
       "password": "test@2023",
+      "is_dosen": false,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -19,6 +20,7 @@
       "email": "admin@gmail.com",
       "username": "admin",
       "password": "test@2023",
+      "is_dosen": false,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -30,6 +32,7 @@
       "email": "operator@gmail.com",
       "username": "operator",
       "password": "test@2023",
+      "is_dosen": false,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -41,6 +44,7 @@
       "email": "sudjadi@gmail.com",
       "username": "sudjadi",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -52,6 +56,7 @@
       "email": "nugroho@gmail.com",
       "username": "nugroho",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -63,6 +68,7 @@
       "email": "agung@gmail.com",
       "username": "agung",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -74,6 +80,7 @@
       "email": "jakwin@gmail.com",
       "username": "jaka",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -85,6 +92,7 @@
       "email": "bambang@gmail.com",
       "username": "bambang",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -96,6 +104,7 @@
       "email": "wahyudi@gmail.com",
       "username": "wahyudi",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -107,6 +116,7 @@
       "email": "sumardi@gmail.com",
       "username": "sumardi",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -118,6 +128,7 @@
       "email": "achmad@gmail.com",
       "username": "achmad",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -129,6 +140,7 @@
       "email": "wahyul@gmail.com",
       "username": "wahyul",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -140,6 +152,7 @@
       "email": "imamsantoso@gmail.com",
       "username": "imam",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -151,6 +164,7 @@
       "email": "karnots@gmail.com",
       "username": "karnots",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -162,6 +176,7 @@
       "email": "sukiswo@gmail.com",
       "username": "sukiswo",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -173,6 +188,7 @@
       "email": "yuli@gmail.com",
       "username": "yuli",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -184,6 +200,7 @@
       "email": "aghus@gmail.com",
       "username": "sofwan",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -195,6 +212,7 @@
       "email": "ajub@gmail.com",
       "username": "ajub",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -206,6 +224,7 @@
       "email": "aris@gmail.com",
       "username": "aris",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -217,6 +236,7 @@
       "email": "syakur@gmail.com",
       "username": "syakur",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -228,6 +248,7 @@
       "email": "mamansoemantri@gmail.com",
       "username": "maman",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -239,6 +260,7 @@
       "email": "facta@gmail.com",
       "username": "facta",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -250,6 +272,7 @@
       "email": "darjat@gmail.com",
       "username": "darjat",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -261,6 +284,7 @@
       "email": "handoko@gmail.com",
       "username": "handoko",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -272,6 +296,7 @@
       "email": "IwanSet@gmail.com",
       "username": "iwan",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -283,6 +308,7 @@
       "email": "budi@gmail.com",
       "username": "budi",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -294,6 +320,7 @@
       "email": "trias@gmail.com",
       "username": "trias",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -305,6 +332,7 @@
       "email": "eko@gmail.com",
       "username": "eko",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -316,6 +344,7 @@
       "email": "munawar@gmail.com",
       "username": "munawar",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -327,6 +356,7 @@
       "email": "enda@gmail.com",
       "username": "enda",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -338,6 +368,7 @@
       "email": "teguhprakoso@gmail.com",
       "username": "teguh",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -349,6 +380,7 @@
       "email": "marfan@gmail.com",
       "username": "arfan",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -360,6 +392,7 @@
       "email": "denis@gmail.com",
       "username": "denis",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -371,6 +404,7 @@
       "email": "yosua@gmail.com",
       "username": "yosua",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -382,6 +416,7 @@
       "email": "hadhaaf@gmail.com",
       "username": "hadha",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -393,6 +428,7 @@
       "email": "ayuketut@gmail.com",
       "username": "ayuketut",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"
@@ -404,6 +440,7 @@
       "email": "agungwibowo@gmail.com",
       "username": "agungwibowo",
       "password": "test@2023",
+      "is_dosen": true,
       "is_active": 1,
       "created_by": "System",
       "modified_by": "System"

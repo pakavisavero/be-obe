@@ -39,5 +39,6 @@ from routes import (
     optionLabelRoute,
     assessmentMatkulRoute,
     assessmentProdiRoute,
-    exportRoute
+    exportRoute,
+    linkMataKuliahRoute
 )

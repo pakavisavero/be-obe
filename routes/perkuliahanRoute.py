@@ -27,6 +27,7 @@ from openpyxl.utils import get_column_letter
 import os
 import shutil
 import subprocess
+import bcrypt
 
 
 PERKULIAHAN = "/api/perkuliahan"
@@ -70,6 +71,37 @@ async def get_all_perkuliahan(
         }
 
 
+@app.get("/api/history-kbm", response_model=PerkuliahanResponseSchema)
+@check_access_module
+async def get_all_history_kbm(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    request: Request = None,
+    page: int = 0,
+    module_access=MODULE_NAME,
+):
+    filtered_data = help_filter(request)
+    if filtered_data:
+        query = perkuliahan.getAllPagingFiltered(
+            db, page, filtered_data, token, xtra={'is_active': False}
+        )
+
+        return {
+            "code": status.HTTP_200_OK,
+            "message": "Success retrieve filtered history kbm",
+            "data": query["data"],
+            "total": query["total"],
+        }
+    else:
+        query = perkuliahan.getAllPaging(db, page, token)
+        return {
+            "code": status.HTTP_200_OK,
+            "message": "Success retrieve all history kbm",
+            "data": query["data"],
+            "total": query["total"],
+        }
+
+
 @app.get(PERKULIAHAN + "/{id}", response_model=PerkuliahanResponseSchema)
 @check_access_module
 async def get_perkuliahan(
@@ -92,7 +124,7 @@ async def get_perkuliahan(
 async def submit_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    data: PerkuliahanCreateSchema = None,
+    data: dict = None,
     request: Request = None,
     module_access=MODULE_NAME,
 ):
@@ -201,6 +233,8 @@ async def upload(
     request: Request = None,
 ):
     try:
+        username = getUsername(token)
+
         data = data["data"]
         thn_ajaran = str(data[0][1]).replace(":", "").strip()
         semester = str(data[1][1]).replace(":", "").strip()
@@ -299,12 +333,19 @@ async def upload(
 
                 existDosen1 = db.query(User).filter_by(nip=nip_dosen1).first()
                 if not existDosen1:
+                    salt = bcrypt.gensalt()
+                    bytes = "test@2023".encode("utf-8")
+                    password = bcrypt.hashpw(bytes, salt)
+
                     existDosen1 = User(
                         **{
                             "email": dosen1,
                             "nip": nip_dosen1,
                             "full_name": dosen1,
                             "prodi_id": 8,
+                            "password": password,
+                            "created_by": username,
+                            "modified_by": username,
                         }
                     )
                     db.add(existDosen1)
@@ -315,6 +356,8 @@ async def upload(
                         **{
                             "user_id": existDosen1.id,
                             "role_id": 3,
+                            "created_by": username,
+                            "modified_by": username,
                         }
                     )
                     db.add(crUserRole)
@@ -382,144 +425,142 @@ async def upload_dpna(
     id = data["id"]
     header = data["data"]
 
-    # try:
-    c1 = header[0][1]
-    if len(c1.split("-")) != 2:
-        raise ValueError("Format cell B1 (Kode MK - Matkul) tidak valid!")
+    try:
+        c1 = header[0][1]
+        if len(c1.split("-")) != 2:
+            raise ValueError("Format cell B1 (Kode MK - Matkul) tidak valid!")
 
-    kode_mk = str(c1.split("-")[0]).replace(":", "").strip()
-    tahun_ajaran = str(header[1][1]).replace(":", "").strip()
-    semester = str(header[2][1]).replace(":", "").strip()
-    kelas = str(header[3][1]).replace(":", "").strip()
+        kode_mk = str(c1.split("-")[0]).replace(":", "").strip()
+        tahun_ajaran = str(header[1][1]).replace(":", "").strip()
+        semester = str(header[2][1]).replace(":", "").strip()
+        kelas = str(header[3][1]).replace(":", "").strip()
 
-    checkMatkul = db.query(MataKuliah).filter_by(kode_mk=kode_mk).first()
-    if not checkMatkul:
-        raise ValueError("Mata Kuliah tidak tersedia!")
+        checkMatkul = db.query(MataKuliah).filter_by(kode_mk=kode_mk).first()
+        if not checkMatkul:
+            raise ValueError("Mata Kuliah tidak tersedia!")
 
-    ta = db.query(TahunAjaran).filter_by(name=tahun_ajaran).first()
-    if not ta:
-        raise ValueError("Tahun Ajaran tidak tersedia!")
+        ta = db.query(TahunAjaran).filter_by(name=tahun_ajaran).first()
+        if not ta:
+            raise ValueError("Tahun Ajaran tidak tersedia!")
 
-    pkActive = db.query(Perkuliahan).filter_by(id=id).first()
-    if (
-        (pkActive.mata_kuliah_id != checkMatkul.id)
-        or (pkActive.tahun_ajaran_id != ta.id)
-        or (pkActive.semester != semester)
-        or (pkActive.kelas != kelas)
-    ):
-        raise ValueError("Data Perkuliahan tidak selaras!")
+        pkActive = db.query(Perkuliahan).filter_by(id=id).first()
+        if (
+            (pkActive.mata_kuliah_id != checkMatkul.id)
+            or (pkActive.tahun_ajaran_id != ta.id)
+            or (pkActive.semester != semester)
+            or (pkActive.kelas != kelas)
+        ):
+            raise ValueError("Data Perkuliahan tidak selaras!")
 
-    checkPk = (
-        db.query(Perkuliahan)
-        .filter_by(mata_kuliah_id=checkMatkul.id)
-        .filter_by(tahun_ajaran_id=ta.id)
-        .filter_by(semester=semester)
-        .filter_by(kelas=kelas)
-        .first()
-    )
+        checkPk = (
+            db.query(Perkuliahan)
+            .filter_by(mata_kuliah_id=checkMatkul.id)
+            .filter_by(tahun_ajaran_id=ta.id)
+            .filter_by(semester=semester)
+            .filter_by(kelas=kelas)
+            .first()
+        )
 
-    setattr(checkPk, "doc_status_id", int(
-        DocStatus.MENUNGGU_UPLOAD_CPMK.value))
-    db.commit()
+        setattr(checkPk, "doc_status_id", int(
+            DocStatus.MENUNGGU_UPLOAD_CPMK.value))
+        db.commit()
 
-    if not checkPk:
-        raise ValueError("Perkuliahan tidak tersedia!")
+        if not checkPk:
+            raise ValueError("Perkuliahan tidak tersedia!")
 
-    idx = 0
-    headerLen = 5
-    for value in data["data"]:
-        if idx >= 7:
-            dis = headerLen - len(value)
-            if dis > 0:
-                for _ in range(0, dis):
-                    value.append("")
+        idx = 0
+        headerLen = 5
+        for value in data["data"]:
+            if idx >= 7:
+                dis = headerLen - len(value)
+                if dis > 0:
+                    for _ in range(0, dis):
+                        value.append("")
 
-            nim = str(value[0])
-            full_name = str(value[1])
+                nim = str(value[0])
+                full_name = str(value[1])
 
-            if nim == '' and full_name == '':
-                idx += 1
-                break
+                if nim == '' and full_name == '':
+                    idx += 1
+                    break
 
-            semMhs = int(value[2])
-            statusMhs = str(value[3])
+                semMhs = int(value[2])
+                statusMhs = str(value[3])
 
-            is_valid = True
-            if "75" in full_name:
-                is_valid = False
+                is_valid = True
+                if "75" in full_name:
+                    is_valid = False
 
-            char = ["(", "<", "%", ">", ")"]
-            for ch in char:
-                full_name = full_name.replace(ch, "")
+                char = ["(", "<", "%", ">", ")"]
+                for ch in char:
+                    full_name = full_name.replace(ch, "")
 
-            if nim and full_name:
-                mhs = db.query(Mahasiswa).filter_by(nim=nim).first()
-                if not mhs:
-                    mhs = Mahasiswa(
+                if nim and full_name:
+                    mhs = db.query(Mahasiswa).filter_by(nim=nim).first()
+                    if not mhs:
+                        mhs = Mahasiswa(
+                            **{
+                                "nim": nim,
+                                "full_name": full_name.rsplit(" ", 1)[0]
+                                .lower()
+                                .title()
+                                .strip(),
+                                "prodi_id": 8,
+                                "status_mhs_id": 1,
+                                "semester": semMhs,
+                                "created_by": user,
+                                "modified_by": user,
+                            }
+                        )
+                        db.add(mhs)
+                        db.commit()
+                        db.refresh(mhs)
+
+                    db.query(Mahasiswa).update({"semester": semMhs})
+                    mapping = MappingMahasiswa(
                         **{
-                            "nim": nim,
-                            "full_name": full_name.rsplit(" ", 1)[0]
-                            .lower()
-                            .title()
-                            .strip(),
-                            "prodi_id": 8,
-                            "status_mhs_id": 1,
-                            "semester": semMhs,
+                            "perkuliahan_id": checkPk.id,
+                            "mahasiswa_id": mhs.id,
+                            "status": statusMhs,
+                            "is_valid": is_valid,
                             "created_by": user,
                             "modified_by": user,
                         }
                     )
-                    db.add(mhs)
+                    db.add(mapping)
                     db.commit()
-                    db.refresh(mhs)
 
-                db.query(Mahasiswa).update({"semester": semMhs})
-                mapping = MappingMahasiswa(
-                    **{
-                        "perkuliahan_id": checkPk.id,
-                        "mahasiswa_id": mhs.id,
-                        "status": statusMhs,
-                        "is_valid": is_valid,
-                        "created_by": user,
-                        "modified_by": user,
-                    }
-                )
-                db.add(mapping)
-                db.commit()
+            idx += 1
 
-        idx += 1
+        persenTugas = remove_char(header[6][4])
+        persenPraktek = remove_char(header[6][5])
+        persenUts = remove_char(header[6][6])
+        persenUas = remove_char(header[6][7])
 
-    print(header[6][4])
+        presentase = PresentasePK(
+            **{
+                "perkuliahan_id": id,
+                "nilai_tugas": persenTugas,
+                "nilai_uts": persenUts,
+                "nilai_uas": persenUas,
+                "nilai_praktek": persenPraktek,
+                "is_active": True,
+            }
+        )
+        db.add(presentase)
+        db.commit()
 
-    persenTugas = remove_char(header[6][4])
-    persenPraktek = remove_char(header[6][5])
-    persenUts = remove_char(header[6][6])
-    persenUas = remove_char(header[6][7])
-
-    presentase = PresentasePK(
-        **{
-            "perkuliahan_id": id,
-            "nilai_tugas": persenTugas,
-            "nilai_uts": persenUts,
-            "nilai_uas": persenUas,
-            "nilai_praktek": persenPraktek,
-            "is_active": True,
+        return {
+            "code": status.HTTP_200_OK,
+            "message": "Success Upload DPNA",
         }
-    )
-    db.add(presentase)
-    db.commit()
 
-    return {
-        "code": status.HTTP_200_OK,
-        "message": "Success Upload DPNA",
-    }
-
-    # except Exception as e:
-    #     print(e)
-    #     db.rollback()
-    #     err = str(e.args[0]).split("\n")
-    #     data = {"message": err[errArray(len(err))]}
-    #     raise HandlerCustom(data=data)
+    except Exception as e:
+        print(e)
+        db.rollback()
+        err = str(e.args[0]).split("\n")
+        data = {"message": err[errArray(len(err))]}
+        raise HandlerCustom(data=data)
 
 
 @app.get("/api/get-template/{id}", response_model=PerkuliahanResponseSchema)

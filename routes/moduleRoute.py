@@ -55,7 +55,7 @@ async def get_all_modules(
 
 
 @app.get(MODULE + "/{id}", response_model=ModuleResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_module(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -96,11 +96,11 @@ async def submit_module(
 
 
 @app.put(MODULE, response_model=ModuleResponseSchema)
-@check_access_module
+# @check_access_module
 async def update_module(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    data: ModuleUpdateSchema = None,
+    data: dict = None,
     module_access=MODULE_NAME,
 ):
     username = getUsername(token)

@@ -16,10 +16,10 @@ class BaseUserSchema(BaseModel):
     email: Optional[str] = None
     nip: Optional[str] = None
     username: Optional[str] = None
-    password: Optional[str] = None
     full_name: Optional[str] = None
     email_verified_at: Optional[datetime] = None
     last_login: Optional[datetime] = None
+    is_dosen: Optional[bool] = None
     is_active: Optional[bool] = None
 
     created_at: Optional[datetime] = None
@@ -32,6 +32,7 @@ class UserSchema(BaseUserSchema):
     prodi: Optional[ProdiSchema] = None
     perkuliahan: Optional[List[PerkuliahanSchema]] = None
     mahasiswa = []
+    roles = []
 
     class Config:
         orm_mode = True

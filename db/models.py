@@ -105,6 +105,7 @@ class User(Base):
     full_name = Column(String(length=255))
     email_verified_at = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
+    is_dosen = Column(Boolean, default=True)
     is_active = Column(Boolean, default=True)
 
     created_at = Column(DateTime, default=datetime.now())
@@ -174,7 +175,7 @@ class Mahasiswa(Base):
     status_mhs_id = Column(BigInteger, ForeignKey(StatusMahasiswa.id))
 
     full_name = Column(String(length=255))
-    nim = Column(String(length=100))
+    nim = Column(String(length=100), unique=True)
     semester = Column(Integer)
 
     is_active = Column(Boolean, default=True)
@@ -874,3 +875,20 @@ class Evaluasi(Base):
 
     cpmk = relationship("CPMK", foreign_keys=[cpmk_id])
     perkuliahan = relationship("Perkuliahan", foreign_keys=[perkuliahan_id])
+
+
+class LinkMataKuliah(Base):
+    __tablename__ = "link_mata_kuliahs"
+
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    mata_kuliah_id = Column(BigInteger, ForeignKey(MataKuliah.id))
+    mapping_id = Column(BigInteger, ForeignKey(MataKuliah.id))
+
+    created_at = Column(DateTime, default=datetime.now())
+    created_by = Column(String(length=120), nullable=True)
+    modified_at = Column(DateTime, default=datetime.now(),
+                         onupdate=datetime.now())
+    modified_by = Column(String(length=120), nullable=True)
+
+    mataKuliah = relationship("MataKuliah", foreign_keys=[mata_kuliah_id])
+    mapping = relationship("MataKuliah", foreign_keys=[mapping_id])

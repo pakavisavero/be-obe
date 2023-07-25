@@ -30,8 +30,6 @@ async def get_dashboards(
         "jml_prodi": jml_prodi,
     }
 
-    print(data)
-
     return {
         "code": status.HTTP_200_OK,
         "message": "success retrieve data!",

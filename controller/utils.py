@@ -23,6 +23,17 @@ class DocStatus(Enum):
     SELESAI = 3
 
 
+def error_handling(e):
+    error = str(e)
+    if 'message' in e.args[0]:
+        error = e.args[0]['message']
+
+    return {
+        'status': False,
+        'message': error
+    }
+
+
 def remove_char(text: str):
     text = text.split(" ")
     length = len(text)
@@ -148,9 +159,10 @@ def helper_static_filter(db, Schema, filtered, offset, xtra={}, xtraOr={}):
 
     if dict_bool:
         for key in dict_bool:
-            if dict_bool[key] == True or dict_bool[key] == False:
-                base_query = base_query.filter(
-                    getattr(Schema, key) == dict_bool[key])
+            if key != 'is_paging':
+                if dict_bool[key] == True or dict_bool[key] == False:
+                    base_query = base_query.filter(
+                        getattr(Schema, key) == dict_bool[key])
 
     if dict_not_null:
         for key in dict_not_null:
@@ -158,21 +170,11 @@ def helper_static_filter(db, Schema, filtered, offset, xtra={}, xtraOr={}):
                 print(dict_not_null[key])
                 base_query = base_query.filter(
                     getattr(Schema, key).isnot(None))
-                # base_query = base_query.filter(
-                #     getattr(Schema, key) == dict_number[key]
-                # )
-    # data = (
-    #     base_query
-    #     .order_by(desc(getattr(Schema, desc("modified_at"))))
-    #     .offset(offset)
-    #     .limit(10)
-    #     .all()
-    # )
 
     if is_paging == False:
         data = (
             base_query.filter_by(
-                **xtra).limit(50).order_by(desc("modified_at")).all()
+                **xtra).order_by(desc("modified_at")).limit(50).all()
         )
         total = base_query.count()
         return data, total
@@ -250,9 +252,6 @@ def help_filter(request):
         for key in data_params:
             if (
                 key != "page"
-                and key != "is_aso"
-                and key != "is_paging"
-                and key != "main_unit"
             ):
                 try:
                     filtered_data[key] = int(data_params[key])
@@ -372,9 +371,16 @@ def to_dict(is_parent=True, row=[], modified=[], xtraIgnore=[]):
             rtn_dict[key] = getattr(row, key)
             if is_parent:
                 for mod in modified:
-                    rtn_dict[mod['name']] = to_dict(
-                        is_parent=False,
-                        row=getattr(row, mod['relation']))[mod['opt']]
+                    if 'name' in mod:
+                        relation = to_dict(
+                            is_parent=False,
+                            row=getattr(row, mod['relation'])
+                        )
+
+                        if relation:
+                            rtn_dict[mod['name']] = relation[mod['opt']]
+                        else:
+                            rtn_dict[mod['name']] = '-'
 
     return rtn_dict
 
@@ -387,7 +393,7 @@ def export_file(columns, element, filename):
         "_" + date_time + ".xlsx"
 
     writer = pd.ExcelWriter(file_response)
-    
+
     df.columns = columns
     df.index = df.index + 1
     df.to_excel(writer)

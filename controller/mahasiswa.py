@@ -5,7 +5,7 @@ from db.schemas.mahasiswaSchema import (
     MahasiswaUpdateSchema,
 )
 
-from .utils import helper_static_filter
+from .utils import helper_static_filter, error_handling
 from datetime import datetime
 import pytz
 
@@ -124,41 +124,107 @@ def getByID(db: Session, id: int, token: str, pks=[]):
     return data
 
 
-def create(db: Session, username: str, data: MahasiswaCreateSchema):
+def create(db: Session, username: str, data: dict):
     try:
-        data.created_at = datetime.now()
-        data.modified_at = datetime.now()
-        data.created_by = username
-        data.modified_by = username
+        doswal_id = data['doswal_id']
+        exist = db.query(Mahasiswa).filter_by(nim=data['nim']).first()
 
-        mahasiswa = Mahasiswa(**data.dict())
-        db.add(mahasiswa)
-        db.commit()
+        help_remove_data(data)
+        if not exist:
+            data['created_at'] = datetime.now()
+            data['modified_at'] = datetime.now()
+            data['created_by'] = username
+            data['modified_by'] = username
+            data['full_name'] = data['full_name'].lower().title().strip()
 
-        return mahasiswa
+            mahasiswa = Mahasiswa(**data)
+            db.add(mahasiswa)
+            db.commit()
+            db.refresh(mahasiswa)
+
+            md = MahasiswaDoswal(**{
+                'mahasiswa_id': mahasiswa.id,
+                'dosen_id': doswal_id,
+                "angkatan": "20" + str(data['nim'])[6:8],
+            })
+            db.add(md)
+            db.commit()
+
+            return {
+                'status': True,
+                'data': mahasiswa
+            }
+
+        else:
+            raise Exception({'message': 'nim mahasiswa already taken!'})
 
     except Exception as e:
-        print(e)
-        return False
+        return error_handling(e)
 
 
-def update(db: Session, username: str, data: MahasiswaUpdateSchema):
+def update(db: Session, username: str, data: dict):
     try:
-        data.modified_at = datetime.now()
-        data.modified_by = username
+        doswal_id = data['doswal_id']
+        exist = db.query(Mahasiswa).filter_by(nim=data['nim']).first()
 
-        mahasiswa = (
-            db.query(Mahasiswa).filter(
-                Mahasiswa.id == data.id).update(dict(data))
-        )
+        help_remove_data(data)
+        if (not exist) or (exist.id == data['id']):
+            data['modified_at'] = datetime.now()
+            data['modified_by'] = username
 
-        db.commit()
+            mahasiswa = (
+                db.query(Mahasiswa).filter(
+                    Mahasiswa.id == data['id']).update({
+                        'nim': data['nim'],
+                        'full_name': data['full_name'],
+                        'prodi_id': data['prodi_id'],
+                    })
+            )
 
-        return mahasiswa
+            db.commit()
 
-    except:
-        return False
+            base_doswal = db.query(MahasiswaDoswal).filter_by(
+                dosen_id=doswal_id, mahasiswa_id=data['id'])
+            args = {
+                'dosen_id': doswal_id,
+                "angkatan": "20" + str(data['nim'])[6:8],
+            }
+
+            doswal = base_doswal.first()
+            if doswal:
+                base_doswal.update(args)
+                db.commit()
+
+            else:
+                args['mahasiswa_id'] = data.id
+                md = MahasiswaDoswal(**args)
+                db.add(md)
+                db.commit()
+
+            return {
+                'status': True,
+                'data': mahasiswa
+            }
+
+        else:
+            raise Exception({'message': 'nim mahasiswa already taken!'})
+
+    except Exception as e:
+        return error_handling(e)
 
 
 def delete(db: Session, id: int):
     return db.query(Mahasiswa).filter_by(id=id).delete()
+
+
+def help_remove_data(data):
+    nameArray = [
+        "prodi_id_name",
+        "doswal_id_name",
+        "doswal_id",
+        "status_mhs_id_name"
+    ]
+
+    for a in nameArray:
+        if a in data:
+            del data[a]

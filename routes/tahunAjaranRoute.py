@@ -58,7 +58,7 @@ async def get_all_tahun_ajaran(
 
 
 @app.get(TAHUN_AJARAN + "/{id}", response_model=TahunAjaranResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_tahun_ajaran(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -73,18 +73,18 @@ async def get_tahun_ajaran(
     }
 
 
-@app.post(TAHUN_AJARAN, response_model=TahunAjaranResponseSchema)
-@check_access_module
+@app.post(TAHUN_AJARAN, response_model=dict)
+# @check_access_module
 async def submit_tahun_ajaran(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    data: TahunAjaranCreateSchema = None,
+    data: dict = None,
     request: Request = None,
 ):
     username = getUsername(token)
 
     res = tahunAjaran.create(db, username, data)
-    if res:
+    if res['status']:
         return {
             "code": status.HTTP_200_OK,
             "message": "Success submit tahun ajaran",
@@ -94,21 +94,21 @@ async def submit_tahun_ajaran(
     else:
         return {
             "code": status.HTTP_400_BAD_REQUEST,
-            "message": "error submit tahun ajaran",
+            "message": res['message'],
         }
 
 
-@app.put(TAHUN_AJARAN, response_model=TahunAjaranResponseSchema)
-@check_access_module
+@app.put(TAHUN_AJARAN, response_model=dict)
+# @check_access_module
 async def update_tahun_ajaran(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    data: TahunAjaranUpdateSchema = None,
+    data: dict = None,
     request: Request = None,
 ):
     username = getUsername(token)
     res = tahunAjaran.update(db, username, data)
-    if res:
+    if res['status']:
         return {
             "code": status.HTTP_200_OK,
             "message": "Success update tahun ajaran",
@@ -117,7 +117,7 @@ async def update_tahun_ajaran(
     else:
         return {
             "code": status.HTTP_400_BAD_REQUEST,
-            "message": "error update tahun ajaran",
+            "message": res['message'],
         }
 
 

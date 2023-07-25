@@ -109,14 +109,14 @@ async def get_mahasiswa(
 async def submit_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    data: MahasiswaCreateSchema = None,
+    data: dict = None,
     request: Request = None,
     module_access=MODULE_NAME,
 ):
     username = getUsername(token)
 
     res = mahasiswa.create(db, username, data)
-    if res:
+    if res['status']:
         return {
             "code": status.HTTP_200_OK,
             "message": "Success submit mahasiswa",
@@ -126,22 +126,22 @@ async def submit_mahasiswa(
     else:
         return {
             "code": status.HTTP_400_BAD_REQUEST,
-            "message": "error submit mahasiswa",
+            "message": res['message'],
         }
 
 
 @app.put(MAHASISWA, response_model=MahasiswaResponseSchema)
-@check_access_module
+# @check_access_module
 async def update_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    data: MahasiswaUpdateSchema = None,
+    data: dict = None,
     request: Request = None,
-    module_access=MODULE_NAME,
+    # module_access=MODULE_NAME,
 ):
     username = getUsername(token)
     res = mahasiswa.update(db, username, data)
-    if res:
+    if res['status']:
         return {
             "code": status.HTTP_200_OK,
             "message": "Success update mahasiswa",
@@ -150,7 +150,7 @@ async def update_mahasiswa(
     else:
         return {
             "code": status.HTTP_400_BAD_REQUEST,
-            "message": "error update mahasiswa",
+            "message": res['message'],
         }
 
 

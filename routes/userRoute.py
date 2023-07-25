@@ -54,40 +54,6 @@ async def get_all_user(
         }
 
 
-@app.get("/api/dosens", response_model=UserResponseSchema)
-@check_access_module
-async def get_all_dosen(
-    db: Session = Depends(db),
-    token: str = Header(default=None),
-    request: Request = None,
-    page: int = 0,
-    module_access=MODULE_NAME,
-):
-    filtered_data = help_filter(request)
-    if filtered_data:
-        query = user.getAllPagingFilteredSpecialDosen(
-            db, page, filtered_data, token, {"role_id": 3}
-        )
-        data = user.getOnlyDosen(db, query["data"])
-
-        return {
-            "code": status.HTTP_200_OK,
-            "message": "Success retrieve filtered dosen",
-            "data": data,
-            "total": query["total"],
-        }
-    else:
-        query = user.getAllPaging(db, page, token)
-        data = user.getOnlyDosen(db, query["data"])
-
-        return {
-            "code": status.HTTP_200_OK,
-            "message": "Success retrieve all dosen",
-            "data": data,
-            "total": query["total"],
-        }
-
-
 @app.get(USER + "/{id}", response_model=UserResponseSchema)
 @check_access_module
 async def get_user(
@@ -106,33 +72,33 @@ async def get_user(
 
 
 @app.post(USER, response_model=UserResponseSchema)
-@check_access_module
+# @check_access_module
 async def submit_user(
     db: Session = Depends(db),
     token: str = Header(default=None),
-    data: UserCreateSchema = None,
+    data: dict = None,
     request: Request = None,
     module_access=MODULE_NAME,
 ):
     username = getUsername(token)
-
     res = user.create(db, username, data)
-    if res:
+    
+    if res['status']:
         return {
             "code": status.HTTP_200_OK,
             "message": "Success submit user",
-            "data": res,
+            "data": res['data'],
         }
 
     else:
         return {
             "code": status.HTTP_400_BAD_REQUEST,
-            "message": "error submit user",
+            "message": res['message'],
         }
 
 
 @app.put(USER, response_model=UserResponseSchema)
-@check_access_module
+# @check_access_module
 async def update_user(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -142,16 +108,16 @@ async def update_user(
 ):
     username = getUsername(token)
     res = user.update(db, username, data)
-    if res:
+    if res['status']:
         return {
             "code": status.HTTP_200_OK,
             "message": "Success update user",
-            "data": data,
+            "data": res['data'],
         }
     else:
         return {
             "code": status.HTTP_400_BAD_REQUEST,
-            "message": "error update user",
+            "message": res['message'],
         }
 
 

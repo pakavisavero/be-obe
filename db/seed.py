@@ -26,7 +26,6 @@ json_files = [
     "fakultas_stuktural.json",
 ]
 
-
 def seed(session, entities):
     seeder = Seeder(session)
     seeder.seed(entities)

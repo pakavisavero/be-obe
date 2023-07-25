@@ -296,7 +296,7 @@ def getAll(db: Session, token: str):
     return data
 
 
-def getAllPaging(db: Session, offset: int, token: str):
+def getAllPaging(db: Session, offset: int, token: str, xtra={}):
     data = db.query(Perkuliahan)
     role = identifyRole(token)
 
@@ -307,19 +307,24 @@ def getAllPaging(db: Session, offset: int, token: str):
                 Perkuliahan.dosen2_id == role["user_id"],
                 Perkuliahan.dosen3_id == role["user_id"],
             )
-        ).all()
+        ).filter_by(**xtra).all()
 
     else:
-        data = data.all()
+        data = data.filter_by(**xtra).all()
 
     total = len(data)
     helperRetrievePerkuliahan(db, data)
     return {"data": data, "total": total}
 
 
-def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
-    xtra = {}
-    xtraOr = {}
+def getAllPagingFiltered(
+    db: Session,
+    offset: int,
+    filtered: dict,
+    token: str,
+    xtra={},
+    xtraOr={}
+):
     role = identifyRole(token)
 
     if role["role"] == "Dosen":
@@ -343,14 +348,17 @@ def getByID(db: Session, id: int, token: str):
     return data
 
 
-def create(db: Session, username: str, data: PerkuliahanCreateSchema):
+def create(db: Session, username: str, data: dict):
     try:
-        data.created_at = datetime.now()
-        data.modified_at = datetime.now()
-        data.created_by = username
-        data.modified_by = username
+        data['created_at'] = datetime.now()
+        data['modified_at'] = datetime.now()
+        data['created_by'] = username
+        data['modified_by'] = username
+        data['doc_status_id'] = 1
 
-        perkuliahan = Perkuliahan(**data.dict())
+        help_remove_data(data)
+
+        perkuliahan = Perkuliahan(**data)
         db.add(perkuliahan)
         db.commit()
 
@@ -1095,3 +1103,19 @@ def getJinjaPortofolio(db: Session, request: Request, id: int, template_name: st
     os.unlink(uri + 'output.pdf')
 
     return uri + 'result.pdf'
+
+
+def help_remove_data(data):
+    nameArray = [
+        "prodi_id_name",
+        "mata_kuliah_id_name",
+        "dosen_id_name",
+        "dosen2_id_name",
+        "dosen3_id_name",
+        "pj_dosen_id_name",
+        "tahun_ajaran_id_name",
+    ]
+
+    for a in nameArray:
+        if a in data:
+            del data[a]

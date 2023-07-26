@@ -20,7 +20,7 @@ class BaseAssessmentProdiDetailSchema(BaseModel):
 
 
 class AssessmentProdiDetailSchema(BaseAssessmentProdiDetailSchema):
-    siklus: List[SiklusProdiSchema] = None
+    siklus: Optional[SiklusProdiSchema] = None
 
     class Config:
         orm_mode = True
@@ -37,8 +37,10 @@ class AssessmentProdiDetailUpdateSchema(BaseAssessmentProdiDetailSchema):
 class AssessmentProdiDetailDeleteSchema(BaseModel):
     id: int
 
+
 class AssessmentProdiDetailResponseSchema(BaseModel):
     code: int
     message: str
-    data: Union[List[AssessmentProdiDetailSchema], AssessmentProdiDetailSchema] = None
+    data: Union[List[AssessmentProdiDetailSchema],
+                AssessmentProdiDetailSchema] = None
     total: Optional[int] = None

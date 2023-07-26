@@ -1,4 +1,4 @@
-from db.models import *
+from db.models import AssessmentProdi, AssessmentProdiDetail
 from db.database import Session
 
 from .utils import helper_static_filter
@@ -16,13 +16,13 @@ def errArray(idx):
 
 
 def getAll(db: Session, token: str):
-    data = db.query(AssessmentMatkul).all()
+    data = db.query(AssessmentProdi).all()
 
     return data
 
 
 def getAllPaging(db: Session, offset: int, token: str):
-    base_query = db.query(AssessmentMatkul)
+    base_query = db.query(AssessmentProdi)
 
     data = base_query.all()
     total = base_query.count()
@@ -31,13 +31,13 @@ def getAllPaging(db: Session, offset: int, token: str):
 
 
 def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
-    data, total = helper_static_filter(db, AssessmentMatkul, filtered, offset)
+    data, total = helper_static_filter(db, AssessmentProdi, filtered, offset)
 
     return {"data": data, "total": total}
 
 
 def getByID(db: Session, id: int, token: str):
-    data = db.query(AssessmentMatkul).filter_by(id=id).first()
+    data = db.query(AssessmentProdi).filter_by(id=id).first()
 
     return data
 
@@ -51,21 +51,21 @@ def create(db: Session, username: str, data: dict):
     children = data["siklus"]
     help_remove_data(data)
 
-    am = AssessmentMatkul(**data)
-    db.add(am)
+    ap = AssessmentProdi(**data)
+    db.add(ap)
     db.commit()
-    db.refresh(am)
+    db.refresh(ap)
 
     for child in children:
-        child = AssessmentMatkulDetail(**{
-            'parent_id': am.id,
-            'perkuliahan_id': child,
+        child = AssessmentProdiDetail(**{
+            'parent_id': ap.id,
+            'siklus_id': child,
         })
 
         db.add(child)
         db.commit()
 
-    return am
+    return ap
 
 
 def update(db: Session, username: str, data: dict):
@@ -73,18 +73,19 @@ def update(db: Session, username: str, data: dict):
         data.modified_at = datetime.now()
         data.modified_by = username
 
-        assessmentMatkul = db.query(AssessmentMatkul).filter(AssessmentMatkul.id == data.id).update(data)
+        assessmentProdi = db.query(AssessmentProdi).filter(
+            AssessmentProdi.id == data.id).update(data)
 
         db.commit()
 
-        return assessmentMatkul
+        return assessmentProdi
 
     except:
         return False
 
 
 def delete(db: Session, id: int):
-    return db.query(AssessmentMatkul).filter_by(id=id).delete()
+    return db.query(AssessmentProdi).filter_by(id=id).delete()
 
 
 def help_remove_data(data):

@@ -10,7 +10,6 @@ from controller.utils import decode_token
 from db.database import Session
 from db.schemas.perkuliahanSchema import (
     PerkuliahanResponseSchema,
-    PerkuliahanCreateSchema,
     PerkuliahanDeleteSchema,
 )
 

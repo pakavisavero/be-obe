@@ -757,10 +757,6 @@ async def save_template(
         wb.save(path)
 
         pdfName = file.filename.replace('xlsx', 'pdf')
-        subprocess.run(["libreoffice", "--headless",
-                        "macro:///Standard.Module1.FitToPage", "--convert-to", "pdf", path])
-        shutil.move(pdfName, 'files/cpmk/' + pdfName)
-
         exp = CheckExportPortofolio(
             **{
                 "perkuliahan_id": id,
@@ -769,6 +765,10 @@ async def save_template(
         )
         db.add(exp)
         db.commit()
+
+        subprocess.run(["libreoffice", "--headless",
+                        "macro:///Standard.Module1.FitToPage", "--convert-to", "pdf", path])
+        shutil.move(pdfName, 'files/cpmk/' + pdfName)
 
         remove_file(path)
 

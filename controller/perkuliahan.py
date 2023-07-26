@@ -356,6 +356,10 @@ def create(db: Session, username: str, data: dict):
         data['modified_by'] = username
         data['doc_status_id'] = 1
 
+        dosen3 = None
+        if not data['dosen3_id']:
+            data['dosen3_id'] = None
+
         help_remove_data(data)
 
         perkuliahan = Perkuliahan(**data)
@@ -798,10 +802,10 @@ def getNilaiSiap(db: Session, id: int):
     perUts = int(presentase.nilai_uts.replace("%", "")) / 100
     perUas = int(presentase.nilai_uas.replace("%", "")) / 100
 
-    sheet["E6"] = perTugas
-    sheet["F6"] = perPraktek
-    sheet["G6"] = perUts
-    sheet["H6"] = perUas
+    # sheet["E6"] = perTugas
+    # sheet["F6"] = perPraktek
+    # sheet["G6"] = perUts
+    # sheet["H6"] = perUas
 
     row = 8
     for map in mapping:

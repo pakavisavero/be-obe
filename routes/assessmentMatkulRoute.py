@@ -79,7 +79,7 @@ def helperRetrieveAssessmentMatkul(db, data, isEdit=False):
                 'id': cp.id,
                 'name': cp.name,
                 'statement': cp.statement,
-                'value': round(float(sumCpmkVal / sumCpmkDivision), 2),
+                'value': round(float(sumCpmkVal / sumCpmkDivision), 1),
                 'cpl': []
             }
 

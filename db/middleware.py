@@ -282,6 +282,7 @@ def get_user_access(db, user_id, role_id):
         temp = (
             {
                 "module_id": u.module_id,
+                "module_name": u.module.module_name,
                 "access": [
                     {
                         "view": u.view,

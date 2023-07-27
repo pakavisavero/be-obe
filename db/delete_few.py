@@ -8,6 +8,7 @@ pks = db.query(Perkuliahan).all()
 for pk in pks:
     pk = pk.id
     db.query(CheckExportDPNA).filter_by(perkuliahan_id=pk).delete()
+    db.query(SiklusProdiDetail).filter_by(perkuliahan_id=pk).delete()
     db.query(CheckExportPortofolio).filter_by(perkuliahan_id=pk).delete()
     base_cpmk = db.query(CPMK).filter_by(perkuliahan_id=pk)
 

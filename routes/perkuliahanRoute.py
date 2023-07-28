@@ -614,10 +614,13 @@ async def upload_dpna(
         }
 
     except Exception as e:
-        print(e)
         db.rollback()
         err = str(e.args[0]).split("\n")
         data = {"message": err[errArray(len(err))]}
+
+        if data['message'] == 'list index out of range':
+            data['message'] = "Excel template is not proper!"
+            
         raise HandlerCustom(data=data)
 
 
@@ -964,6 +967,10 @@ async def upload_cpmk(
         db.rollback()
         err = str(e.args[0]).split("\n")
         data = {"message": err[errArray(len(err))]}
+
+        if data['message'] == 'list index out of range':
+            data['message'] = "Excel template is not proper!"
+
         raise HandlerCustom(data=data)
 
 

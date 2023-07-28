@@ -27,7 +27,7 @@ def errArray(idx):
 
 
 @app.get(MATA_KULIAH + "s", response_model=MataKuliahResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_all_mata_kuliah(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -56,7 +56,7 @@ async def get_all_mata_kuliah(
 
 
 @app.get(MATA_KULIAH + "/{id}", response_model=MataKuliahResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_mata_kuliah(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -73,7 +73,7 @@ async def get_mata_kuliah(
 
 
 @app.post(MATA_KULIAH, response_model=MataKuliahResponseSchema)
-@check_access_module
+# @check_access_module
 async def submit_mata_kuliah(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -99,7 +99,7 @@ async def submit_mata_kuliah(
 
 
 @app.put(MATA_KULIAH, response_model=MataKuliahResponseSchema)
-@check_access_module
+# @check_access_module
 async def update_mata_kuliah(
     db: Session = Depends(db),
     token: str = Header(default=None),

@@ -26,7 +26,7 @@ def errArray(idx):
 
 
 @app.get(MODULE + "s", response_model=ModuleResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_all_modules(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -71,7 +71,7 @@ async def get_module(
 
 
 @app.post(MODULE, response_model=ModuleResponseSchema)
-@check_access_module
+# @check_access_module
 async def submit_module(
     db: Session = Depends(db),
     token: str = Header(default=None),

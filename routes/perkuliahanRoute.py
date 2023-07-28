@@ -41,7 +41,7 @@ def errArray(idx):
 
 
 @app.get(PERKULIAHAN + "s", response_model=PerkuliahanResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_all_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -72,7 +72,7 @@ async def get_all_perkuliahan(
 
 
 @app.get("/api/history-kbm", response_model=PerkuliahanResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_all_history_kbm(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -104,7 +104,7 @@ async def get_all_history_kbm(
 
 
 @app.get(PERKULIAHAN + "/{id}", response_model=PerkuliahanResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -121,7 +121,7 @@ async def get_perkuliahan(
 
 
 @app.post(PERKULIAHAN, response_model=PerkuliahanResponseSchema)
-@check_access_module
+# @check_access_module
 async def submit_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -204,7 +204,7 @@ async def deactivate_perkuliahan_all(
 
 
 @app.put(PERKULIAHAN, response_model=PerkuliahanResponseSchema)
-@check_access_module
+# @check_access_module
 async def update_perkuliahan(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -620,7 +620,7 @@ async def upload_dpna(
 
         if data['message'] == 'list index out of range':
             data['message'] = "Excel template is not proper!"
-            
+
         raise HandlerCustom(data=data)
 
 

@@ -29,7 +29,7 @@ def errArray(idx):
 
 
 @app.get(ROLE_MASTER + "s", response_model=RoleMasterResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_all_role_master(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -58,7 +58,7 @@ async def get_all_role_master(
 
 
 @app.get(ROLE_MASTER + "/{id}", response_model=RoleMasterResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_role_master(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -75,7 +75,7 @@ async def get_role_master(
 
 
 @app.post(ROLE_MASTER, response_model=RoleMasterResponseSchema)
-@check_access_module
+# @check_access_module
 async def submit_role_master(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -101,7 +101,7 @@ async def submit_role_master(
 
 
 @app.put(ROLE_MASTER, response_model=RoleMasterResponseSchema)
-@check_access_module
+# @check_access_module
 async def update_role_master(
     db: Session = Depends(db),
     token: str = Header(default=None),

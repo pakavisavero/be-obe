@@ -25,7 +25,7 @@ def errArray(idx):
 
 
 @app.get(USER_ROLE + "s", response_model=UserRoleResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_all_user_role(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -53,7 +53,7 @@ async def get_all_user_role(
 
 
 @app.get(USER_ROLE + "/{id}", response_model=UserRoleResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_user_role(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -68,7 +68,7 @@ async def get_user_role(
 
 
 @app.post(USER_ROLE, response_model=UserRoleResponseSchema)
-@check_access_module
+# @check_access_module
 async def submit_user_role(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -92,7 +92,7 @@ async def submit_user_role(
 
 
 @app.put(USER_ROLE, response_model=UserRoleResponseSchema)
-@check_access_module
+# @check_access_module
 async def update_user_role(
     db: Session = Depends(db),
     token: str = Header(default=None),

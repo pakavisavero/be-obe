@@ -26,7 +26,7 @@ def errArray(idx):
 
 
 @app.get(PRODI + "s", response_model=ProdiResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_all_prodi(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -55,7 +55,7 @@ async def get_all_prodi(
 
 
 @app.get(PRODI + "/{id}", response_model=ProdiResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_prodi(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -72,7 +72,7 @@ async def get_prodi(
 
 
 @app.post(PRODI, response_model=ProdiResponseSchema)
-@check_access_module
+# @check_access_module
 async def submit_prodi(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -98,7 +98,7 @@ async def submit_prodi(
 
 
 @app.put(PRODI, response_model=ProdiResponseSchema)
-@check_access_module
+# @check_access_module
 async def update_prodi(
     db: Session = Depends(db),
     token: str = Header(default=None),

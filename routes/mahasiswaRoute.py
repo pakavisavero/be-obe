@@ -30,7 +30,7 @@ def errArray(idx):
 
 
 @app.get(MAHASISWA + "s", response_model=MahasiswaResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_all_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -67,7 +67,7 @@ async def get_all_mahasiswa(
 
 
 @app.get(MAHASISWA + "/{id}", response_model=MahasiswaResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -84,7 +84,7 @@ async def get_mahasiswa(
 
 
 @app.post(MAHASISWA + "/raport", response_model=MahasiswaResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -105,7 +105,7 @@ async def get_mahasiswa(
 
 
 @app.post(MAHASISWA, response_model=MahasiswaResponseSchema)
-@check_access_module
+# @check_access_module
 async def submit_mahasiswa(
     db: Session = Depends(db),
     token: str = Header(default=None),

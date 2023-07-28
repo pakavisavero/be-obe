@@ -26,7 +26,7 @@ def errArray(idx):
 
 
 @app.get(USER + "s", response_model=UserResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_all_user(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -55,7 +55,7 @@ async def get_all_user(
 
 
 @app.get(USER + "/{id}", response_model=UserResponseSchema)
-@check_access_module
+# @check_access_module
 async def get_user(
     db: Session = Depends(db),
     token: str = Header(default=None),
@@ -82,7 +82,7 @@ async def submit_user(
 ):
     username = getUsername(token)
     res = user.create(db, username, data)
-    
+
     if res['status']:
         return {
             "code": status.HTTP_200_OK,
@@ -122,7 +122,7 @@ async def update_user(
 
 
 @app.put("/api/update-password", response_model=UserResponseSchema)
-@check_access_module
+# @check_access_module
 async def update_password(
     db: Session = Depends(db),
     token: str = Header(default=None),

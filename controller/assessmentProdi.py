@@ -51,7 +51,8 @@ def helperRetrieveAssessmentProdi(db, data):
 
                     if alreadyExistSiklus:
                         cExist[name][index]['sum'] += sum
-                        cExist[name][index]['value'] += round(total_values, 2)
+                        cExist[name][index]['value'] += round(
+                            total_values / 25, 2)
                     else:
                         if not initSiklus:
                             cExist[name].append({
@@ -59,7 +60,7 @@ def helperRetrieveAssessmentProdi(db, data):
                                 'pk_id': sik.perkuliahan_id,
                                 'siklus': child.siklus.name,
                                 'sum': sum,
-                                'value': round(total_values, 2),
+                                'value': round(total_values / 25, 2),
                             })
                             initSiklus = True
 
@@ -74,7 +75,7 @@ def helperRetrieveAssessmentProdi(db, data):
                                 'pk_id': sik.perkuliahan_id,
                                 'siklus': child.siklus.name,
                                 'sum': sum,
-                                'value': round(total_values, 2),
+                                'value': round(total_values / 25, 2),
                             }
                         ],
                     }

@@ -18,3 +18,8 @@ def getEmail(token):
 def getUsername(token):
     username = decode_token(token)["username"]
     return username
+
+
+def getUserId(token):
+    userId = decode_token(token)["user_id"]
+    return userId

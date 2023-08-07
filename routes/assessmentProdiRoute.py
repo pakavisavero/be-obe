@@ -5,7 +5,7 @@ from controller import assessmentProdi
 from routes.route import app
 from controller.utils import help_filter, check_access_module
 
-from db.session import db, getUsername
+from db.session import db, getUsername, getUserId
 from db.models import *
 from db.database import Session
 from db.schemas.assessmentProdiSchema import (
@@ -122,4 +122,68 @@ async def delete_assessment_prodi(
     return {
         "code": status.HTTP_200_OK,
         "message": "Success delete assessment prodi",
+    }
+
+
+@app.get('/api/get-pdf-assessment-prodi/{id}')
+# @check_access_module
+async def get_pdf_assessment_prodi(
+    db: Session = Depends(db),
+    token: str = Header(default=None),
+    request: Request = None,
+    id: int = None
+):
+    user = db.query(User).filter_by(id=getUserId(token)).first()
+    prodi_id = user.prodi_id
+
+    data = []
+    listSiklus = []
+
+    cpls = db.query(CPL).filter_by(prodi_id=prodi_id).all()
+    assessment = db.query(AssessmentProdi).filter_by(id=id).first()
+
+    for cpl in cpls:
+        # GET Assessment Prodi Detail
+        dataSiklus = {
+            'cpl': cpl.name.replace('CPL', 'PK ')
+        }
+
+        for asse in assessment.children:
+            # GET Siklus
+            siklus = asse.siklus
+            values = 0
+            sum = 0
+
+            for detail in siklus.children:
+                if cpl.id == detail.cpl_id:
+                    pk = detail.perkuliahan_id
+                    mapping = db.query(MappingMahasiswa).filter_by(
+                        perkuliahan_id=pk).all()
+                    for map in mapping:
+                        cplMhs = db.query(CplMahasiswa).\
+                            filter_by(mapping_mhs_id=map.id).\
+                            filter_by(cpl_id=cpl.id).\
+                            first()
+
+                        values += float(cplMhs.value)
+                        sum += 1
+
+            # Prevent Zero Division
+            if sum == 0:
+                sum = 1
+
+            if not siklus.name in listSiklus:
+                listSiklus.append(siklus.name)
+
+            dataSiklus[siklus.name] = round(values / sum, 2)
+
+        data.append(dataSiklus)
+
+    return {
+        "code": status.HTTP_200_OK,
+        "message": "Success get assessment prodi data!",
+        "data": {
+            'pks': data,
+            'siklus': listSiklus,
+        },
     }

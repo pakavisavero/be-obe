@@ -1,4 +1,4 @@
-from db.models import AssessmentProdi, AssessmentProdiDetail
+from db.models import *
 from db.database import Session
 
 from .utils import helper_static_filter
@@ -6,6 +6,84 @@ from datetime import datetime
 import pytz
 
 tz = pytz.timezone("Asia/Jakarta")
+
+
+def helperRetrieveAssessmentProdi(db, data):
+    graph = []
+    listSiklus = []
+
+    existCplList = False
+    initSiklus = False
+
+    for child in data.children:
+        listSiklus.append(child.siklus.name)
+        siklus = child.siklus.children
+
+        # Iterasi pada children atau siklus
+        for sik in siklus:
+            total_values = 0
+            mapping = db.query(MappingMahasiswa).filter_by(
+                perkuliahan_id=sik.perkuliahan_id).all()
+
+            sum = len(mapping)
+            for map in mapping:
+                cplMhs = db.query(CplMahasiswa).\
+                    filter_by(cpl_id=sik.cpl_id).\
+                    filter_by(mapping_mhs_id=map.id).\
+                    first()
+
+                if cplMhs:
+                    total_values += float(cplMhs.value)
+
+            # Iterasi pada graphic (cpl)
+            for cExist in graph:
+                name = sik.cpl.name
+                if name in cExist:
+                    existCplList = True
+                    alreadyExistSiklus = False
+                    index = 0
+
+                    # Check siklus pada cpl GRAPH
+                    for idx, cSiklus in enumerate(cExist[name]):
+                        if cSiklus['id'] == child.siklus_id:
+                            alreadyExistSiklus = True
+                            index = idx
+
+                    if alreadyExistSiklus:
+                        cExist[name][index]['sum'] += sum
+                        cExist[name][index]['value'] += round(total_values, 2)
+                    else:
+                        if not initSiklus:
+                            cExist[name].append({
+                                'id': child.siklus_id,
+                                'pk_id': sik.perkuliahan_id,
+                                'siklus': child.siklus.name,
+                                'sum': sum,
+                                'value': round(total_values, 2),
+                            })
+                            initSiklus = True
+
+                initSiklus = False
+
+            if not existCplList:
+                graph.append(
+                    {
+                        sik.cpl.name: [
+                            {
+                                'id': child.siklus_id,
+                                'pk_id': sik.perkuliahan_id,
+                                'siklus': child.siklus.name,
+                                'sum': sum,
+                                'value': round(total_values, 2),
+                            }
+                        ],
+                    }
+                )
+
+            existCplList = False
+
+    setattr(data, 'graph', graph)
+    setattr(data, 'listSiklus', listSiklus)
 
 
 def errArray(idx):
@@ -38,6 +116,8 @@ def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
 
 def getByID(db: Session, id: int, token: str):
     data = db.query(AssessmentProdi).filter_by(id=id).first()
+
+    helperRetrieveAssessmentProdi(db, data)
 
     return data
 

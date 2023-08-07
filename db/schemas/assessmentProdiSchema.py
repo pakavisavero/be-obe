@@ -21,6 +21,8 @@ class BaseAssessmentProdiSchema(BaseModel):
 
 class AssessmentProdiSchema(BaseAssessmentProdiSchema):
     children: List[AssessmentProdiDetailSchema] = None
+    listSiklus = []
+    graph = []
 
     class Config:
         orm_mode = True
@@ -36,6 +38,7 @@ class AssessmentProdiUpdateSchema(BaseAssessmentProdiSchema):
 
 class AssessmentProdiDeleteSchema(BaseModel):
     id: int
+
 
 class AssessmentProdiResponseSchema(BaseModel):
     code: int

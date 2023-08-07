@@ -917,7 +917,12 @@ async def upload_cpmk(
 
         ta = db.query(TahunAjaran).filter_by(name=tahun_ajaran).first()
         if not ta:
-            raise ValueError("Tahun Ajaran tidak tersedia!")
+            ta2 = db.query(TahunAjaran).filter_by(
+                tahun_ajaran=tahun_ajaran).first()
+            if not ta2:
+                raise ValueError("Tahun Ajaran tidak tersedia!")
+
+            ta = ta2
 
         pkActive = db.query(Perkuliahan).filter_by(id=id).first()
         if (

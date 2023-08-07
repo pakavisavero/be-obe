@@ -100,10 +100,13 @@ def get_single_cpmk(cpmk):
     bobot = 0
     for cp in cpmk:
         value = 0
-        if cp.value and cp.value != '':
-            value = cp.value
-        else:
-            value = 0
+        try:
+            if cp.value and cp.value != '':
+                value = cp.value
+            else:
+                value = 0
+        except:
+            ...
 
         val = round(float(value), 2)
         if val >= 80:
@@ -115,10 +118,13 @@ def get_single_cpmk(cpmk):
         elif val >= 51:
             bobot = 1
 
-        temp[cp.cpmk.name] = {
-            'nilai': val,
-            'bobot': bobot,
-        }
+        try:
+            temp[cp.cpmk.name] = {
+                'nilai': val,
+                'bobot': bobot,
+            }
+        except:
+            ...
 
         bobot = 0
 
@@ -291,7 +297,7 @@ def errArray(idx):
 def getAll(db: Session, token: str):
     data = db.query(Perkuliahan).all()
 
-    helperRetrievePerkuliahan(db, data)
+    # helperRetrievePerkuliahan(db, data)
 
     return data
 
@@ -313,7 +319,7 @@ def getAllPaging(db: Session, offset: int, token: str, xtra={}):
         data = data.filter_by(**xtra).all()
 
     total = len(data)
-    helperRetrievePerkuliahan(db, data)
+    # helperRetrievePerkuliahan(db, data)
     return {"data": data, "total": total}
 
 
@@ -337,7 +343,7 @@ def getAllPagingFiltered(
     data, total = helper_static_filter(
         db, Perkuliahan, filtered, offset, xtra, xtraOr)
 
-    helperRetrievePerkuliahan(db, data)
+    # helperRetrievePerkuliahan(db, data)
     return {"data": data, "total": total}
 
 
@@ -1059,8 +1065,11 @@ def getJinjaPortofolio(db: Session, request: Request, id: int, template_name: st
     evaluasiMain = db.query(EvaluasiMain).filter_by(
         perkuliahan_id=pk.id).first()
 
-    setattr(evaluasiMain, 'ambang', str(
-        round(float(evaluasiMain.ambang) * 100, 2)) + '%')
+    try:
+        setattr(evaluasiMain, 'ambang', str(
+            round(float(evaluasiMain.ambang) * 100, 2)) + '%')
+    except:
+        ...
 
     cplProdi = db.query(CPL).filter_by(prodi_id=8).all()
     environment = Environment(loader=FileSystemLoader("files/template/"))

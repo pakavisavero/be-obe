@@ -10,8 +10,8 @@ tz = pytz.timezone("Asia/Jakarta")
 
 class BaseAssessmentProdiDetailSchema(BaseModel):
     id: Optional[int] = None
-    parent_id: Optional[str] = None
-    siklus_id: Optional[str] = None
+    parent_id: Optional[int] = None
+    siklus_id: Optional[int] = None
 
     created_at: Optional[datetime] = None
     created_by: Optional[str] = None

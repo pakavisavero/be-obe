@@ -3,14 +3,17 @@ from db.database import Session
 
 from .utils import helper_static_filter
 from datetime import datetime
+from db.session import db, getUsername, getUserId
+
 import pytz
 
 tz = pytz.timezone("Asia/Jakarta")
 
 
-def helperRetrieveAssessmentProdi(db, data):
+def helperRetrieveAssessmentProdi(db, data, prodi_id):
     graph = []
     listSiklus = []
+    cpls = db.query(CPL).filter_by(prodi_id=prodi_id).all()
 
     existCplList = False
     initSiklus = False
@@ -83,6 +86,18 @@ def helperRetrieveAssessmentProdi(db, data):
 
             existCplList = False
 
+    for cpl in cpls:
+        match = False
+        for gr in graph:
+            for key, _ in gr.items():
+                if cpl.name == key:
+                    match = True
+
+        if not match:
+            graph.insert(int(cpl.name.replace('CPL', '')) - 1, {
+                cpl.name: []
+            })
+
     setattr(data, 'graph', graph)
     setattr(data, 'listSiklus', listSiklus)
 
@@ -118,7 +133,10 @@ def getAllPagingFiltered(db: Session, offset: int, filtered: dict, token: str):
 def getByID(db: Session, id: int, token: str):
     data = db.query(AssessmentProdi).filter_by(id=id).first()
 
-    helperRetrieveAssessmentProdi(db, data)
+    user = db.query(User).filter_by(id=getUserId(token)).first()
+    prodi_id = user.prodi_id
+
+    helperRetrieveAssessmentProdi(db, data, prodi_id)
 
     return data
 

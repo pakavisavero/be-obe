@@ -175,7 +175,7 @@ async def get_pdf_assessment_prodi(
             if not siklus.name in listSiklus:
                 listSiklus.append(siklus.name)
 
-            dataSiklus[siklus.name] = round(values / sum, 2)
+            dataSiklus[siklus.name] = round(values / sum / 25, 2)
 
         data.append(dataSiklus)
 
